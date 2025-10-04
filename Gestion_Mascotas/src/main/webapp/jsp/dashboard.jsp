@@ -1,10 +1,9 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://jakarta.ee/jstl/core" %>
 
 <!-- Verificar que el usuario esté logueado -->
 <c:if test="${empty sessionScope.usuario}">
-    <c:redirect url="/login"/>
+    <% response.sendRedirect(request.getContextPath() + "/login.jsp"); %>
 </c:if>
 
 <!DOCTYPE html>
@@ -16,7 +15,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/dashboard.css">
 </head>
 <body>
-<!-- Header/Navbar -->
 <header class="main-header">
     <div class="header-content">
         <div class="logo">
@@ -31,28 +29,25 @@
             </ul>
         </nav>
         <div class="user-menu">
-            <span class="user-name">👤 ${sessionScope.nombreCompleto}</span>
+            <span class="user-name">👤 ${sessionScope.usuario.nombreCompleto}</span>
             <a href="${pageContext.request.contextPath}/perfil" class="btn-secondary">Mi Perfil</a>
             <a href="${pageContext.request.contextPath}/logout" class="btn-logout">Cerrar Sesión</a>
         </div>
     </div>
 </header>
 
-<!-- Contenido Principal -->
 <main class="main-content">
     <div class="container">
-        <!-- Bienvenida -->
         <section class="welcome-section">
-            <h1>¡Bienvenido, ${sessionScope.nombreCompleto}! 👋</h1>
+            <h1>¡Bienvenido, ${sessionScope.usuario.nombreCompleto}! 👋</h1>
             <p>Gestiona toda la información de tus mascotas en un solo lugar</p>
         </section>
 
-        <!-- Tarjetas de estadísticas -->
         <section class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon">🐕</div>
                 <div class="stat-info">
-                    <h3>${totalMascotas != null ? totalMascotas : 0}</h3>
+                    <h3><c:out value="${totalMascotas != null ? totalMascotas : 0}"/></h3>
                     <p>Mascotas Registradas</p>
                 </div>
                 <a href="${pageContext.request.contextPath}/mascotas" class="stat-link">Ver todas →</a>
@@ -61,7 +56,7 @@
             <div class="stat-card">
                 <div class="stat-icon">🏥</div>
                 <div class="stat-info">
-                    <h3>${totalVisitas != null ? totalVisitas : 0}</h3>
+                    <h3><c:out value="${totalVisitas != null ? totalVisitas : 0}"/></h3>
                     <p>Visitas Veterinarias</p>
                 </div>
                 <a href="${pageContext.request.contextPath}/visitas" class="stat-link">Ver historial →</a>
@@ -70,7 +65,7 @@
             <div class="stat-card">
                 <div class="stat-icon">💉</div>
                 <div class="stat-info">
-                    <h3>${totalVacunas != null ? totalVacunas : 0}</h3>
+                    <h3><c:out value="${totalVacunas != null ? totalVacunas : 0}"/></h3>
                     <p>Vacunas Aplicadas</p>
                 </div>
                 <a href="${pageContext.request.contextPath}/vacunas" class="stat-link">Ver registro →</a>
@@ -79,14 +74,13 @@
             <div class="stat-card">
                 <div class="stat-icon">📅</div>
                 <div class="stat-info">
-                    <h3>${proximasVacunas != null ? proximasVacunas : 0}</h3>
+                    <h3><c:out value="${proximasVacunas != null ? proximasVacunas : 0}"/></h3>
                     <p>Vacunas Próximas</p>
                 </div>
                 <a href="${pageContext.request.contextPath}/vacunas?proximas=true" class="stat-link">Ver pendientes →</a>
             </div>
         </section>
 
-        <!-- Acciones rápidas -->
         <section class="quick-actions">
             <h2>Acciones Rápidas</h2>
             <div class="actions-grid">
@@ -116,7 +110,6 @@
             </div>
         </section>
 
-        <!-- Información reciente (ejemplo) -->
         <section class="recent-activity">
             <h2>Actividad Reciente</h2>
             <div class="activity-list">
@@ -124,10 +117,10 @@
                     <c:when test="${not empty actividadReciente}">
                         <c:forEach items="${actividadReciente}" var="actividad">
                             <div class="activity-item">
-                                <span class="activity-icon">${actividad.icono}</span>
+                                <span class="activity-icon"><c:out value="${actividad.icono}"/></span>
                                 <div class="activity-details">
-                                    <p class="activity-text">${actividad.descripcion}</p>
-                                    <span class="activity-date">${actividad.fecha}</span>
+                                    <p class="activity-text"><c:out value="${actividad.descripcion}"/></p>
+                                    <span class="activity-date"><c:out value="${actividad.fecha}"/></span>
                                 </div>
                             </div>
                         </c:forEach>
@@ -143,7 +136,6 @@
     </div>
 </main>
 
-<!-- Footer -->
 <footer class="main-footer">
     <p>&copy; 2025 Sistema de Gestión de Mascotas. Todos los derechos reservados.</p>
 </footer>
