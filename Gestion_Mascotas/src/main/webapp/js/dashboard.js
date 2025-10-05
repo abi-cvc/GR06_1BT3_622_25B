@@ -2,6 +2,17 @@
 // FUNCIONES DE MODALES
 // ============================================
 
+function abrirModalRegistrarMascota() {
+    document.getElementById('modalRegistrarMascota').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function cerrarModalRegistrarMascota() {
+    document.getElementById('modalRegistrarMascota').style.display = 'none';
+    document.body.style.overflow = 'auto';
+    document.getElementById('formRegistrarMascota').reset();
+}
+
 function abrirModalEditar() {
     document.getElementById('modalEditarPerfil').style.display = 'flex';
     document.body.style.overflow = 'hidden';

@@ -58,7 +58,7 @@ public class MascotaServlet extends HttpServlet {
             request.setAttribute("usuarioId", session.getAttribute("usuarioId"));
         }
         request.setAttribute("tiposMascota", TipoMascota.values());
-        request.getRequestDispatcher("/jsp/mascota/registrarMascota.jsp").forward(request, response);
+        request.getRequestDispatcher("/jsp/registrarMascota.jsp").forward(request, response);
     }
 
     private void mostrarFormularioEdicion(HttpServletRequest request, HttpServletResponse response)
