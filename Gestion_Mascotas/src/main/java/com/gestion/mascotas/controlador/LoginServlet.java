@@ -11,6 +11,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Servlet para manejar el inicio de sesión y cierre de sesión de usuarios
+ */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
@@ -21,10 +24,13 @@ public class LoginServlet extends HttpServlet {
         usuarioDAO = new UsuarioDAO();
     }
 
-    // Mostrar página de login
+    /**
+     * Mostrar página de login
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         // Si ya está logueado, redirigir al dashboard
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("usuario") != null) {
@@ -32,10 +38,28 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
+        // Verificar si viene de un registro exitoso
+        session = request.getSession(false);
+        if (session != null) {
+            if (session.getAttribute("registroExitoso") != null) {
+                request.setAttribute("success", session.getAttribute("mensajeRegistro"));
+                session.removeAttribute("registroExitoso");
+                session.removeAttribute("mensajeRegistro");
+            }
+            
+            if (session.getAttribute("logoutExitoso") != null) {
+                request.setAttribute("success", session.getAttribute("mensajeLogout"));
+                session.removeAttribute("logoutExitoso");
+                session.removeAttribute("mensajeLogout");
+            }
+        }
+
+        request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
     }
 
-    // Procesar login
+    /**
+     * Procesar login o logout
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -44,103 +68,87 @@ public class LoginServlet extends HttpServlet {
 
         if ("login".equals(action)) {
             procesarLogin(request, response);
-        } else if ("register".equals(action)) {
-            procesarRegistro(request, response);
         } else if ("logout".equals(action)) {
             procesarLogout(request, response);
+        } else {
+            response.sendRedirect(request.getContextPath() + "/login");
         }
     }
 
+    /**
+     * Procesar el inicio de sesión
+     */
     private void procesarLogin(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String nombreUsuario = request.getParameter("nombreUsuario");
         String contrasena = request.getParameter("contrasena");
+        String recordar = request.getParameter("recordar");
 
         // Validación básica
         if (nombreUsuario == null || nombreUsuario.trim().isEmpty() ||
-                contrasena == null || contrasena.trim().isEmpty()) {
-            request.setAttribute("error", "Usuario y contraseña son obligatorios");
-            request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
+                contrasena == null || contrasena.isEmpty()) {
+            request.setAttribute("error", "Por favor ingresa tu usuario y contraseña.");
+            request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
             return;
         }
 
-        // Validar credenciales
-        Usuario usuario = usuarioDAO.validarLogin(nombreUsuario, contrasena);
+        // Normalizar nombre de usuario (convertir a minúsculas)
+        nombreUsuario = nombreUsuario.trim().toLowerCase();
 
-        if (usuario != null) {
-            // Login exitoso
-            HttpSession session = request.getSession();
-            session.setAttribute("usuario", usuario);
-            session.setAttribute("usuarioId", usuario.getId());
-            session.setAttribute("nombreUsuario", usuario.getNombreUsuario());
+        try {
+            // Validar credenciales
+            Usuario usuario = usuarioDAO.validarLogin(nombreUsuario, contrasena);
 
-            response.sendRedirect(request.getContextPath() + "/dashboard");
-        } else {
-            // Login fallido
-            request.setAttribute("error", "Usuario o contraseña incorrectos");
-            request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
+            if (usuario != null) {
+                // Login exitoso - crear sesión
+                HttpSession session = request.getSession();
+                session.setAttribute("usuario", usuario);
+                session.setAttribute("usuarioId", usuario.getId());
+                session.setAttribute("nombreUsuario", usuario.getNombreUsuario());
+                session.setAttribute("nombreCompleto", usuario.getNombre());
+                session.setAttribute("email", usuario.getEmail());
+                
+                // Configurar tiempo de sesión
+                if ("on".equals(recordar)) {
+                    // Recordar por 30 días
+                    session.setMaxInactiveInterval(30 * 24 * 60 * 60);
+                } else {
+                    // Sesión estándar de 2 horas
+                    session.setMaxInactiveInterval(2 * 60 * 60);
+                }
+
+                // Redirigir al dashboard
+                response.sendRedirect(request.getContextPath() + "/dashboard");
+            } else {
+                // Login fallido
+                request.setAttribute("error", 
+                    "Usuario o contraseña incorrectos. Por favor verifica tus credenciales.");
+                request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", 
+                "Error en el servidor. Por favor intenta más tarde.");
+            request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
         }
     }
 
-    private void procesarRegistro(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String nombreUsuario = request.getParameter("nombreUsuario");
-        String nombre = request.getParameter("nombre");
-        String email = request.getParameter("email");
-        String telefono = request.getParameter("telefono");
-        String contrasena = request.getParameter("contrasena");
-        String confirmarContrasena = request.getParameter("confirmarContrasena");
-
-        // Validaciones
-        if (nombreUsuario == null || nombreUsuario.trim().isEmpty() ||
-                nombre == null || nombre.trim().isEmpty() ||
-                email == null || email.trim().isEmpty() ||
-                contrasena == null || contrasena.trim().isEmpty()) {
-
-            request.setAttribute("error", "Todos los campos obligatorios deben ser completados");
-            request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
-            return;
-        }
-
-        if (!contrasena.equals(confirmarContrasena)) {
-            request.setAttribute("error", "Las contraseñas no coinciden");
-            request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
-            return;
-        }
-
-        // Verificar si el usuario ya existe
-        if (usuarioDAO.buscarPorNombreUsuario(nombreUsuario) != null) {
-            request.setAttribute("error", "El nombre de usuario ya existe");
-            request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
-            return;
-        }
-
-        if (usuarioDAO.buscarPorEmail(email) != null) {
-            request.setAttribute("error", "El email ya está registrado");
-            request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
-            return;
-        }
-
-        // Crear nuevo usuario
-        Usuario nuevoUsuario = new Usuario(nombreUsuario, nombre, email, telefono, contrasena);
-
-        if (usuarioDAO.crearUsuario(nuevoUsuario)) {
-            request.setAttribute("success", "Usuario registrado exitosamente. Por favor inicia sesión.");
-            request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
-        } else {
-            request.setAttribute("error", "Error al registrar el usuario. Intenta nuevamente.");
-            request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
-        }
-    }
-
+    /**
+     * Procesar el cierre de sesión
+     */
     private void procesarLogout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
+            
+            // Crear nueva sesión para el mensaje
+            HttpSession newSession = request.getSession();
+            newSession.setAttribute("logoutExitoso", true);
+            newSession.setAttribute("mensajeLogout", 
+                "Has cerrado sesión exitosamente. ¡Hasta pronto!");
         }
 
         response.sendRedirect(request.getContextPath() + "/login");
