@@ -36,7 +36,7 @@ public class UsuarioServlet extends HttpServlet {
                 eliminarUsuario(request, response);
                 break;
             default:
-                response.sendRedirect("index.jsp");
+                response.sendRedirect("jsp/index.jsp");
         }
     }
 

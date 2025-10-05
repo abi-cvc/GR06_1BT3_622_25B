@@ -31,7 +31,13 @@
       <artifactId>hibernate-core</artifactId>
       <version>6.4.4.Final</version>
     </dependency>
-    <!-- JSTL -->
+    <!-- JSTL API -->
+    <dependency>
+      <groupId>jakarta.servlet.jsp.jstl</groupId>
+      <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+    <!-- JSTL Implementation -->
     <dependency>
       <groupId>org.glassfish.web</groupId>
       <artifactId>jakarta.servlet.jsp.jstl</artifactId>
