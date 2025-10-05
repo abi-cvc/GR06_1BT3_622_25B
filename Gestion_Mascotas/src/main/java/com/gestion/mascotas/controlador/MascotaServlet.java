@@ -40,7 +40,7 @@ public class MascotaServlet extends HttpServlet {
             case "eliminar":
                 eliminarMascota(request, response);
                 break;
-            case "detalles":
+            case "detalles": // Nueva acción para mostrar detalles
                 mostrarDetallesMascota(request, response);
                 break;
             case "listar": // Aseguramos que 'listar' sea una acción explícita
@@ -89,6 +89,7 @@ public class MascotaServlet extends HttpServlet {
         request.getRequestDispatcher("/jsp/listaMascotas.jsp").forward(request, response);
     }
 
+    // Nuevo método para mostrar los detalles de una mascota
     private void mostrarDetallesMascota(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Long id = Long.parseLong(request.getParameter("id"));
@@ -96,11 +97,11 @@ public class MascotaServlet extends HttpServlet {
 
         if (mascota == null) {
             request.setAttribute("error", "Mascota no encontrada.");
-            listarMascotas(request, response);
+            listarMascotas(request, response); // Redirigir a la lista si no se encuentra
             return;
         }
         request.setAttribute("mascota", mascota);
-        request.getRequestDispatcher("/jsp/mascota/detallesMascota.jsp").forward(request, response);
+        request.getRequestDispatcher("/jsp/detallesMascota.jsp").forward(request, response);
     }
 
     private void eliminarMascota(HttpServletRequest request, HttpServletResponse response)
