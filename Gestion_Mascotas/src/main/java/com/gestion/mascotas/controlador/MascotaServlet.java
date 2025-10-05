@@ -13,7 +13,7 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/mascota")
+@WebServlet({"/mascota", "/mascotas"})
 public class MascotaServlet extends HttpServlet {
 
     private MascotaDAO mascotaDAO = new MascotaDAO();
@@ -105,12 +105,28 @@ public class MascotaServlet extends HttpServlet {
     private void eliminarMascota(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         Long id = Long.parseLong(request.getParameter("id"));
+        
+        HttpSession session = request.getSession(false);
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        
+        // Verificar que la mascota pertenezca al usuario
+        Mascota mascota = mascotaDAO.obtenerPorId(id);
+        if (mascota == null) {
+            response.sendRedirect(request.getContextPath() + "/dashboard?error=mascota_no_encontrada");
+            return;
+        }
+        
+        if (!mascota.getUsuario().getId().equals(usuario.getId())) {
+            response.sendRedirect(request.getContextPath() + "/dashboard?error=acceso_denegado");
+            return;
+        }
+        
         try {
             mascotaDAO.eliminar(id);
-            response.sendRedirect(request.getContextPath() + "/mascota?action=listar&success=eliminado");
+            response.sendRedirect(request.getContextPath() + "/dashboard?success=mascota_eliminada");
         } catch (Exception e) {
-            request.setAttribute("error", "Error al eliminar la mascota: " + e.getMessage());
-            listarMascotas(request, response);
+            e.printStackTrace();
+            response.sendRedirect(request.getContextPath() + "/dashboard?error=error_eliminando");
         }
     }
 

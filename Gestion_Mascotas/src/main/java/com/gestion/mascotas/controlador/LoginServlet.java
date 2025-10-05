@@ -52,6 +52,12 @@ public class LoginServlet extends HttpServlet {
                 session.removeAttribute("logoutExitoso");
                 session.removeAttribute("mensajeLogout");
             }
+            
+            if (session.getAttribute("eliminacionExitosa") != null) {
+                request.setAttribute("success", session.getAttribute("mensajeEliminacion"));
+                session.removeAttribute("eliminacionExitosa");
+                session.removeAttribute("mensajeEliminacion");
+            }
         }
 
         request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);

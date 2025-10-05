@@ -34,6 +34,6 @@ public class DashboardServlet extends HttpServlet {
         request.setAttribute("proximasVacunas", 0);
 
         // Mostrar el dashboard
-        request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
+        request.getRequestDispatcher("/jsp/dashboard.jsp").forward(request, response);
     }
 }
