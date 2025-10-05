@@ -7,12 +7,19 @@
 
     <persistence-unit name="GestionMascotasPU" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        
+
         <!-- Entidades -->
         <class>com.gestion.mascotas.modelo.Usuario</class>
         <class>com.gestion.mascotas.modelo.Mascota</class>
         <class>com.gestion.mascotas.modelo.Vacuna</class>
         <class>com.gestion.mascotas.modelo.VisitaVeterinaria</class>
+        <!-- NUEVAS ENTIDADES -->
+        <class>com.gestion.mascotas.modelo.Recordatorio</class>
+        <class>com.gestion.mascotas.modelo.RecordatorioAlimentacion</class>
+        <class>com.gestion.mascotas.modelo.RecordatorioPaseo</class>
+        <class>com.gestion.mascotas.modelo.Sugerencia</class>
+        <class>com.gestion.mascotas.modelo.SugerenciaAlimentacion</class>
+        <class>com.gestion.mascotas.modelo.SugerenciaEjercicio</class>
 
         <properties>
             <!-- Configuración de conexión PostgreSQL -->
