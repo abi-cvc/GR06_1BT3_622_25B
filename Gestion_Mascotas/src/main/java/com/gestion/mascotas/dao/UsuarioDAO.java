@@ -1,7 +1,7 @@
-package com.gestionmascotas.app.dao;
+package com.gestion.mascotas.dao;
 
-import com.gestionmascotas.app.model.Usuario;
-import com.gestionmascotas.app.util.HibernateUtil;
+import com.gestion.mascotas.modelo.Usuario;
+import com.gestion.mascotas.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -21,7 +21,7 @@ public class UsuarioDAO {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.save(usuario);
+            session.persist(usuario);
             transaction.commit();
             return true;
         } catch (Exception e) {
@@ -59,6 +59,20 @@ public class UsuarioDAO {
         }
     }
 
+    // Validar login (nuevo método)
+    public Usuario validarLogin(String nombreUsuario, String contrasena) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<Usuario> query = session.createQuery(
+                    "FROM Usuario WHERE nombreUsuario = :nombreUsuario AND contrasena = :contrasena", Usuario.class);
+            query.setParameter("nombreUsuario", nombreUsuario);
+            query.setParameter("contrasena", contrasena);
+            return query.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     // Obtener usuario por ID
     public Usuario obtenerPorId(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -84,7 +98,7 @@ public class UsuarioDAO {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.update(usuario);
+            session.merge(usuario);
             transaction.commit();
             return true;
         } catch (Exception e) {
@@ -103,7 +117,7 @@ public class UsuarioDAO {
             transaction = session.beginTransaction();
             Usuario usuario = session.get(Usuario.class, id);
             if (usuario != null) {
-                session.delete(usuario);
+                session.remove(usuario);
                 transaction.commit();
                 return true;
             }
@@ -115,5 +129,15 @@ public class UsuarioDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    // Verificar si existe un email (nuevo método)
+    public boolean existeEmail(String email) {
+        return buscarPorEmail(email) != null;
+    }
+
+    // Método guardar alternativo (nuevo método)
+    public void guardar(Usuario usuario) {
+        crearUsuario(usuario);
     }
 }

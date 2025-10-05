@@ -1,10 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://jakarta.ee/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!-- Verificar que el usuario esté logueado -->
-<c:if test="${empty sessionScope.usuario}">
-    <% response.sendRedirect(request.getContextPath() + "/login.jsp"); %>
-</c:if>
+<%
+    if (session.getAttribute("usuario") == null) {
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
+        return;
+    }
+%>
 
 <!DOCTYPE html>
 <html lang="es">

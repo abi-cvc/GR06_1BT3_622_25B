@@ -1,12 +1,11 @@
-package com.gestionmascotas.app.controller;
+package com.gestion.mascotas.controlador;
 
-import com.gestionmascotas.app.dao.UsuarioDAO;
-import com.gestionmascotas.app.model.Usuario;
-import org.mindrot.jbcrypt.BCrypt;
+import com.gestion.mascotas.dao.UsuarioDAO;
+import com.gestion.mascotas.modelo.Usuario;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
 import java.io.IOException;
 
 @WebServlet("/usuario")
@@ -44,7 +43,9 @@ public class UsuarioServlet extends HttpServlet {
     private void registrarUsuario(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         String nombreUsuario = request.getParameter("nombreUsuario");
+        String nombre = request.getParameter("nombre");
         String email = request.getParameter("email");
+        String telefono = request.getParameter("telefono");
         String contrasena = request.getParameter("contrasena");
 
         // Verificar si ya existe
@@ -55,13 +56,7 @@ public class UsuarioServlet extends HttpServlet {
             return;
         }
 
-        // Hashear contraseña
-        String hashedPassword = BCrypt.hashpw(contrasena, BCrypt.gensalt());
-
-        Usuario usuario = new Usuario();
-        usuario.setNombreUsuario(nombreUsuario);
-        usuario.setEmail(email);
-        usuario.setContrasena(hashedPassword);
+        Usuario usuario = new Usuario(nombreUsuario, nombre, email, telefono, contrasena);
 
         if (usuarioDAO.crearUsuario(usuario)) {
             response.sendRedirect("login.jsp");
@@ -76,13 +71,13 @@ public class UsuarioServlet extends HttpServlet {
         String nombreUsuario = request.getParameter("nombreUsuario");
         String contrasena = request.getParameter("contrasena");
 
-        Usuario usuario = usuarioDAO.buscarPorNombreUsuario(nombreUsuario);
+        Usuario usuario = usuarioDAO.validarLogin(nombreUsuario, contrasena);
 
-        if (usuario != null && BCrypt.checkpw(contrasena, usuario.getContrasena())) {
+        if (usuario != null) {
             HttpSession session = request.getSession();
             session.setAttribute("usuario", usuario);
-            session.setAttribute("nombreCompleto", usuario.getNombreUsuario()); // <-- importante
-            response.sendRedirect(request.getContextPath() + "/dashboard"); // ir al dashboard
+            session.setAttribute("nombreCompleto", usuario.getNombreUsuario());
+            response.sendRedirect(request.getContextPath() + "/dashboard");
         } else {
             request.setAttribute("error", "Credenciales inválidas");
             request.getRequestDispatcher("/login.jsp").forward(request, response);
@@ -107,12 +102,12 @@ public class UsuarioServlet extends HttpServlet {
             usuario.setEmail(nuevoEmail);
         }
         if (nuevaContrasena != null && !nuevaContrasena.isEmpty()) {
-            usuario.setContrasena(BCrypt.hashpw(nuevaContrasena, BCrypt.gensalt()));
+            usuario.setContrasena(nuevaContrasena);
         }
 
         if (usuarioDAO.actualizarUsuario(usuario)) {
             session.setAttribute("usuario", usuario);
-            session.setAttribute("nombreCompleto", usuario.getNombreUsuario()); // mantener nombre actualizado
+            session.setAttribute("nombreCompleto", usuario.getNombreUsuario());
             request.setAttribute("mensaje", "Perfil actualizado correctamente");
         } else {
             request.setAttribute("error", "Error al actualizar perfil");

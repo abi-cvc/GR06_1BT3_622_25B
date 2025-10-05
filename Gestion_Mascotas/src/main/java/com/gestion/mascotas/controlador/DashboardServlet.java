@@ -1,6 +1,4 @@
-package com.gestionmascotas.app.controller;
-
-import com.gestionmascotas.app.model.Usuario;
+package com.gestion.mascotas.controlador;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -25,11 +23,10 @@ public class DashboardServlet extends HttpServlet {
             return;
         }
 
-        // Obtener el usuario de la sesión
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-        Long usuarioId = usuario.getId();
-
-        // TODO: Cargar estadísticas del usuario
+        // TODO: Obtener usuario y cargar estadísticas reales usando DAOs
+        // Usuario usuario = (Usuario) session.getAttribute("usuario");
+        // Long usuarioId = usuario.getId();
+        
         // Por ahora dejamos valores de ejemplo
         request.setAttribute("totalMascotas", 0);
         request.setAttribute("totalVisitas", 0);

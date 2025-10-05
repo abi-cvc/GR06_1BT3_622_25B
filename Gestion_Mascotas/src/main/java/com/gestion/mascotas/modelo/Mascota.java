@@ -1,4 +1,4 @@
-package com.gestionmascotas.app.model;
+package com.gestion.mascotas.modelo;
 
 import jakarta.persistence.*;
 import java.util.List;
@@ -27,7 +27,7 @@ public class Mascota {
 
     // Relación con visitas
     @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<VisitaVeterinario> visitas;
+    private List<VisitaVeterinaria> visitas;
 
     // Getters y Setters
     public Long getId() { return id; }
@@ -45,6 +45,6 @@ public class Mascota {
     public List<Vacuna> getVacunas() { return vacunas; }
     public void setVacunas(List<Vacuna> vacunas) { this.vacunas = vacunas; }
 
-    public List<VisitaVeterinario> getVisitas() { return visitas; }
-    public void setVisitas(List<VisitaVeterinario> visitas) { this.visitas = visitas; }
+    public List<VisitaVeterinaria> getVisitas() { return visitas; }
+    public void setVisitas(List<VisitaVeterinaria> visitas) { this.visitas = visitas; }
 }

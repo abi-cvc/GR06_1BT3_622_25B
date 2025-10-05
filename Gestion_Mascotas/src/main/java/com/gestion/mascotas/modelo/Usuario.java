@@ -1,4 +1,4 @@
-package com.gestionmascotas.app.model;
+package com.gestion.mascotas.modelo;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;

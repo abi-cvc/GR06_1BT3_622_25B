@@ -1,4 +1,4 @@
-package com.gestionmascotas.app.util;
+package com.gestion.mascotas.util;
 
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;

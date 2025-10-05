@@ -1,6 +1,6 @@
-package com.gestionmascotas.app.dao;
+package com.gestion.mascotas.dao;
 
-import com.gestionmascotas.app.model.Vacuna;
+import com.gestion.mascotas.modelo.Vacuna;
 import jakarta.persistence.*;
 
 import java.util.List;

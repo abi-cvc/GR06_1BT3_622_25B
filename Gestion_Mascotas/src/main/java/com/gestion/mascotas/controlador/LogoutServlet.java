@@ -1,4 +1,4 @@
-package com.gestionmascotas.app.controller;
+package com.gestion.mascotas.controlador;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

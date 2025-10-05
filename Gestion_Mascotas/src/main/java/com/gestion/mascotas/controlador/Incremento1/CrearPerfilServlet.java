@@ -1,8 +1,7 @@
-package com.gestion.mascotas.controlador.incremento1;
+package com.gestion.mascotas.controlador.Incremento1;
 
 import com.gestion.mascotas.dao.UsuarioDAO;
 import com.gestion.mascotas.modelo.Usuario;
-import com.gestion.mascotas.util.PasswordUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -49,7 +48,7 @@ public class CrearPerfilServlet extends HttpServlet {
         nuevoUsuario.setNombre(nombre);
         nuevoUsuario.setEmail(email);
         nuevoUsuario.setTelefono(telefono);
-        nuevoUsuario.setContrasena(PasswordUtil.hashPassword(contrasena));
+        nuevoUsuario.setContrasena(contrasena);
 
         // 5. Guardar en la base de datos
         try {

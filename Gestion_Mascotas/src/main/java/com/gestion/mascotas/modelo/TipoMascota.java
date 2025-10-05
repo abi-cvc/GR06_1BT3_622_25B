@@ -1,4 +1,4 @@
-package com.gestionmascotas.app.model;
+package com.gestion.mascotas.modelo;
 
 public enum TipoMascota {
     PERRO,

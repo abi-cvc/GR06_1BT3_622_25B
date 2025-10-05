@@ -1,10 +1,10 @@
-package com.gestionmascotas.app.controller;
+package com.gestion.mascotas.controlador;
 
-import com.gestionmascotas.app.dao.MascotaDAO;
-import com.gestionmascotas.app.dao.UsuarioDAO;
-import com.gestionmascotas.app.model.Mascota;
-import com.gestionmascotas.app.model.TipoMascota;
-import com.gestionmascotas.app.model.Usuario;
+import com.gestion.mascotas.dao.MascotaDAO;
+import com.gestion.mascotas.dao.UsuarioDAO;
+import com.gestion.mascotas.modelo.Mascota;
+import com.gestion.mascotas.modelo.TipoMascota;
+import com.gestion.mascotas.modelo.Usuario;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

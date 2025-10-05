@@ -1,4 +1,4 @@
-package com.gestion_mascotas.app.util;
+package com.gestion.mascotas.util;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -9,7 +9,8 @@ public class HibernateUtil {
 
     static {
         try {
-            sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+            // Configurar Hibernate usando persistence.xml
+            sessionFactory = new Configuration().configure().buildSessionFactory();
         } catch (Throwable ex) {
             System.err.println("Error al crear SessionFactory: " + ex);
             throw new ExceptionInInitializerError(ex);
@@ -22,5 +23,11 @@ public class HibernateUtil {
 
     public static Session getSession() {
         return sessionFactory.openSession();
+    }
+
+    public static void shutdown() {
+        if (sessionFactory != null) {
+            sessionFactory.close();
+        }
     }
 }
