@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        request.getRequestDispatcher("/index.jsp").forward(request, response);
+        request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
     }
 
     // Procesar login
@@ -61,7 +61,7 @@ public class LoginServlet extends HttpServlet {
         if (nombreUsuario == null || nombreUsuario.trim().isEmpty() ||
                 contrasena == null || contrasena.trim().isEmpty()) {
             request.setAttribute("error", "Usuario y contraseña son obligatorios");
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
             return;
         }
 
@@ -79,7 +79,7 @@ public class LoginServlet extends HttpServlet {
         } else {
             // Login fallido
             request.setAttribute("error", "Usuario o contraseña incorrectos");
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
         }
     }
 
@@ -100,26 +100,26 @@ public class LoginServlet extends HttpServlet {
                 contrasena == null || contrasena.trim().isEmpty()) {
 
             request.setAttribute("error", "Todos los campos obligatorios deben ser completados");
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
             return;
         }
 
         if (!contrasena.equals(confirmarContrasena)) {
             request.setAttribute("error", "Las contraseñas no coinciden");
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
             return;
         }
 
         // Verificar si el usuario ya existe
         if (usuarioDAO.buscarPorNombreUsuario(nombreUsuario) != null) {
             request.setAttribute("error", "El nombre de usuario ya existe");
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
             return;
         }
 
         if (usuarioDAO.buscarPorEmail(email) != null) {
             request.setAttribute("error", "El email ya está registrado");
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
             return;
         }
 
@@ -128,10 +128,10 @@ public class LoginServlet extends HttpServlet {
 
         if (usuarioDAO.crearUsuario(nuevoUsuario)) {
             request.setAttribute("success", "Usuario registrado exitosamente. Por favor inicia sesión.");
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
         } else {
             request.setAttribute("error", "Error al registrar el usuario. Intenta nuevamente.");
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/index.jsp").forward(request, response);
         }
     }
 
