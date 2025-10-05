@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import com.gestion.mascotas.modelo.TipoMascota;
 
 @WebServlet({"/dashboard", "/home", ""})
 public class DashboardServlet extends HttpServlet {
@@ -32,6 +33,8 @@ public class DashboardServlet extends HttpServlet {
         request.setAttribute("totalVisitas", 0);
         request.setAttribute("totalVacunas", 0);
         request.setAttribute("proximasVacunas", 0);
+
+        request.setAttribute("tiposMascota", TipoMascota.values());
 
         // Mostrar el dashboard
         request.getRequestDispatcher("/jsp/dashboard.jsp").forward(request, response);

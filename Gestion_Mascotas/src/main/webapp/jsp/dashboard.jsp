@@ -126,7 +126,7 @@
             <section class="quick-actions">
                 <h2>Acciones Rápidas</h2>
                 <div class="actions-grid">
-                    <a href="${pageContext.request.contextPath}/mascotas?action=nueva" class="action-card">
+                    <a href="#" onclick="abrirModalRegistrarMascota(); return false;" class="action-card">
                         <div class="action-icon">➕</div>
                         <h3>Registrar Mascota</h3>
                         <p>Añade una nueva mascota a tu perfil</p>
@@ -163,15 +163,15 @@
             </div>
             <form action="${pageContext.request.contextPath}/perfil" method="post" id="formEditarPerfil">
                 <input type="hidden" name="action" value="actualizar">
-                
+
                 <div class="form-group">
                     <label for="nombre">
                         <i class="fas fa-id-card"></i> Nombre Completo
                     </label>
-                    <input type="text" 
-                           id="nombre" 
+                    <input type="text"
+                           id="nombre"
                            name="nombre"
-                           value="${sessionScope.nombreCompleto}" 
+                           value="${sessionScope.nombreCompleto}"
                            required
                            maxlength="100">
                 </div>
@@ -180,10 +180,10 @@
                     <label for="email">
                         <i class="fas fa-envelope"></i> Correo Electrónico
                     </label>
-                    <input type="email" 
-                           id="email" 
+                    <input type="email"
+                           id="email"
                            name="email"
-                           value="${sessionScope.email}" 
+                           value="${sessionScope.email}"
                            required
                            maxlength="100">
                 </div>
@@ -192,10 +192,10 @@
                     <label for="telefono">
                         <i class="fas fa-phone"></i> Teléfono
                     </label>
-                    <input type="tel" 
-                           id="telefono" 
+                    <input type="tel"
+                           id="telefono"
                            name="telefono"
-                           value="${sessionScope.usuario.telefono}" 
+                           value="${sessionScope.usuario.telefono}"
                            pattern="[0-9]{10}"
                            maxlength="10"
                            placeholder="0999999999">
@@ -207,8 +207,8 @@
                         <i class="fas fa-lock"></i> Contraseña Actual
                     </label>
                     <div class="password-input">
-                        <input type="password" 
-                               id="contrasenaActual" 
+                        <input type="password"
+                               id="contrasenaActual"
                                name="contrasenaActual"
                                placeholder="Ingresa tu contraseña actual para confirmar">
                         <button type="button" class="toggle-password" onclick="togglePassword('contrasenaActual')">
@@ -231,8 +231,8 @@
                             <i class="fas fa-key"></i> Nueva Contraseña
                         </label>
                         <div class="password-input">
-                            <input type="password" 
-                                   id="nuevaContrasena" 
+                            <input type="password"
+                                   id="nuevaContrasena"
                                    name="nuevaContrasena"
                                    placeholder="Mínimo 6 caracteres"
                                    minlength="6">
@@ -247,8 +247,8 @@
                             <i class="fas fa-key"></i> Confirmar Nueva Contraseña
                         </label>
                         <div class="password-input">
-                            <input type="password" 
-                                   id="confirmarNuevaContrasena" 
+                            <input type="password"
+                                   id="confirmarNuevaContrasena"
                                    name="confirmarNuevaContrasena"
                                    placeholder="Repite la nueva contraseña"
                                    minlength="6">
@@ -289,13 +289,13 @@
                 </ul>
                 <form action="${pageContext.request.contextPath}/perfil" method="post" id="formEliminarPerfil">
                     <input type="hidden" name="action" value="eliminar">
-                    
+
                     <div class="form-group">
                         <label for="contrasenaEliminar">
                             <i class="fas fa-lock"></i> Confirma tu contraseña para continuar
                         </label>
-                        <input type="password" 
-                               id="contrasenaEliminar" 
+                        <input type="password"
+                               id="contrasenaEliminar"
                                name="contrasena"
                                placeholder="Ingresa tu contraseña"
                                required>
@@ -342,6 +342,65 @@
                     </form>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="modalRegistrarMascota" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-paw"></i> Registrar Nueva Mascota</h2>
+                <button class="modal-close" onclick="cerrarModalRegistrarMascota()">&times;</button>
+            </div>
+            <form action="${pageContext.request.contextPath}/mascota" method="post" id="formRegistrarMascota">
+                <input type="hidden" name="action" value="registrar">
+
+                <input type="hidden" id="usuarioId" name="usuarioId" value="${sessionScope.usuario.id}" readonly required>
+
+                <div class="form-group">
+                    <label for="nombreMascota"><i class="fas fa-tag"></i> Nombre</label>
+                    <input type="text" id="nombreMascota" name="nombre" required maxlength="50">
+                </div>
+
+                <div class="form-group">
+                    <label for="tipoMascota"><i class="fas fa-cat"></i> Tipo de Mascota</label>
+                    <select id="tipoMascota" name="tipo" required class="form-control">
+                        <option value="" disabled selected>Seleccione un tipo</option>
+                        <c:forEach var="tipo" items="${tiposMascota}">
+                            <option value="${tipo}">${tipo}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="razaMascota"><i class="fas fa-dog"></i> Raza</label>
+                    <input type="text" id="razaMascota" name="raza" required maxlength="50">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edadMascota"><i class="fas fa-birthday-cake"></i> Edad (años)</label>
+                        <input type="number" id="edadMascota" name="edad" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pesoMascota"><i class="fas fa-weight"></i> Peso (kg)</label>
+                        <input type="number" id="pesoMascota" name="peso" step="0.1" min="0" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="colorMascota"><i class="fas fa-palette"></i> Color</label>
+                    <input type="text" id="colorMascota" name="color" maxlength="30">
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="cerrarModalRegistrarMascota()">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus-circle"></i> Registrar Mascota
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
