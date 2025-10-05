@@ -297,8 +297,8 @@ Se realizó un análisis exhaustivo del proyecto y se corrigieron **todos los er
 - ✅ Maven 3.x
 
 ### Base de Datos
-- ✅ MySQL 8.0
-- ✅ MySQL Connector/J 8.3.0
+- ✅ PostgreSQL 14+
+- ✅ PostgreSQL JDBC Driver 42.7.3
 
 ### Patrones de Diseño
 - ✅ MVC (Model-View-Controller)

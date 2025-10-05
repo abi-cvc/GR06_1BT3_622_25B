@@ -1,25 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="https://jakarta.ee/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_2.xsd"
-             version="3.2">
-  <persistence-unit name="gestionMascotasPU" transaction-type="RESOURCE_LOCAL">
-    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-    <!-- Entidades -->
-    <class>com.gestion.mascotas.modelo.Usuario</class>
-    <class>com.gestion.mascotas.modelo.Mascota</class>
-    <class>com.gestion.mascotas.modelo.Vacuna</class>
-    <class>com.gestion.mascotas.modelo.VisitaVeterinaria</class>
-    <!-- Configuración de conexión -->
-    <properties>
-      <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-      <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/gestion_mascotas?useSSL=false&amp;serverTimezone=UTC"/>
-      <property name="jakarta.persistence.jdbc.user" value="root"/>
-      <property name="jakarta.persistence.jdbc.password" value="tu_password"/>
-      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
-      <property name="hibernate.hbm2ddl.auto" value="update"/>
-      <property name="hibernate.show_sql" value="true"/>
-      <property name="hibernate.format_sql" value="true"/>
-    </properties>
-  </persistence-unit>
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence
+             https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+
+    <persistence-unit name="GestionMascotasPU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        
+        <!-- Entidades -->
+        <class>com.gestion.mascotas.modelo.Usuario</class>
+        <class>com.gestion.mascotas.modelo.Mascota</class>
+        <class>com.gestion.mascotas.modelo.Vacuna</class>
+        <class>com.gestion.mascotas.modelo.VisitaVeterinaria</class>
+
+        <properties>
+            <!-- Configuración de conexión PostgreSQL -->
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/gestion_mascotas"/>
+            <property name="jakarta.persistence.jdbc.user" value="postgres"/>
+            <!-- ⚠️ IMPORTANTEEEEEE CAMBIA ESTA CONTRASEÑA POR LA QUE PUSISTE EN LA INSTALACIÓN -->
+            <property name="jakarta.persistence.jdbc.password" value="carol123"/>
+
+            <!-- Configuración de Hibernate -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+        </properties>
+    </persistence-unit>
 </persistence>

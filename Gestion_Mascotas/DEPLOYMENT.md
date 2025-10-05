@@ -3,41 +3,51 @@
 ## Prerequisitos Verificados ✓
 - [x] JDK 17 instalado
 - [x] Maven 3.6+ instalado
-- [x] MySQL 8.0+ instalado y ejecutándose
+- [x] PostgreSQL 14+ instalado y ejecutándose
 - [x] Servidor de aplicaciones (Tomcat 10+, Jetty, etc.)
 
 ## 🔥 Despliegue en 5 Pasos
 
 ### Paso 1: Configurar Base de Datos
 ```sql
--- Conectarse a MySQL
-mysql -u root -p
+-- Conectarse a PostgreSQL (Windows)
+psql -U postgres
+
+-- O en Linux/Mac
+sudo -u postgres psql
 
 -- Crear base de datos
 CREATE DATABASE gestion_mascotas;
 
--- Usar la base de datos
-USE gestion_mascotas;
+-- Conectarse a la base de datos
+\c gestion_mascotas
 
--- Ejecutar script SQL (opcional, Hibernate puede crear las tablas)
-SOURCE gestion_mascotas.sql;
+-- Ejecutar script SQL (desde terminal del sistema, no desde psql)
+-- Windows:
+psql -U postgres -d gestion_mascotas -f gestion_mascotas_postgres.sql
+
+-- Linux/Mac:
+psql -U postgres -d gestion_mascotas -f gestion_mascotas_postgres.sql
+
+-- Verificar tablas creadas (desde psql)
+\dt
 
 -- Salir
-EXIT;
+\q
 ```
 
 ### Paso 2: Actualizar Credenciales
-Editar estos 2 archivos con tus credenciales de MySQL:
+Editar estos 2 archivos con tus credenciales de PostgreSQL:
 
 **`src/main/resources/persistence.xml`** (líneas 17-18):
 ```xml
-<property name="jakarta.persistence.jdbc.user" value="root"/>
+<property name="jakarta.persistence.jdbc.user" value="postgres"/>
 <property name="jakarta.persistence.jdbc.password" value="TU_PASSWORD_AQUI"/>
 ```
 
 **`src/main/resources/hibernate.cfg.xml`** (líneas 9-10):
 ```xml
-<property name="hibernate.connection.username">root</property>
+<property name="hibernate.connection.username">postgres</property>
 <property name="hibernate.connection.password">TU_PASSWORD_AQUI</property>
 ```
 
@@ -117,40 +127,52 @@ Inicializando Sistema de Gestión de Mascotas
 ```
 
 ### Verificar Creación de Tablas
-En MySQL:
+En PostgreSQL:
 ```sql
-USE gestion_mascotas;
-SHOW TABLES;
+-- Conectarse a la base de datos
+psql -U postgres -d gestion_mascotas
+
+-- Ver todas las tablas
+\dt
+
+-- Ver estructura de una tabla
+\d usuarios
+\d mascotas
+\d vacunas
+\d visitas
+
+-- Salir
+\q
 ```
 
 **Resultado esperado**:
 ```
-+---------------------------+
-| Tables_in_gestion_mascotas|
-+---------------------------+
-| mascotas                  |
-| usuarios                  |
-| vacunas                   |
-| visitas                   |
-+---------------------------+
+              List of relations
+ Schema |   Name   | Type  |  Owner   
+--------+----------+-------+----------
+ public | mascotas | table | postgres
+ public | usuarios | table | postgres
+ public | vacunas  | table | postgres
+ public | visitas  | table | postgres
 ```
 
 ## 🐛 Solución de Problemas Comunes
 
 ### Error: "No suitable driver found"
-**Problema**: MySQL driver no encontrado
+**Problema**: PostgreSQL driver no encontrado
 
 **Solución**:
-1. Verificar que mysql-connector-j esté en las dependencias
+1. Verificar que postgresql esté en las dependencias del pom.xml
 2. Limpiar y recompilar: `mvn clean package`
 
-### Error: "Access denied for user"
+### Error: "Access denied for user" o "authentication failed"
 **Problema**: Credenciales incorrectas
 
 **Solución**:
-1. Verificar usuario y contraseña en MySQL
+1. Verificar usuario y contraseña en PostgreSQL
 2. Actualizar persistence.xml y hibernate.cfg.xml
-3. Recompilar el proyecto
+3. Verificar el método de autenticación en pg_hba.conf
+4. Recompilar el proyecto
 
 ### Error: "Unknown database 'gestion_mascotas'"
 **Problema**: Base de datos no creada
@@ -173,7 +195,8 @@ CREATE DATABASE gestion_mascotas;
 **Solución**:
 1. Verificar logs de servidor para ver errores de Hibernate
 2. Verificar configuración de hibernate.cfg.xml
-3. Verificar que MySQL esté ejecutándose
+3. Verificar que PostgreSQL esté ejecutándose
+4. Verificar conectividad: `psql -U postgres -d gestion_mascotas`
 
 ## 🧪 Pruebas Básicas
 

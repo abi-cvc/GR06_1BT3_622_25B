@@ -7,7 +7,7 @@ Sistema web desarrollado en Java para la gestión integral de mascotas, vacunas 
 - **Java**: 17
 - **Jakarta EE**: 6.0
 - **Hibernate ORM**: 6.4.4
-- **MySQL**: 8.0
+- **PostgreSQL**: 14+
 - **Maven**: Gestión de dependencias
 - **JSTL**: 3.0.1
 - **Servidor de aplicaciones**: Compatible con Tomcat 10+, Jetty, etc.
@@ -99,7 +99,7 @@ Gestion_Mascotas/
 ### Prerequisitos
 - JDK 17 o superior
 - Maven 3.6+
-- MySQL 8.0+
+- PostgreSQL 14+
 - Servidor de aplicaciones compatible con Jakarta EE 6.0 (Tomcat 10+)
 
 ### Pasos de Instalación
@@ -111,18 +111,18 @@ Gestion_Mascotas/
    ```
 
 2. **Configurar la base de datos**
-   - Crear la base de datos en MySQL:
+   - Crear la base de datos en PostgreSQL:
      ```sql
      CREATE DATABASE gestion_mascotas;
      ```
    - Ejecutar el script SQL proporcionado:
      ```bash
-     mysql -u root -p gestion_mascotas < gestion_mascotas.sql
+     psql -U postgres -d gestion_mascotas -f gestion_mascotas_postgres.sql
      ```
 
 3. **Configurar credenciales de la base de datos**
    
-   Actualizar los archivos de configuración con tus credenciales de MySQL:
+   Actualizar los archivos de configuración con tus credenciales de PostgreSQL:
    
    **`src/main/resources/persistence.xml`**:
    ```xml
@@ -233,9 +233,10 @@ Gestion_Mascotas/
 ## 🐛 Solución de Problemas Comunes
 
 ### Error de conexión a la base de datos
-- Verificar que MySQL esté ejecutándose
+- Verificar que PostgreSQL esté ejecutándose
 - Verificar credenciales en `persistence.xml` y `hibernate.cfg.xml`
 - Verificar que la base de datos `gestion_mascotas` exista
+- Verificar el puerto (por defecto 5432)
 
 ### Error 404 al acceder a la aplicación
 - Verificar que el servidor esté ejecutándose
