@@ -86,6 +86,8 @@ public class MascotaServlet extends HttpServlet {
         List<Mascota> mascotas = mascotaDAO.obtenerMascotasPorUsuario(usuarioId);
 
         request.setAttribute("mascotas", mascotas);
+        // AGREGAR: enviar tipos de mascota para el modal de registro
+        request.setAttribute("tiposMascota", TipoMascota.values());
         request.getRequestDispatcher("/jsp/listaMascotas.jsp").forward(request, response);
     }
 
@@ -169,12 +171,21 @@ public class MascotaServlet extends HttpServlet {
         }
 
         Mascota mascota = new Mascota();
-        mascota.registrarMascota(nombre, tipo, raza, edad, peso, color, usuario); // Using the model method
+        // NO usar registrarMascota() que llama a usuario.addMascota()
+        // Establecer los valores directamente
+        mascota.setNombre(nombre);
+        mascota.setTipo(tipo);
+        mascota.setRaza(raza);
+        mascota.setEdad(edad);
+        mascota.setPeso(peso);
+        mascota.setColor(color);
+        mascota.setUsuario(usuario);
 
         try {
             mascotaDAO.guardar(mascota);
             response.sendRedirect(request.getContextPath() + "/mascota?action=listar&success=registrado");
         } catch (Exception e) {
+            e.printStackTrace();
             request.setAttribute("error", "Error al registrar la mascota: " + e.getMessage());
             mostrarFormularioRegistro(request, response);
         }

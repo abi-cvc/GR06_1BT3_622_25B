@@ -407,37 +407,3 @@
     <script src="${pageContext.request.contextPath}/js/dashboard.js"></script>
 </body>
 </html>
-            </div>
-        </section>
-
-        <section class="recent-activity">
-            <h2>Actividad Reciente</h2>
-            <div class="activity-list">
-                <c:choose>
-                    <c:when test="${not empty actividadReciente}">
-                        <c:forEach items="${actividadReciente}" var="actividad">
-                            <div class="activity-item">
-                                <span class="activity-icon"><c:out value="${actividad.icono}"/></span>
-                                <div class="activity-details">
-                                    <p class="activity-text"><c:out value="${actividad.descripcion}"/></p>
-                                    <span class="activity-date"><c:out value="${actividad.fecha}"/></span>
-                                </div>
-                            </div>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="empty-state">
-                            <p>🎉 ¡Comienza registrando tu primera mascota!</p>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
-            </div>
-        </section>
-    </div>
-</main>
-
-<footer class="main-footer">
-    <p>&copy; 2025 Sistema de Gestión de Mascotas. Todos los derechos reservados.</p>
-</footer>
-</body>
-</html>
