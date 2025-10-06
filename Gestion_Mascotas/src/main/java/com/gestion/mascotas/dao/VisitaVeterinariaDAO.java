@@ -7,7 +7,7 @@ import java.util.List;
 
 public class VisitaVeterinariaDAO {
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("gestionMascotasPU");
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionMascotasPU");
 
     public void guardar(VisitaVeterinaria visita) {
         EntityManager em = emf.createEntityManager();
@@ -55,6 +55,22 @@ public class VisitaVeterinariaDAO {
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             e.printStackTrace();
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Obtiene el total de visitas veterinarias para una mascota específica.
+     * @param mascotaId El ID de la mascota.
+     * @return El número total de visitas de la mascota.
+     */
+    public long contarVisitasPorMascota(Long mascotaId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery("SELECT COUNT(v) FROM VisitaVeterinaria v WHERE v.mascota.id = :mascotaId", Long.class)
+                    .setParameter("mascotaId", mascotaId)
+                    .getSingleResult();
         } finally {
             em.close();
         }

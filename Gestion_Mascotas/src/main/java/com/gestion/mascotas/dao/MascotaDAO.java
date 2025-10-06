@@ -7,7 +7,7 @@ import java.util.List;
 
 public class MascotaDAO {
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("gestionMascotasPU");
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionMascotasPU"); // Asegúrate de que el nombre de la PU sea correcto
 
     public void guardar(Mascota mascota) {
         EntityManager em = emf.createEntityManager();
@@ -55,6 +55,35 @@ public class MascotaDAO {
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             e.printStackTrace();
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Obtiene todas las mascotas asociadas a un usuario específico.
+     * @param usuarioId El ID del usuario.
+     * @return Una lista de mascotas del usuario.
+     */
+    public List<Mascota> obtenerMascotasPorUsuario(Long usuarioId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery("SELECT m FROM Mascota m WHERE m.usuario.id = :usuarioId", Mascota.class)
+                    .setParameter("usuarioId", usuarioId)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Mascota> obtenerPorUsuario(Long usuarioId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT m FROM Mascota m WHERE m.usuario.id = :usuarioId ORDER BY m.nombre",
+                            Mascota.class)
+                    .setParameter("usuarioId", usuarioId)
+                    .getResultList();
         } finally {
             em.close();
         }

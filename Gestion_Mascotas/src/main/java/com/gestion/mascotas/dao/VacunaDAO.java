@@ -7,7 +7,7 @@ import java.util.List;
 
 public class VacunaDAO {
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("gestionMascotasPU");
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionMascotasPU");
 
     public void guardar(Vacuna vacuna) {
         EntityManager em = emf.createEntityManager();
@@ -55,6 +55,39 @@ public class VacunaDAO {
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             e.printStackTrace();
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Obtiene el total de vacunas aplicadas para una mascota específica.
+     * Solo cuenta vacunas cuya fecha es igual o anterior a hoy.
+     * @param mascotaId El ID de la mascota.
+     * @return El número total de vacunas aplicadas de la mascota.
+     */
+    public long contarVacunasPorMascota(Long mascotaId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery("SELECT COUNT(v) FROM Vacuna v WHERE v.mascota.id = :mascotaId AND v.fecha <= CURRENT_DATE", Long.class)
+                    .setParameter("mascotaId", mascotaId)
+                    .getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Obtiene las vacunas próximas (futuras) para una mascota específica.
+     * @param mascotaId El ID de la mascota.
+     * @return El número de vacunas próximas de la mascota.
+     */
+    public long contarVacunasProximasPorMascota(Long mascotaId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery("SELECT COUNT(v) FROM Vacuna v WHERE v.mascota.id = :mascotaId AND v.fecha > CURRENT_DATE", Long.class)
+                    .setParameter("mascotaId", mascotaId)
+                    .getSingleResult();
         } finally {
             em.close();
         }
