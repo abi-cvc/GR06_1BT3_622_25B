@@ -91,7 +91,10 @@
                                 <i class="fas fa-paw"></i> Mascota
                             </th>
                             <th style="padding: 1rem; text-align: left;">
-                                <i class="fas fa-calendar"></i> Fecha Aplicación
+                                <i class="fas fa-calendar"></i> Fecha
+                            </th>
+                            <th style="padding: 1rem; text-align: center;">
+                                <i class="fas fa-info-circle"></i> Estado
                             </th>
                             <th style="padding: 1rem; text-align: center; border-radius: 0 8px 0 0;">
                                 <i class="fas fa-cog"></i> Acciones
@@ -99,17 +102,40 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <%@ page import="java.time.LocalDate" %>
                         <c:forEach var="vacuna" items="${vacunas}">
+                            <%
+                                // Obtener la fecha actual del servidor
+                                LocalDate fechaHoy = LocalDate.now();
+                                request.setAttribute("fechaHoy", fechaHoy);
+                            %>
+                            
                             <tr style="border-bottom: 1px solid #e5e7eb;">
                                 <td style="padding: 1rem;">
                                     <strong style="color: var(--primary-color);">${vacuna.nombre}</strong>
                                 </td>
                                 <td style="padding: 1rem;">
                                     <i class="fas fa-dog" style="color: var(--text-secondary); margin-right: 0.5rem;"></i>
-                                        ${vacuna.mascota.nombre}
+                                    ${vacuna.mascota.nombre}
                                 </td>
                                 <td style="padding: 1rem;">
-                                        ${vacuna.fecha}
+                                    ${vacuna.fecha}
+                                </td>
+                                <td style="padding: 1rem; text-align: center;">
+                                    <%
+                                        com.gestion.mascotas.modelo.Vacuna vacunaActual = (com.gestion.mascotas.modelo.Vacuna) pageContext.getAttribute("vacuna");
+                                        LocalDate fechaVacuna = vacunaActual.getFecha();
+                                        boolean esFutura = fechaVacuna != null && fechaVacuna.isAfter(fechaHoy);
+                                    %>
+                                    <% if (esFutura) { %>
+                                        <span class="badge badge-warning">
+                                            <i class="fas fa-clock"></i> Próxima
+                                        </span>
+                                    <% } else { %>
+                                        <span class="badge badge-success">
+                                            <i class="fas fa-check-circle"></i> Aplicada
+                                        </span>
+                                    <% } %>
                                 </td>
                                 <td style="padding: 1rem; text-align: center;">
                                     <button onclick="confirmarEliminarVacuna(${vacuna.id}, '${vacuna.nombre}')"
@@ -185,14 +211,13 @@
 
             <div class="form-group">
                 <label for="fechaVacuna">
-                    <i class="fas fa-calendar"></i> Fecha de Aplicación <span class="required">*</span>
+                    <i class="fas fa-calendar"></i> Fecha de Aplicación/Programación <span class="required">*</span>
                 </label>
                 <input type="date"
                        id="fechaVacuna"
                        name="fecha"
-                       required
-                       max="<%= java.time.LocalDate.now() %>">
-                <small class="help-text">Fecha en que se aplicó la vacuna</small>
+                       required>
+                <small class="help-text">Fecha en que se aplicó o se aplicará la vacuna (puede ser futura)</small>
             </div>
 
             <div class="modal-actions">

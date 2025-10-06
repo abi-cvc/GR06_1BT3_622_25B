@@ -62,13 +62,14 @@ public class VacunaDAO {
 
     /**
      * Obtiene el total de vacunas aplicadas para una mascota específica.
+     * Solo cuenta vacunas cuya fecha es igual o anterior a hoy.
      * @param mascotaId El ID de la mascota.
-     * @return El número total de vacunas de la mascota.
+     * @return El número total de vacunas aplicadas de la mascota.
      */
     public long contarVacunasPorMascota(Long mascotaId) {
         EntityManager em = emf.createEntityManager();
         try {
-            return em.createQuery("SELECT COUNT(v) FROM Vacuna v WHERE v.mascota.id = :mascotaId", Long.class)
+            return em.createQuery("SELECT COUNT(v) FROM Vacuna v WHERE v.mascota.id = :mascotaId AND v.fecha <= CURRENT_DATE", Long.class)
                     .setParameter("mascotaId", mascotaId)
                     .getSingleResult();
         } finally {

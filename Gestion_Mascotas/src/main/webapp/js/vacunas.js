@@ -73,22 +73,14 @@ document.addEventListener('DOMContentLoaded', function() {
             // Validar que se haya ingresado una fecha
             if (!fechaVacuna) {
                 e.preventDefault();
-                alert('Por favor ingresa la fecha de aplicación');
-                return false;
-            }
-
-            // Validar que la fecha no sea futura
-            const hoy = new Date();
-            hoy.setHours(0, 0, 0, 0);
-            const fechaSeleccionada = new Date(fechaVacuna);
-
-            if (fechaSeleccionada > hoy) {
-                e.preventDefault();
-                alert('La fecha de aplicación no puede ser futura');
+                alert('Por favor ingresa la fecha de aplicación o programación');
                 return false;
             }
 
             // Validar que la fecha no sea muy antigua (más de 10 años)
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+            const fechaSeleccionada = new Date(fechaVacuna);
             const fechaMinima = new Date();
             fechaMinima.setFullYear(fechaMinima.getFullYear() - 10);
 
@@ -102,12 +94,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Establecer la fecha máxima como hoy
-    const fechaInput = document.getElementById('fechaVacuna');
-    if (fechaInput) {
-        const hoy = new Date().toISOString().split('T')[0];
-        fechaInput.setAttribute('max', hoy);
-    }
+    // NO establecer fecha máxima - permitir fechas futuras para programar vacunas
+    // El campo de fecha puede ser pasado, presente o futuro
 });
 
 // ===== ALERTAS AUTO-DESVANECIENTES =====

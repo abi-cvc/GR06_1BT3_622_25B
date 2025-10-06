@@ -151,7 +151,7 @@
                                     </div>
 
                                     <div class="stat-card-mini">
-                                        <div class="stat-icon-mini">�</div>
+                                        <div class="stat-icon-mini">📅</div>
                                         <div class="stat-info-mini">
                                             <h4><c:out value="${vacunasProximasPorMascota[mascota.id] != null ? vacunasProximasPorMascota[mascota.id] : 0}"/></h4>
                                             <p>Vacunas Próximas</p>

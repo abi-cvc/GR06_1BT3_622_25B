@@ -57,6 +57,8 @@ public class VacunaServlet extends HttpServlet {
             // Obtener las mascotas del usuario para el modal de registro
             List<Mascota> mascotas = mascotaDAO.obtenerPorUsuario(usuario.getId());
 
+            // Pasar la fecha actual para comparaciones en el JSP
+            request.setAttribute("fechaActual", LocalDate.now());
             request.setAttribute("vacunas", vacunas);
             request.setAttribute("mascotas", mascotas);
 
@@ -118,12 +120,6 @@ public class VacunaServlet extends HttpServlet {
             // Parsear fecha y mascota ID
             LocalDate fecha = LocalDate.parse(fechaStr);
             Long mascotaId = Long.parseLong(mascotaIdStr);
-
-            // Validar que la fecha no sea futura
-            if (fecha.isAfter(LocalDate.now())) {
-                response.sendRedirect(request.getContextPath() + "/vacuna?error=fecha_invalida");
-                return;
-            }
 
             // Obtener la mascota
             Mascota mascota = mascotaDAO.obtenerPorId(mascotaId);
