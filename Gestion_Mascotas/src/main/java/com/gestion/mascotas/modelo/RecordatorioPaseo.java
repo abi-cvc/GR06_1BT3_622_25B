@@ -46,7 +46,7 @@ public class RecordatorioPaseo extends Recordatorio {
     public void setDuracionMinutos(Integer duracionMinutos) {
         this.duracionMinutos = duracionMinutos;
     }
-
+/*
     // Sobreescribe el método de configuración para incluir detalles del paseo
     public void configurarRecordatorio(Mascota mascota, String descripcion, LocalDateTime fechaHora,
                                        String diasSemana, String horarios, Integer duracionMinutos) {
@@ -64,7 +64,7 @@ public class RecordatorioPaseo extends Recordatorio {
         super.modificarRecordatorio(nuevaDescripcion, nuevaFechaHora, activo);
         System.out.println("Detalles de paseo modificados para el recordatorio.");
     }
-
+*/
     public void modificarDetallesPaseo(String diasSemana, String horarios, Integer duracionMinutos) {
         this.setDiasSemana(diasSemana);
         this.setHorarios(horarios);

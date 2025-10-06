@@ -126,6 +126,110 @@
       opacity: 0.9;
     }
 
+    /* Estilos para el modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: var(--bg-primary);
+      margin: 5% auto;
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      width: 90%;
+      max-width: 500px;
+      box-shadow: var(--shadow-xl);
+      position: relative;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .close-button {
+      color: var(--text-secondary);
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .close-button:hover,
+    .close-button:focus {
+      color: var(--primary-color);
+    }
+
+    .modal h2 {
+      color: var(--text-primary);
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="time"],
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      box-sizing: border-box;
+    }
+
+    .form-group input[type="checkbox"] {
+      margin-right: 0.5rem;
+    }
+
+    .dias-semana-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .dias-semana-group label {
+      display: flex;
+      align-items: center;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--primary-color);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      width: 100%;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       .mascota-details-card {
@@ -145,6 +249,11 @@
       }
       .actions-grid-details {
         grid-template-columns: 1fr;
+      }
+      .modal-content {
+        width: 95%;
+        margin: 10% auto;
+        padding: 1.5rem;
       }
     }
   </style>
@@ -227,13 +336,13 @@
       <section class="quick-actions-details">
         <h2><i class="fas fa-bolt"></i> Acciones Rápidas para ${mascota.nombre}</h2>
         <div class="actions-grid-details">
-          <a href="${pageContext.request.contextPath}/jsp/recordatorio/registrarRecordatorioAlimentacion.jsp?mascotaId=${mascota.id}" class="action-card-details">
+          <a href="#" class="action-card-details" id="openRecordatorioAlimentacionModal">
             <i class="action-icon fas fa-utensils"></i>
             <h3>Configurar Recordatorio de Alimento</h3>
             <p>Establece horarios y tipo de comida para tu mascota.</p>
           </a>
 
-          <a href="${pageContext.request.contextPath}/jsp/recordatorio/registrarRecordatorioPaseo.jsp?mascotaId=${mascota.id}" class="action-card-details">
+          <a href="${pageContext.request.contextPath}/jsp/registrarRecordatorioPaseo.jsp?mascotaId=${mascota.id}" class="action-card-details">
             <i class="action-icon fas fa-running"></i>
             <h3>Configurar Recordatorio de Ejercicio</h3>
             <p>Planifica paseos y actividades para mantenerla activa.</p>
@@ -256,6 +365,98 @@
   </div>
 </main>
 
+<!-- Modal para Configurar Recordatorio de Alimentación -->
+<div id="recordatorioAlimentacionModal" class="modal">
+  <div class="modal-content">
+    <span class="close-button">&times;</span>
+    <h2>Configurar Recordatorio de Alimentación para ${mascota.nombre}</h2>
+    <form action="${pageContext.request.contextPath}/recordatorioAlimentacion" method="post">
+      <input type="hidden" name="action" value="registrar">
+      <input type="hidden" name="mascotaId" value="${mascota.id}">
+
+      <div class="form-group">
+        <label for="frecuencia">Frecuencia:</label>
+        <select id="frecuencia" name="frecuencia" required onchange="mostrarSelectoresHora()">
+          <option value="">Selecciona la frecuencia</option>
+          <option value="1">1 vez al día</option>
+          <option value="2">2 veces al día</option>
+          <option value="3">3 veces al día</option>
+        </select>
+      </div>
+
+      <div id="horariosContainer">
+        <!-- Los selectores de hora se insertarán aquí dinámicamente -->
+      </div>
+
+      <div class="form-group">
+        <label for="tipoAlimento">Tipo de Alimento:</label>
+        <input type="text" id="tipoAlimento" name="tipoAlimento" placeholder="Ej: Pienso seco, comida húmeda" required>
+      </div>
+
+      <div class="form-group">
+        <label>Días para el recordatorio:</label>
+        <div class="dias-semana-group">
+          <label><input type="checkbox" name="diasSemana" value="Lunes"> Lunes</label>
+          <label><input type="checkbox" name="diasSemana" value="Martes"> Martes</label>
+          <label><input type="checkbox" name="diasSemana" value="Miércoles"> Miércoles</label>
+          <label><input type="checkbox" name="diasSemana" value="Jueves"> Jueves</label>
+          <label><input type="checkbox" name="diasSemana" value="Viernes"> Viernes</label>
+          <label><input type="checkbox" name="diasSemana" value="Sábado"> Sábado</label>
+          <label><input type="checkbox" name="diasSemana" value="Domingo"> Domingo</label>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-primary">Guardar Recordatorio</button>
+    </form>
+  </div>
+</div>
+
 <script src="${pageContext.request.contextPath}/js/dashboard.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var modal = document.getElementById("recordatorioAlimentacionModal");
+    var btn = document.getElementById("openRecordatorioAlimentacionModal");
+    var span = document.getElementsByClassName("close-button")[0];
+
+    if (btn) {
+      btn.onclick = function(event) {
+        event.preventDefault(); // Evita que el enlace navegue
+        modal.style.display = "block";
+        mostrarSelectoresHora(); // Asegura que los selectores se muestren al abrir el modal
+      }
+    }
+
+    if (span) {
+      span.onclick = function() {
+        modal.style.display = "none";
+      }
+    }
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  });
+
+  function mostrarSelectoresHora() {
+    var frecuencia = document.getElementById("frecuencia").value;
+    var horariosContainer = document.getElementById("horariosContainer");
+    horariosContainer.innerHTML = ''; // Limpiar selectores anteriores
+
+    if (frecuencia) {
+      var numHorarios = parseInt(frecuencia);
+      for (var i = 1; i <= numHorarios; i++) {
+        var div = document.createElement('div');
+        div.className = 'form-group';
+        div.innerHTML = `
+          <label for="horario${i}">Hora de Alimentación ${i}:</label>
+          <input type="time" id="horario${i}" name="horario${i}" required>
+        `;
+        horariosContainer.appendChild(div);
+      }
+    }
+  }
+</script>
 </body>
 </html>
