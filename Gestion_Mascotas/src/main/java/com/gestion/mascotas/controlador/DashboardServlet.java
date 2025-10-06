@@ -62,6 +62,8 @@ public class DashboardServlet extends HttpServlet {
         request.setAttribute("vacunasPorMascota", vacunasPorMascota);
         request.setAttribute("vacunasProximasPorMascota", vacunasProximasPorMascota);
         request.setAttribute("tiposMascota", TipoMascota.values());
+        long totalVisitas = visitaDAO.contarVisitasPorUsuario(usuarioId);
+        request.setAttribute("totalVisitas", totalVisitas);
 
         // Mostrar el dashboard
         request.getRequestDispatcher("/jsp/dashboard.jsp").forward(request, response);

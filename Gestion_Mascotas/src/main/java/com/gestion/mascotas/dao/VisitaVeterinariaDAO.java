@@ -14,11 +14,16 @@ public class VisitaVeterinariaDAO {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.persist(visita);
+            if (visita.getId() == null) {
+                em.persist(visita);
+            } else {
+                em.merge(visita);
+            }
             tx.commit();
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             e.printStackTrace();
+            throw new RuntimeException("Error al guardar la visita veterinaria", e);
         } finally {
             em.close();
         }
@@ -27,7 +32,10 @@ public class VisitaVeterinariaDAO {
     public List<VisitaVeterinaria> obtenerTodas() {
         EntityManager em = emf.createEntityManager();
         try {
-            return em.createQuery("SELECT v FROM VisitaVeterinaria v", VisitaVeterinaria.class).getResultList();
+            return em.createQuery(
+                    "SELECT v FROM VisitaVeterinaria v ORDER BY v.fecha DESC",
+                    VisitaVeterinaria.class
+            ).getResultList();
         } finally {
             em.close();
         }
@@ -55,21 +63,62 @@ public class VisitaVeterinariaDAO {
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             e.printStackTrace();
+            throw new RuntimeException("Error al eliminar la visita veterinaria", e);
         } finally {
             em.close();
         }
     }
 
-    /**
-     * Obtiene el total de visitas veterinarias para una mascota específica.
-     * @param mascotaId El ID de la mascota.
-     * @return El número total de visitas de la mascota.
-     */
+    public List<VisitaVeterinaria> obtenerPorMascota(Long mascotaId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT v FROM VisitaVeterinaria v WHERE v.mascota.id = :mascotaId ORDER BY v.fecha DESC",
+                            VisitaVeterinaria.class
+                    )
+                    .setParameter("mascotaId", mascotaId)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<VisitaVeterinaria> obtenerPorUsuario(Long usuarioId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT v FROM VisitaVeterinaria v WHERE v.mascota.usuario.id = :usuarioId ORDER BY v.fecha DESC",
+                            VisitaVeterinaria.class
+                    )
+                    .setParameter("usuarioId", usuarioId)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
     public long contarVisitasPorMascota(Long mascotaId) {
         EntityManager em = emf.createEntityManager();
         try {
-            return em.createQuery("SELECT COUNT(v) FROM VisitaVeterinaria v WHERE v.mascota.id = :mascotaId", Long.class)
+            return em.createQuery(
+                            "SELECT COUNT(v) FROM VisitaVeterinaria v WHERE v.mascota.id = :mascotaId",
+                            Long.class
+                    )
                     .setParameter("mascotaId", mascotaId)
+                    .getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
+
+    public long contarVisitasPorUsuario(Long usuarioId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT COUNT(v) FROM VisitaVeterinaria v WHERE v.mascota.usuario.id = :usuarioId",
+                            Long.class
+                    )
+                    .setParameter("usuarioId", usuarioId)
                     .getSingleResult();
         } finally {
             em.close();
