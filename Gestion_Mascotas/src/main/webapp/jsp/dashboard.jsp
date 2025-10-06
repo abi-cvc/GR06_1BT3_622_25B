@@ -83,44 +83,86 @@
                 <p>Gestiona toda la información de tus mascotas en un solo lugar</p>
             </section>
 
-            <!-- Estadísticas -->
-            <section class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">🐕</div>
-                    <div class="stat-info">
-                        <h3><c:out value="${totalMascotas != null ? totalMascotas : 0}"/></h3>
-                        <p>Mascotas Registradas</p>
-                    </div>
-                    <a href="${pageContext.request.contextPath}/mascotas" class="stat-link">Ver todas →</a>
-                </div>
+            <!-- Sección de Mascotas con sus Estadísticas -->
+            <c:choose>
+                <c:when test="${empty mascotas}">
+                    <section class="no-mascotas">
+                        <div class="empty-state">
+                            <i class="fas fa-paw fa-4x"></i>
+                            <h2>No tienes mascotas registradas</h2>
+                            <p>¡Comienza agregando tu primera mascota!</p>
+                            <button class="btn btn-primary btn-lg" onclick="abrirModalRegistrarMascota()">
+                                <i class="fas fa-plus-circle"></i> Registrar Primera Mascota
+                            </button>
+                        </div>
+                    </section>
+                </c:when>
+                <c:otherwise>
+                    <section class="mascotas-section">
+                        <h2><i class="fas fa-dog"></i> Mis Mascotas</h2>
+                        
+                        <c:forEach var="mascota" items="${mascotas}">
+                            <div class="mascota-stats-card">
+                                <div class="mascota-header">
+                                    <div class="mascota-info-header">
+                                        <div class="mascota-icon-large">
+                                            <c:choose>
+                                                <c:when test="${mascota.tipo == 'PERRO'}">
+                                                    <i class="fas fa-dog"></i>
+                                                </c:when>
+                                                <c:when test="${mascota.tipo == 'GATO'}">
+                                                    <i class="fas fa-cat"></i>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <i class="fas fa-paw"></i>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </div>
+                                        <div class="mascota-details">
+                                            <h3>${mascota.nombre}</h3>
+                                            <p class="mascota-tipo">${mascota.tipo}</p>
+                                            <c:if test="${not empty mascota.raza}">
+                                                <p class="mascota-raza"><i class="fas fa-dna"></i> ${mascota.raza}</p>
+                                            </c:if>
+                                        </div>
+                                    </div>
+                                    <div class="mascota-actions-header">
+                                        <a href="${pageContext.request.contextPath}/mascotas" class="btn btn-sm btn-secondary">
+                                            <i class="fas fa-eye"></i> Ver Detalles
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                <div class="stats-grid-mascota">
+                                    <div class="stat-card-mini">
+                                        <div class="stat-icon-mini">🏥</div>
+                                        <div class="stat-info-mini">
+                                            <h4><c:out value="${visitasPorMascota[mascota.id] != null ? visitasPorMascota[mascota.id] : 0}"/></h4>
+                                            <p>Visitas Veterinarias</p>
+                                        </div>
+                                    </div>
 
-                <div class="stat-card">
-                    <div class="stat-icon">🏥</div>
-                    <div class="stat-info">
-                        <h3><c:out value="${totalVisitas != null ? totalVisitas : 0}"/></h3>
-                        <p>Visitas Veterinarias</p>
-                    </div>
-                    <a href="${pageContext.request.contextPath}/visitas" class="stat-link">Ver historial →</a>
-                </div>
+                                    <div class="stat-card-mini">
+                                        <div class="stat-icon-mini">💉</div>
+                                        <div class="stat-info-mini">
+                                            <h4><c:out value="${vacunasPorMascota[mascota.id] != null ? vacunasPorMascota[mascota.id] : 0}"/></h4>
+                                            <p>Vacunas Aplicadas</p>
+                                        </div>
+                                    </div>
 
-                <div class="stat-card">
-                    <div class="stat-icon">💉</div>
-                    <div class="stat-info">
-                        <h3><c:out value="${totalVacunas != null ? totalVacunas : 0}"/></h3>
-                        <p>Vacunas Aplicadas</p>
-                    </div>
-                    <a href="${pageContext.request.contextPath}/vacunas" class="stat-link">Ver registro →</a>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon">📅</div>
-                    <div class="stat-info">
-                        <h3><c:out value="${proximasVacunas != null ? proximasVacunas : 0}"/></h3>
-                        <p>Vacunas Próximas</p>
-                    </div>
-                    <a href="${pageContext.request.contextPath}/vacunas?proximas=true" class="stat-link">Ver pendientes →</a>
-                </div>
-            </section>
+                                    <div class="stat-card-mini">
+                                        <div class="stat-icon-mini">📅</div>
+                                        <div class="stat-info-mini">
+                                            <h4><c:out value="${vacunasProximasPorMascota[mascota.id] != null ? vacunasProximasPorMascota[mascota.id] : 0}"/></h4>
+                                            <p>Vacunas Próximas</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </section>
+                </c:otherwise>
+            </c:choose>
 
             <!-- Acciones Rápidas -->
             <section class="quick-actions">
