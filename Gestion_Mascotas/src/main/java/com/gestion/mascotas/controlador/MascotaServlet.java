@@ -1,13 +1,13 @@
 package com.gestion.mascotas.controlador;
 
 import com.gestion.mascotas.dao.MascotaDAO;
+import com.gestion.mascotas.dao.RecordatorioAlimentacionDAO;
 import com.gestion.mascotas.dao.UsuarioDAO;
 import com.gestion.mascotas.modelo.Mascota;
+import com.gestion.mascotas.modelo.RecordatorioAlimentacion;
 import com.gestion.mascotas.modelo.TipoMascota;
 import com.gestion.mascotas.modelo.Usuario;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -19,6 +19,7 @@ public class MascotaServlet extends HttpServlet {
 
     private MascotaDAO mascotaDAO = new MascotaDAO();
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
+    private RecordatorioAlimentacionDAO recordatorioAlimentacionDAO = new RecordatorioAlimentacionDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -42,10 +43,10 @@ public class MascotaServlet extends HttpServlet {
             case "eliminar":
                 eliminarMascota(request, response);
                 break;
-            case "detalles": // Nueva acción para mostrar detalles
+            case "detalles":
                 mostrarDetallesMascota(request, response);
                 break;
-            case "listar": // Aseguramos que 'listar' sea una acción explícita
+            case "listar":
             default:
                 listarMascotas(request, response);
                 break;
@@ -54,7 +55,6 @@ public class MascotaServlet extends HttpServlet {
 
     private void mostrarFormularioRegistro(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Pass the logged-in user's ID to pre-fill or associate
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("usuarioId") != null) {
             request.setAttribute("usuarioId", session.getAttribute("usuarioId"));
@@ -84,16 +84,13 @@ public class MascotaServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         Long usuarioId = (Long) session.getAttribute("usuarioId");
 
-        // Obtener las mascotas del usuario logueado
         List<Mascota> mascotas = mascotaDAO.obtenerMascotasPorUsuario(usuarioId);
 
         request.setAttribute("mascotas", mascotas);
-        // AGREGAR: enviar tipos de mascota para el modal de registro
         request.setAttribute("tiposMascota", TipoMascota.values());
         request.getRequestDispatcher("/jsp/listaMascotas.jsp").forward(request, response);
     }
 
-    // Nuevo método para mostrar los detalles de una mascota
     private void mostrarDetallesMascota(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Long id = Long.parseLong(request.getParameter("id"));
@@ -101,9 +98,14 @@ public class MascotaServlet extends HttpServlet {
 
         if (mascota == null) {
             request.setAttribute("error", "Mascota no encontrada.");
-            listarMascotas(request, response); // Redirigir a la lista si no se encuentra
+            listarMascotas(request, response);
             return;
         }
+
+        // Cargar recordatorios de alimentación para esta mascota
+        List<RecordatorioAlimentacion> recordatoriosAlimentacion = recordatorioAlimentacionDAO.obtenerRecordatoriosAlimentacionPorMascota(id);
+        request.setAttribute("recordatoriosAlimentacion", recordatoriosAlimentacion);
+
         request.setAttribute("mascota", mascota);
         request.getRequestDispatcher("/jsp/detallesMascota.jsp").forward(request, response);
     }
@@ -115,7 +117,6 @@ public class MascotaServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-        // Verificar que la mascota pertenezca al usuario
         Mascota mascota = mascotaDAO.obtenerPorId(id);
         if (mascota == null) {
             response.sendRedirect(request.getContextPath() + "/dashboard?error=mascota_no_encontrada");
@@ -173,8 +174,6 @@ public class MascotaServlet extends HttpServlet {
         }
 
         Mascota mascota = new Mascota();
-        // NO usar registrarMascota() que llama a usuario.addMascota()
-        // Establecer los valores directamente
         mascota.setNombre(nombre);
         mascota.setTipo(tipo);
         mascota.setRaza(raza);
@@ -197,12 +196,11 @@ public class MascotaServlet extends HttpServlet {
             throws IOException, ServletException {
         Long id = Long.parseLong(request.getParameter("id"));
         String nombre = request.getParameter("nombre");
-        TipoMascota tipo = TipoMascota.valueOf(request.getParameter("tipo")); // Type might not be editable, but including for completeness
+        TipoMascota tipo = TipoMascota.valueOf(request.getParameter("tipo"));
         String raza = request.getParameter("raza");
         Integer edad = Integer.parseInt(request.getParameter("edad"));
         Double peso = Double.parseDouble(request.getParameter("peso"));
         String color = request.getParameter("color");
-        // Assuming usuarioId is not changed during pet update, or handled separately
 
         Mascota mascota = mascotaDAO.obtenerPorId(id);
         if (mascota == null) {
@@ -211,33 +209,26 @@ public class MascotaServlet extends HttpServlet {
             return;
         }
 
-        mascota.actualizarDatos(nombre, raza, edad, peso, color); // Using the model method
-        mascota.setTipo(tipo); // Update type directly if it's editable
+        mascota.actualizarDatos(nombre, raza, edad, peso, color);
+        mascota.setTipo(tipo);
 
         try {
-            mascotaDAO.guardar(mascota); // save or merge
+            mascotaDAO.guardar(mascota);
             response.sendRedirect(request.getContextPath() + "/mascota?action=listar&success=actualizado");
         } catch (Exception e) {
             request.setAttribute("error", "Error al actualizar la mascota: " + e.getMessage());
             mostrarFormularioEdicion(request, response);
         }
     }
+
     /**
      * Obtiene todas las mascotas de un usuario específico
      * @param usuarioId ID del usuario
      * @return Lista de mascotas del usuario
      */
     public List<Mascota> obtenerPorUsuario(Long usuarioId) {
-        EntityManagerFactory emf = null;
-        EntityManager em = emf.createEntityManager();
-        try {
-            return em.createQuery(
-                            "SELECT m FROM Mascota m WHERE m.usuario.id = :usuarioId ORDER BY m.nombre",
-                            Mascota.class)
-                    .setParameter("usuarioId", usuarioId)
-                    .getResultList();
-        } finally {
-            em.close();
-        }
+        // Este método ya existe en MascotaDAO, no es necesario duplicarlo aquí.
+        // Si se llama desde el servlet, debería usar mascotaDAO.obtenerMascotasPorUsuario(usuarioId);
+        return mascotaDAO.obtenerMascotasPorUsuario(usuarioId);
     }
 }

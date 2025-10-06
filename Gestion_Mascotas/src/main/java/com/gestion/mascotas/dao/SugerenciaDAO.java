@@ -16,11 +16,16 @@ public class SugerenciaDAO {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.persist(sugerencia);
+            if (sugerencia.getId() == null) { // Si el ID es nulo, es una nueva entidad
+                em.persist(sugerencia);
+            } else { // Si el ID existe, se actualiza
+                em.merge(sugerencia);
+            }
             tx.commit();
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             e.printStackTrace();
+            throw new RuntimeException("Error al guardar la sugerencia", e);
         } finally {
             em.close();
         }
@@ -54,6 +59,7 @@ public class SugerenciaDAO {
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             e.printStackTrace();
+            throw new RuntimeException("Error al actualizar la sugerencia", e);
         } finally {
             em.close();
         }
@@ -72,6 +78,7 @@ public class SugerenciaDAO {
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             e.printStackTrace();
+            throw new RuntimeException("Error al eliminar la sugerencia", e);
         } finally {
             em.close();
         }

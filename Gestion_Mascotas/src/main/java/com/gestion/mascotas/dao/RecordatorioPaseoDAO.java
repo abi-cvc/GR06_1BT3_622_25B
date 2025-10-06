@@ -16,11 +16,16 @@ public class RecordatorioPaseoDAO {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.persist(recordatorio);
+            if (recordatorio.getId() == null) { // Si el ID es nulo, es una nueva entidad
+                em.persist(recordatorio);
+            } else { // Si el ID existe, se actualiza
+                em.merge(recordatorio);
+            }
             tx.commit();
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             e.printStackTrace();
+            throw new RuntimeException("Error al guardar el recordatorio de paseo", e);
         } finally {
             em.close();
         }
@@ -54,6 +59,7 @@ public class RecordatorioPaseoDAO {
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             e.printStackTrace();
+            throw new RuntimeException("Error al actualizar el recordatorio de paseo", e);
         } finally {
             em.close();
         }
@@ -72,6 +78,7 @@ public class RecordatorioPaseoDAO {
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             e.printStackTrace();
+            throw new RuntimeException("Error al eliminar el recordatorio de paseo", e);
         } finally {
             em.close();
         }

@@ -16,11 +16,16 @@ public class RecordatorioAlimentacionDAO {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.persist(recordatorio);
+            if (recordatorio.getId() == null) {
+                em.persist(recordatorio);
+            } else {
+                em.merge(recordatorio);
+            }
             tx.commit();
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             e.printStackTrace();
+            throw new RuntimeException("Error al guardar el recordatorio de alimentación", e);
         } finally {
             em.close();
         }
@@ -54,6 +59,7 @@ public class RecordatorioAlimentacionDAO {
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             e.printStackTrace();
+            throw new RuntimeException("Error al actualizar el recordatorio de alimentación", e);
         } finally {
             em.close();
         }
@@ -72,6 +78,7 @@ public class RecordatorioAlimentacionDAO {
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             e.printStackTrace();
+            throw new RuntimeException("Error al eliminar el recordatorio de alimentación", e);
         } finally {
             em.close();
         }
@@ -80,7 +87,7 @@ public class RecordatorioAlimentacionDAO {
     public List<RecordatorioAlimentacion> obtenerRecordatoriosAlimentacionPorMascota(Long mascotaId) {
         EntityManager em = emf.createEntityManager();
         try {
-            return em.createQuery("SELECT ra FROM RecordatorioAlimentacion ra WHERE ra.mascota.id = :mascotaId", RecordatorioAlimentacion.class)
+            return em.createQuery("SELECT ra FROM RecordatorioAlimentacion ra WHERE ra.mascota.id = :mascotaId ORDER BY ra.horarios", RecordatorioAlimentacion.class)
                     .setParameter("mascotaId", mascotaId)
                     .getResultList();
         } finally {

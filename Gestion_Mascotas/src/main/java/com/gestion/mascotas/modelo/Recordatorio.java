@@ -5,25 +5,36 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "recordatorios")
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Recordatorio {
+@Inheritance(strategy = InheritanceType.JOINED) // Añadir esta línea
+public class Recordatorio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mascota_id", nullable = false)
     private Mascota mascota;
 
     @Column(nullable = false)
     private String descripcion;
 
-    @Column(name = "fecha_hora_recordatorio", nullable = false)
-    private LocalDateTime fechaHoraRecordatorio;
+    @Column(name = "fecha_hora_recordatorio")
+    private LocalDateTime fechaHoraRecordatorio; // Puede ser nulo para recordatorios recurrentes
 
     @Column(nullable = false)
     private boolean activo;
+
+    // Constructor vacío
+    public Recordatorio() {
+    }
+
+    // Constructor con campos obligatorios
+    public Recordatorio(Mascota mascota, String descripcion, boolean activo) {
+        this.mascota = mascota;
+        this.descripcion = descripcion;
+        this.activo = activo;
+    }
 
     // Getters y Setters
     public Long getId() {
@@ -66,32 +77,11 @@ public abstract class Recordatorio {
         this.activo = activo;
     }
 
-    // Métodos genéricos de gestión de recordatorios
-    public void configurarRecordatorio(Mascota mascota, String descripcion, LocalDateTime fechaHora) {
-        this.setMascota(mascota);
-        this.setDescripcion(descripcion);
-        this.setFechaHoraRecordatorio(fechaHora);
-        this.setActivo(true);
-        System.out.println("Recordatorio configurado: " + descripcion + " para " + mascota.getNombre() + " el " + fechaHora);
-    }
-
-    public void modificarRecordatorio(String nuevaDescripcion, LocalDateTime nuevaFechaHora, boolean activo) {
-        this.setDescripcion(nuevaDescripcion);
-        this.setFechaHoraRecordatorio(nuevaFechaHora);
-        this.setActivo(activo);
-        System.out.println("Recordatorio modificado a: " + nuevaDescripcion + " el " + nuevaFechaHora + " (Activo: " + activo + ")");
-    }
-
-    public void eliminarRecordatorio() {
-        this.setActivo(false); // Se marca como inactivo en lugar de eliminar físicamente
-        System.out.println("Recordatorio eliminado (marcado como inactivo): " + this.getDescripcion());
-    }
-
     @Override
     public String toString() {
         return "Recordatorio{" +
                 "id=" + id +
-                ", mascota=" + (mascota != null ? mascota.getNombre() : "N/A") +
+                ", mascota=" + (mascota != null ? mascota.getNombre() : "null") +
                 ", descripcion='" + descripcion + '\'' +
                 ", fechaHoraRecordatorio=" + fechaHoraRecordatorio +
                 ", activo=" + activo +
