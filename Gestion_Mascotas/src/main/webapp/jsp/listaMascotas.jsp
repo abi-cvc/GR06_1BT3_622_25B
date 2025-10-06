@@ -98,10 +98,9 @@
                     <h3 class="mascota-name">${mascota.nombre}</h3>
                     <p class="mascota-type">${mascota.tipo}</p>
                     <div class="mascota-actions">
-                        <button onclick="verDetallesMascota(${mascota.id}, '${mascota.nombre}', '${mascota.tipo}', '${mascota.raza}', ${mascota.edad}, ${mascota.peso}, '${mascota.color}')"
-                                class="btn btn-sm btn-info" title="Ver Detalles">
+                        <a href="${pageContext.request.contextPath}/mascota?action=detalles&id=${mascota.id}" class="btn btn-sm btn-info" title="Ver Detalles">
                             <i class="fas fa-eye"></i>
-                        </button>
+                        </a>
                         <button onclick="editarMascota(${mascota.id}, '${mascota.nombre}', '${mascota.tipo}', '${mascota.raza}', ${mascota.edad}, ${mascota.peso}, '${mascota.color}')"
                                 class="btn btn-sm btn-secondary" title="Editar">
                             <i class="fas fa-edit"></i>
@@ -116,54 +115,6 @@
         </div>
     </div>
 </main>
-
-<!-- Modal de Ver Detalles -->
-<div id="modalDetallesMascota" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2><i class="fas fa-info-circle"></i> Detalles de la Mascota</h2>
-            <button class="modal-close" onclick="cerrarModalDetalles()">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div class="detalle-mascota">
-                <div class="detalle-icon" id="detalleIcon">
-                    <i class="fas fa-paw"></i>
-                </div>
-                <div class="detalle-info">
-                    <div class="detalle-row">
-                        <label><i class="fas fa-tag"></i> Nombre:</label>
-                        <span id="detalleNombre">-</span>
-                    </div>
-                    <div class="detalle-row">
-                        <label><i class="fas fa-paw"></i> Tipo:</label>
-                        <span id="detalleTipo">-</span>
-                    </div>
-                    <div class="detalle-row">
-                        <label><i class="fas fa-dna"></i> Raza:</label>
-                        <span id="detalleRaza">-</span>
-                    </div>
-                    <div class="detalle-row">
-                        <label><i class="fas fa-birthday-cake"></i> Edad:</label>
-                        <span id="detalleEdad">-</span>
-                    </div>
-                    <div class="detalle-row">
-                        <label><i class="fas fa-weight"></i> Peso:</label>
-                        <span id="detallePeso">-</span>
-                    </div>
-                    <div class="detalle-row">
-                        <label><i class="fas fa-palette"></i> Color:</label>
-                        <span id="detalleColor">-</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-actions">
-            <button type="button" class="btn btn-secondary" onclick="cerrarModalDetalles()">
-                <i class="fas fa-times"></i> Cerrar
-            </button>
-        </div>
-    </div>
-</div>
 
 <!-- Modal de Editar Mascota -->
 <div id="modalEditarMascota" class="modal">

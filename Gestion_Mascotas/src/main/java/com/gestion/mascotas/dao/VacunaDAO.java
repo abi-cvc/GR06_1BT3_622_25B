@@ -7,7 +7,7 @@ import java.util.List;
 
 public class VacunaDAO {
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("gestionMascotasPU");
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionMascotasPU");
 
     public void guardar(Vacuna vacuna) {
         EntityManager em = emf.createEntityManager();
@@ -60,40 +60,33 @@ public class VacunaDAO {
         }
     }
 
-    // Agregar estos métodos a tu clase VacunaDAO existente
-
     /**
-     * Cuenta el total de vacunas registradas para las mascotas de un usuario
-     * @param usuarioId ID del usuario
-     * @return Número total de vacunas
+     * Obtiene el total de vacunas aplicadas para una mascota específica.
+     * @param mascotaId El ID de la mascota.
+     * @return El número total de vacunas de la mascota.
      */
-    public int contarPorUsuario(Long usuarioId) {
+    public long contarVacunasPorMascota(Long mascotaId) {
         EntityManager em = emf.createEntityManager();
         try {
-            Long count = em.createQuery(
-                            "SELECT COUNT(v) FROM Vacuna v WHERE v.mascota.usuario.id = :usuarioId",
-                            Long.class)
-                    .setParameter("usuarioId", usuarioId)
+            return em.createQuery("SELECT COUNT(v) FROM Vacuna v WHERE v.mascota.id = :mascotaId", Long.class)
+                    .setParameter("mascotaId", mascotaId)
                     .getSingleResult();
-            return count.intValue();
         } finally {
             em.close();
         }
     }
 
     /**
-     * Obtiene todas las vacunas de las mascotas de un usuario específico
-     * @param usuarioId ID del usuario
-     * @return Lista de vacunas
+     * Obtiene las vacunas próximas (futuras) para una mascota específica.
+     * @param mascotaId El ID de la mascota.
+     * @return El número de vacunas próximas de la mascota.
      */
-    public List<Vacuna> obtenerPorUsuario(Long usuarioId) {
+    public long contarVacunasProximasPorMascota(Long mascotaId) {
         EntityManager em = emf.createEntityManager();
         try {
-            return em.createQuery(
-                            "SELECT v FROM Vacuna v WHERE v.mascota.usuario.id = :usuarioId ORDER BY v.fecha DESC",
-                            Vacuna.class)
-                    .setParameter("usuarioId", usuarioId)
-                    .getResultList();
+            return em.createQuery("SELECT COUNT(v) FROM Vacuna v WHERE v.mascota.id = :mascotaId AND v.fecha > CURRENT_DATE", Long.class)
+                    .setParameter("mascotaId", mascotaId)
+                    .getSingleResult();
         } finally {
             em.close();
         }
