@@ -4,6 +4,7 @@ import com.gestion.mascotas.dao.MascotaDAO;
 import com.gestion.mascotas.dao.VacunaDAO;
 import com.gestion.mascotas.modelo.Mascota;
 import com.gestion.mascotas.modelo.Vacuna;
+import com.gestion.mascotas.modelo.Usuario;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,7 +13,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-@WebServlet("/vacuna")
+@WebServlet({"/vacunas", "/vacuna"})
 public class VacunaServlet extends HttpServlet {
 
     private VacunaDAO vacunaDAO = new VacunaDAO();
@@ -21,46 +22,77 @@ public class VacunaServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        // Verificar que el usuario esté logueado
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("usuario") == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
         String action = request.getParameter("action");
-        if (action == null) action = "listar";
+
+        if (action == null) {
+            action = "listar";
+        }
 
         switch (action) {
-            case "registrar":
-                mostrarFormularioRegistro(request, response);
-                break;
             case "eliminar":
                 eliminarVacuna(request, response);
                 break;
+            case "listar":
             default:
-                listarVacunas(request, response);
+                listarVacunas(request, response, usuario);
                 break;
         }
     }
 
-    private void mostrarFormularioRegistro(HttpServletRequest request, HttpServletResponse response)
+    private void listarVacunas(HttpServletRequest request, HttpServletResponse response, Usuario usuario)
             throws ServletException, IOException {
-        List<Mascota> mascotas = mascotaDAO.obtenerTodas();
-        request.setAttribute("mascotas", mascotas);
-        request.getRequestDispatcher("vacuna.jsp").forward(request, response);
-    }
+        try {
+            // Obtener todas las vacunas del sistema (puedes filtrar por usuario si lo deseas)
+            List<Vacuna> vacunas = vacunaDAO.obtenerTodas();
 
-    private void listarVacunas(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        List<Vacuna> vacunas = vacunaDAO.obtenerTodas();
-        request.setAttribute("vacunas", vacunas);
-        request.getRequestDispatcher("listaVacunas.jsp").forward(request, response);
+            // Obtener las mascotas del usuario para el modal de registro
+            List<Mascota> mascotas = mascotaDAO.obtenerPorUsuario(usuario.getId());
+
+            request.setAttribute("vacunas", vacunas);
+            request.setAttribute("mascotas", mascotas);
+
+            request.getRequestDispatcher("jsp/listaVacunas.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Error al cargar las vacunas: " + e.getMessage());
+            request.getRequestDispatcher("jsp/listaVacunas.jsp").forward(request, response);
+        }
     }
 
     private void eliminarVacuna(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        Long id = Long.parseLong(request.getParameter("id"));
-        vacunaDAO.eliminar(id);
-        response.sendRedirect("vacuna?action=listar");
+        try {
+            Long id = Long.parseLong(request.getParameter("id"));
+            vacunaDAO.eliminar(id);
+            response.sendRedirect(request.getContextPath() + "/vacuna?success=eliminado");
+        } catch (NumberFormatException e) {
+            response.sendRedirect(request.getContextPath() + "/vacuna?error=id_invalido");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect(request.getContextPath() + "/vacuna?error=error_eliminando");
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        // Verificar sesión
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("usuario") == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
         String action = request.getParameter("action");
         if ("registrar".equals(action)) {
             registrarVacuna(request, response);
@@ -69,24 +101,54 @@ public class VacunaServlet extends HttpServlet {
 
     private void registrarVacuna(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
-        String nombre = request.getParameter("nombre");
-        LocalDate fecha = LocalDate.parse(request.getParameter("fecha"));
-        Long mascotaId = Long.parseLong(request.getParameter("mascotaId"));
+        try {
+            // Obtener parámetros del formulario
+            String nombre = request.getParameter("nombre");
+            String fechaStr = request.getParameter("fecha");
+            String mascotaIdStr = request.getParameter("mascotaId");
 
-        Mascota mascota = mascotaDAO.obtenerPorId(mascotaId);
-        if (mascota == null) {
-            request.setAttribute("error", "Mascota no encontrada");
-            request.getRequestDispatcher("vacuna.jsp").forward(request, response);
-            return;
+            // Validar que todos los campos estén presentes
+            if (nombre == null || nombre.trim().isEmpty() ||
+                    fechaStr == null || fechaStr.trim().isEmpty() ||
+                    mascotaIdStr == null || mascotaIdStr.trim().isEmpty()) {
+                response.sendRedirect(request.getContextPath() + "/vacuna?error=campos_vacios");
+                return;
+            }
+
+            // Parsear fecha y mascota ID
+            LocalDate fecha = LocalDate.parse(fechaStr);
+            Long mascotaId = Long.parseLong(mascotaIdStr);
+
+            // Validar que la fecha no sea futura
+            if (fecha.isAfter(LocalDate.now())) {
+                response.sendRedirect(request.getContextPath() + "/vacuna?error=fecha_invalida");
+                return;
+            }
+
+            // Obtener la mascota
+            Mascota mascota = mascotaDAO.obtenerPorId(mascotaId);
+            if (mascota == null) {
+                response.sendRedirect(request.getContextPath() + "/vacuna?error=mascota_no_encontrada");
+                return;
+            }
+
+            // Crear y guardar la vacuna
+            Vacuna vacuna = new Vacuna();
+            vacuna.setNombre(nombre.trim());
+            vacuna.setFecha(fecha);
+            vacuna.setMascota(mascota);
+
+            vacunaDAO.guardar(vacuna);
+
+            // Redirigir con mensaje de éxito
+            response.sendRedirect(request.getContextPath() + "/vacuna?success=registrado");
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            response.sendRedirect(request.getContextPath() + "/vacuna?error=formato_invalido");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect(request.getContextPath() + "/vacuna?error=error_registro");
         }
-
-        Vacuna vacuna = new Vacuna();
-        vacuna.setNombre(nombre);
-        vacuna.setFecha(fecha);
-        vacuna.setMascota(mascota);
-
-        vacunaDAO.guardar(vacuna);
-
-        response.sendRedirect("vacuna?action=listar");
     }
 }

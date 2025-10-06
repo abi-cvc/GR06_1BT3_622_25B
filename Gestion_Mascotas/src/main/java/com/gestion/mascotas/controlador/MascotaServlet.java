@@ -6,6 +6,8 @@ import com.gestion.mascotas.modelo.Mascota;
 import com.gestion.mascotas.modelo.TipoMascota;
 import com.gestion.mascotas.modelo.Usuario;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -217,6 +219,24 @@ public class MascotaServlet extends HttpServlet {
         } catch (Exception e) {
             request.setAttribute("error", "Error al actualizar la mascota: " + e.getMessage());
             mostrarFormularioEdicion(request, response);
+        }
+    }
+    /**
+     * Obtiene todas las mascotas de un usuario específico
+     * @param usuarioId ID del usuario
+     * @return Lista de mascotas del usuario
+     */
+    public List<Mascota> obtenerPorUsuario(Long usuarioId) {
+        EntityManagerFactory emf = null;
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT m FROM Mascota m WHERE m.usuario.id = :usuarioId ORDER BY m.nombre",
+                            Mascota.class)
+                    .setParameter("usuarioId", usuarioId)
+                    .getResultList();
+        } finally {
+            em.close();
         }
     }
 }

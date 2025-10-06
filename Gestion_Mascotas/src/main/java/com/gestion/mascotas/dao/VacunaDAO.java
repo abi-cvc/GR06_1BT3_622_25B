@@ -59,4 +59,43 @@ public class VacunaDAO {
             em.close();
         }
     }
+
+    // Agregar estos métodos a tu clase VacunaDAO existente
+
+    /**
+     * Cuenta el total de vacunas registradas para las mascotas de un usuario
+     * @param usuarioId ID del usuario
+     * @return Número total de vacunas
+     */
+    public int contarPorUsuario(Long usuarioId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            Long count = em.createQuery(
+                            "SELECT COUNT(v) FROM Vacuna v WHERE v.mascota.usuario.id = :usuarioId",
+                            Long.class)
+                    .setParameter("usuarioId", usuarioId)
+                    .getSingleResult();
+            return count.intValue();
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Obtiene todas las vacunas de las mascotas de un usuario específico
+     * @param usuarioId ID del usuario
+     * @return Lista de vacunas
+     */
+    public List<Vacuna> obtenerPorUsuario(Long usuarioId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT v FROM Vacuna v WHERE v.mascota.usuario.id = :usuarioId ORDER BY v.fecha DESC",
+                            Vacuna.class)
+                    .setParameter("usuarioId", usuarioId)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
 }

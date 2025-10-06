@@ -75,4 +75,17 @@ public class MascotaDAO {
             em.close();
         }
     }
+
+    public List<Mascota> obtenerPorUsuario(Long usuarioId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT m FROM Mascota m WHERE m.usuario.id = :usuarioId ORDER BY m.nombre",
+                            Mascota.class)
+                    .setParameter("usuarioId", usuarioId)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
 }

@@ -112,14 +112,6 @@
                     <a href="${pageContext.request.contextPath}/vacunas" class="stat-link">Ver registro →</a>
                 </div>
 
-                <div class="stat-card">
-                    <div class="stat-icon">📅</div>
-                    <div class="stat-info">
-                        <h3><c:out value="${proximasVacunas != null ? proximasVacunas : 0}"/></h3>
-                        <p>Vacunas Próximas</p>
-                    </div>
-                    <a href="${pageContext.request.contextPath}/vacunas?proximas=true" class="stat-link">Ver pendientes →</a>
-                </div>
             </section>
 
             <!-- Acciones Rápidas -->
