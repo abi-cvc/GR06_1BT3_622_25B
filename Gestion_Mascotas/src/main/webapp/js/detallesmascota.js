@@ -3,48 +3,86 @@
 // Cerrar modal si se hace clic fuera de él
 window.onclick = function(event) {
     const modalEditarPerfil = document.getElementById('modalEditarPerfil');
-    const modalRecordatorioAlimentacion = document.getElementById('modalRecordatorioAlimentacion');
+    const modalRecordatorioAlimentacion = document.getElementById('recordatorioAlimentacionModal');
+    const modalRecordatorioPaseo = document.getElementById('recordatorioPaseoModal');
+    const modalEliminarAlimentacion = document.getElementById('modalEliminarRecordatorioAlimentacion');
+    const modalEliminarPaseo = document.getElementById('modalEliminarRecordatorioPaseo');
 
-    if (event.target === modalEditarPerfil) {
+    if (modalEditarPerfil && event.target === modalEditarPerfil) {
         modalEditarPerfil.style.display = 'none';
     }
-    if (event.target === modalRecordatorioAlimentacion) {
+    if (modalRecordatorioAlimentacion && event.target === modalRecordatorioAlimentacion) {
         modalRecordatorioAlimentacion.style.display = 'none';
+    }
+    if (modalRecordatorioPaseo && event.target === modalRecordatorioPaseo) {
+        modalRecordatorioPaseo.style.display = 'none';
+    }
+    if (modalEliminarAlimentacion && event.target === modalEliminarAlimentacion) {
+        modalEliminarAlimentacion.style.display = 'none';
+    }
+    if (modalEliminarPaseo && event.target === modalEliminarPaseo) {
+        modalEliminarPaseo.style.display = 'none';
     }
 }
 
-// --- Funciones para el Nuevo Modal de Recordatorio de Alimentación ---
+// --- Funciones para el Modal de Recordatorio de Alimentación ---
 
 function abrirModalRecordatorioAlimentacion() {
-    document.getElementById('modalRecordatorioAlimentacion').style.display = 'block';
-    // Resetear el formulario al abrir
-    document.getElementById('formRecordatorioAlimentacion').reset();
-    document.getElementById('horariosContainer').innerHTML = ''; // Limpiar campos de horario
+    const modal = document.getElementById('recordatorioAlimentacionModal');
+    if (modal) {
+        modal.style.display = 'block';
+        document.getElementById('formRecordatorioAlimentacion').reset();
+        document.getElementById('horariosContainer').innerHTML = '';
+    }
 }
 
 function cerrarModalRecordatorioAlimentacion() {
-    document.getElementById('modalRecordatorioAlimentacion').style.display = 'none';
+    const modal = document.getElementById('recordatorioAlimentacionModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
 }
 
 function generarCamposHorario() {
     const frecuencia = document.getElementById('frecuencia').value;
     const horariosContainer = document.getElementById('horariosContainer');
-    horariosContainer.innerHTML = ''; // Limpiar campos anteriores
+    horariosContainer.innerHTML = '';
 
     if (frecuencia) {
         for (let i = 1; i <= parseInt(frecuencia); i++) {
             const div = document.createElement('div');
             div.classList.add('form-group');
             div.innerHTML = `
-                <label for="horario${i}">Horario ${i}:</label>
-                <input type="time" id="horario${i}" name="horario${i}" required>
+                <label for="horario${i}"><i class="fas fa-bell"></i> Horario ${i}:</label>
+                <input type="time" id="horario${i}" name="horario${i}" required class="form-control">
             `;
             horariosContainer.appendChild(div);
         }
     }
 }
 
-// Manejo de mensajes de alerta (ya está en el JSP, pero se puede centralizar aquí si se desea)
+// --- Funciones para Modales de Eliminación ---
+
+function confirmarEliminarRecordatorioAlimentacion(id, tipoAlimento) {
+    document.getElementById('eliminarIdRecordatorioAlimentacion').value = id;
+    document.getElementById('eliminarTipoAlimento').textContent = tipoAlimento;
+    document.getElementById('modalEliminarRecordatorioAlimentacion').style.display = 'block';
+}
+
+function cerrarModalEliminarRecordatorioAlimentacion() {
+    document.getElementById('modalEliminarRecordatorioAlimentacion').style.display = 'none';
+}
+
+function confirmarEliminarRecordatorioPaseo(id) {
+    document.getElementById('eliminarIdRecordatorioPaseo').value = id;
+    document.getElementById('modalEliminarRecordatorioPaseo').style.display = 'block';
+}
+
+function cerrarModalEliminarRecordatorioPaseo() {
+    document.getElementById('modalEliminarRecordatorioPaseo').style.display = 'none';
+}
+
+// Manejo de mensajes de alerta
 document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const success = urlParams.get('success');
@@ -56,10 +94,15 @@ document.addEventListener('DOMContentLoaded', function() {
             message = '✅ Recordatorio de alimentación registrado exitosamente.';
         } else if (success === 'recordatorio_alimentacion_eliminado') {
             message = '✅ Recordatorio de alimentación eliminado exitosamente.';
+        } else if (success === 'recordatorio_paseo_registrado') {
+            message = '✅ Recordatorio de paseo registrado exitosamente.';
+        } else if (success === 'recordatorio_paseo_eliminado') {
+            message = '✅ Recordatorio de paseo eliminado exitosamente.';
         }
-        // Puedes añadir más mensajes de éxito aquí
+
         if (message) {
-            mostrarAlerta(message, 'success');
+            console.log(message);
+            // Las alertas ya se muestran en el JSP, esto es solo para debugging
         }
     }
 
@@ -75,22 +118,12 @@ document.addEventListener('DOMContentLoaded', function() {
             message = '❌ Error al registrar el recordatorio de alimentación.';
         } else if (error === 'error_eliminando_recordatorio_alimentacion') {
             message = '❌ Error al eliminar el recordatorio de alimentación.';
+        } else if (error === 'error_eliminando_recordatorio_paseo') {
+            message = '❌ Error al eliminar el recordatorio de paseo.';
         }
-        // Puedes añadir más mensajes de error aquí
+
         if (message) {
-            mostrarAlerta(message, 'error');
+            console.error(message);
         }
-    }
-
-    function mostrarAlerta(message, type) {
-        const container = document.querySelector('.container'); // O donde quieras mostrar la alerta
-        let alertDiv = document.createElement('div');
-        alertDiv.classList.add('alert', type);
-        alertDiv.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
-        container.prepend(alertDiv); // Añadir al principio del contenedor
-
-        setTimeout(() => {
-            alertDiv.remove();
-        }, 5000);
     }
 });

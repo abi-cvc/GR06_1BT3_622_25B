@@ -1,9 +1,9 @@
 package com.gestion.mascotas.controlador;
 
 import com.gestion.mascotas.dao.MascotaDAO;
-import com.gestion.mascotas.dao.RecordatorioAlimentacionDAO;
+import com.gestion.mascotas.dao.RecordatorioPaseoDAO;
 import com.gestion.mascotas.modelo.Mascota;
-import com.gestion.mascotas.modelo.RecordatorioAlimentacion;
+import com.gestion.mascotas.modelo.RecordatorioPaseo;
 import com.gestion.mascotas.modelo.Usuario;
 
 import jakarta.servlet.ServletException;
@@ -20,15 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@WebServlet("/recordatorioAlimentacion")
-public class RecordatorioAlimentacionServlet extends HttpServlet {
+@WebServlet("/recordatorioPaseo")
+public class RecordatorioPaseoServlet extends HttpServlet {
 
-    private RecordatorioAlimentacionDAO recordatorioAlimentacionDAO;
+    private RecordatorioPaseoDAO recordatorioPaseoDAO;
     private MascotaDAO mascotaDAO;
 
     @Override
     public void init() throws ServletException {
-        recordatorioAlimentacionDAO = new RecordatorioAlimentacionDAO();
+        recordatorioPaseoDAO = new RecordatorioPaseoDAO();
         mascotaDAO = new MascotaDAO();
     }
 
@@ -48,14 +48,14 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
 
         switch (action) {
             case "eliminar":
-                eliminarRecordatorioAlimentacion(request, response);
+                eliminarRecordatorioPaseo(request, response);
                 break;
             case "desactivar":
-                desactivarRecordatorioAlimentacion(request, response);
+                desactivarRecordatorioPaseo(request, response);
                 break;
             case "listar":
             default:
-                listarRecordatoriosAlimentacion(request, response);
+                listarRecordatoriosPaseo(request, response);
                 break;
         }
     }
@@ -74,18 +74,18 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         if ("registrar".equals(action)) {
-            registrarRecordatorioAlimentacion(request, response);
+            registrarRecordatorioPaseo(request, response);
         } else if ("actualizar".equals(action)) {
-            actualizarRecordatorioAlimentacion(request, response);
+            actualizarRecordatorioPaseo(request, response);
         } else {
             response.sendRedirect(request.getContextPath() + "/mascota?error=accion_desconocida");
         }
     }
 
     /**
-     * Registrar un nuevo recordatorio de alimentación
+     * Registrar un nuevo recordatorio de paseo
      */
-    private void registrarRecordatorioAlimentacion(HttpServletRequest request, HttpServletResponse response)
+    private void registrarRecordatorioPaseo(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
@@ -94,10 +94,9 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
         try {
             // Obtener parámetros del formulario
             String mascotaIdStr = request.getParameter("mascotaId");
-            String frecuencia = request.getParameter("frecuencia");
-            String tipoAlimento = request.getParameter("tipoAlimento");
-            String[] diasSeleccionados = request.getParameterValues("diasSemana");
-
+            String frecuenciaStr = request.getParameter("frecuenciaPaseo");
+            String duracionMinutosStr = request.getParameter("duracionMinutos");
+            String[] diasSeleccionados = request.getParameterValues("diasSemanaPaseo");
 
             // Validaciones básicas
             if (mascotaIdStr == null || mascotaIdStr.trim().isEmpty()) {
@@ -106,14 +105,15 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
                 return;
             }
 
-            if (frecuencia == null || frecuencia.trim().isEmpty()) {
+            if (frecuenciaStr == null || frecuenciaStr.trim().isEmpty()) {
                 response.sendRedirect(request.getContextPath() +
                         "/mascota?action=detalles&id=" + mascotaIdStr +
-                        "&error=frecuencia_vacia");
+                        "&error=frecuencia_paseo_vacia");
                 return;
             }
 
             Long mascotaId = Long.parseLong(mascotaIdStr);
+            int frecuencia = Integer.parseInt(frecuenciaStr);
 
             // Validar que la mascota existe y pertenece al usuario
             Mascota mascota = mascotaDAO.obtenerPorId(mascotaId);
@@ -134,12 +134,11 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
 
             // Obtener los horarios del formulario
             List<LocalTime> horarios = new ArrayList<>();
-            int numHorarios = Integer.parseInt(frecuencia);
 
-            System.out.println("Numero de horarios esperados: " + numHorarios);
+            System.out.println("Numero de horarios esperados para paseo: " + frecuencia);
 
-            for (int i = 1; i <= numHorarios; i++) {
-                String paramName = "horario" + i;
+            for (int i = 1; i <= frecuencia; i++) {
+                String paramName = "horarioPaseo" + i;
                 String horaStr = request.getParameter(paramName);
 
                 System.out.println("Parametro " + paramName + ": " + horaStr);
@@ -148,9 +147,9 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
                     try {
                         LocalTime hora = LocalTime.parse(horaStr);
                         horarios.add(hora);
-                        System.out.println("Hora agregada: " + hora);
+                        System.out.println("Hora de paseo agregada: " + hora);
                     } catch (Exception e) {
-                        System.err.println("Error parseando hora: " + horaStr);
+                        System.err.println("Error parseando hora de paseo: " + horaStr);
                         e.printStackTrace();
                         response.sendRedirect(request.getContextPath() +
                                 "/mascota?action=detalles&id=" + mascotaId +
@@ -160,66 +159,73 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
                 }
             }
 
-            System.out.println("Total horarios capturados: " + horarios.size());
+            System.out.println("Total horarios de paseo capturados: " + horarios.size());
 
             // Validar que se ingresaron horarios
             if (horarios.isEmpty()) {
-                System.err.println("ERROR: No se recibieron horarios");
+                System.err.println("ERROR: No se recibieron horarios de paseo");
                 response.sendRedirect(request.getContextPath() +
                         "/mascota?action=detalles&id=" + mascotaId +
-                        "&error=horarios_vacios");
+                        "&error=horarios_paseo_vacios");
                 return;
             }
 
-            // Validar tipo de alimento
-            if (tipoAlimento == null || tipoAlimento.trim().isEmpty()) {
-                response.sendRedirect(request.getContextPath() +
-                        "/mascota?action=detalles&id=" + mascotaId +
-                        "&error=tipo_alimento_vacio");
-                return;
+            // Validar duración
+            Integer duracionMinutos = null;
+            if (duracionMinutosStr != null && !duracionMinutosStr.trim().isEmpty()) {
+                duracionMinutos = Integer.parseInt(duracionMinutosStr);
+                if (duracionMinutos <= 0) {
+                    response.sendRedirect(request.getContextPath() +
+                            "/mascota?action=detalles&id=" + mascotaId +
+                            "&error=duracion_invalida");
+                    return;
+                }
             }
 
             // Construir string de días de la semana
             String diasSemana = "";
             if (diasSeleccionados != null && diasSeleccionados.length > 0) {
                 diasSemana = String.join(",", diasSeleccionados);
-                System.out.println("Dias seleccionados: " + diasSemana);
+                System.out.println("Dias seleccionados para paseo: " + diasSemana);
             } else {
                 System.out.println("Sin dias especificos - activo todos los dias");
             }
 
-            // Crear el recordatorio de alimentación
-            RecordatorioAlimentacion recordatorio = new RecordatorioAlimentacion();
+            // Crear el recordatorio de paseo
+            RecordatorioPaseo recordatorio = new RecordatorioPaseo();
             recordatorio.setMascota(mascota);
             recordatorio.setActivo(true);
-            recordatorio.setDescripcion("Recordatorio de alimentación: " +
-                    frecuencia + " vez/veces al día - " + tipoAlimento);
-            recordatorio.setFrecuencia(frecuencia);
+
+            String descripcion = "Recordatorio de paseo: " + frecuencia + " vez/veces al día";
+            if (duracionMinutos != null) {
+                descripcion += " - " + duracionMinutos + " minutos";
+            }
+            recordatorio.setDescripcion(descripcion);
 
             String horariosStr = horarios.stream()
                     .map(LocalTime::toString)
                     .collect(Collectors.joining(","));
 
             recordatorio.setHorarios(horariosStr);
-            recordatorio.setTipoAlimento(tipoAlimento.trim());
             recordatorio.setDiasSemana(diasSemana);
+            recordatorio.setDuracionMinutos(duracionMinutos);
             recordatorio.setFechaHoraRecordatorio(LocalDateTime.now());
 
-            System.out.println("Guardando recordatorio: " + recordatorio);
+            System.out.println("Guardando recordatorio de paseo: " + recordatorio);
 
             // Guardar en la base de datos
-            boolean guardado = recordatorioAlimentacionDAO.guardar(recordatorio);
+            boolean guardado = recordatorioPaseoDAO.guardar(recordatorio);
 
             if (guardado) {
-                System.out.println("Recordatorio guardado exitosamente");
+                System.out.println("Recordatorio de paseo guardado exitosamente");
                 response.sendRedirect(request.getContextPath() +
                         "/mascota?action=detalles&id=" + mascotaId +
-                        "&success=recordatorio_alimentacion_registrado");
+                        "&success=recordatorio_paseo_registrado");
             } else {
-                System.err.println("Error al guardar el recordatorio");
+                System.err.println("Error al guardar el recordatorio de paseo");
                 response.sendRedirect(request.getContextPath() +
                         "/mascota?action=detalles&id=" + mascotaId +
-                        "&error=error_guardar_recordatorio");
+                        "&error=error_guardar_recordatorio_paseo");
             }
 
         } catch (NumberFormatException e) {
@@ -233,14 +239,14 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
             System.err.println("Error general: " + e.getMessage());
             response.sendRedirect(request.getContextPath() +
                     "/mascota?action=detalles&id=" + request.getParameter("mascotaId") +
-                    "&error=error_registro_recordatorio_alimentacion");
+                    "&error=error_registro_recordatorio_paseo");
         }
     }
 
     /**
-     * Actualizar un recordatorio de alimentación existente
+     * Actualizar un recordatorio de paseo existente
      */
-    private void actualizarRecordatorioAlimentacion(HttpServletRequest request, HttpServletResponse response)
+    private void actualizarRecordatorioPaseo(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
@@ -250,7 +256,7 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
             Long recordatorioId = Long.parseLong(request.getParameter("recordatorioId"));
             Long mascotaId = Long.parseLong(request.getParameter("mascotaId"));
 
-            RecordatorioAlimentacion recordatorio = recordatorioAlimentacionDAO.obtenerPorId(recordatorioId);
+            RecordatorioPaseo recordatorio = recordatorioPaseoDAO.obtenerPorId(recordatorioId);
 
             if (recordatorio == null) {
                 response.sendRedirect(request.getContextPath() +
@@ -268,18 +274,23 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
             }
 
             // Actualizar datos
-            String frecuencia = request.getParameter("frecuencia");
-            String tipoAlimento = request.getParameter("tipoAlimento");
-            String[] diasSeleccionados = request.getParameterValues("diasSemana");
+            String frecuenciaStr = request.getParameter("frecuenciaPaseo");
+            String duracionMinutosStr = request.getParameter("duracionMinutos");
+            String[] diasSeleccionados = request.getParameterValues("diasSemanaPaseo");
 
+            int frecuencia = Integer.parseInt(frecuenciaStr);
             List<LocalTime> horarios = new ArrayList<>();
-            int numHorarios = Integer.parseInt(frecuencia);
 
-            for (int i = 1; i <= numHorarios; i++) {
-                String horaStr = request.getParameter("horario" + i);
+            for (int i = 1; i <= frecuencia; i++) {
+                String horaStr = request.getParameter("horarioPaseo" + i);
                 if (horaStr != null && !horaStr.trim().isEmpty()) {
                     horarios.add(LocalTime.parse(horaStr));
                 }
+            }
+
+            Integer duracionMinutos = null;
+            if (duracionMinutosStr != null && !duracionMinutosStr.trim().isEmpty()) {
+                duracionMinutos = Integer.parseInt(duracionMinutosStr);
             }
 
             String diasSemana = "";
@@ -287,39 +298,42 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
                 diasSemana = String.join(",", diasSeleccionados);
             }
 
-            recordatorio.setFrecuencia(frecuencia);
             recordatorio.setHorarios(horarios.stream()
                     .map(LocalTime::toString)
                     .collect(Collectors.joining(",")));
-            recordatorio.setTipoAlimento(tipoAlimento.trim());
             recordatorio.setDiasSemana(diasSemana);
-            recordatorio.setDescripcion("Recordatorio de alimentación: " +
-                    frecuencia + " vez/veces al día - " + tipoAlimento);
+            recordatorio.setDuracionMinutos(duracionMinutos);
 
-            boolean actualizado = recordatorioAlimentacionDAO.actualizar(recordatorio);
+            String descripcion = "Recordatorio de paseo: " + frecuencia + " vez/veces al día";
+            if (duracionMinutos != null) {
+                descripcion += " - " + duracionMinutos + " minutos";
+            }
+            recordatorio.setDescripcion(descripcion);
+
+            boolean actualizado = recordatorioPaseoDAO.actualizar(recordatorio);
 
             if (actualizado) {
                 response.sendRedirect(request.getContextPath() +
                         "/mascota?action=detalles&id=" + mascotaId +
-                        "&success=recordatorio_actualizado");
+                        "&success=recordatorio_paseo_actualizado");
             } else {
                 response.sendRedirect(request.getContextPath() +
                         "/mascota?action=detalles&id=" + mascotaId +
-                        "&error=error_actualizar_recordatorio");
+                        "&error=error_actualizar_recordatorio_paseo");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect(request.getContextPath() +
                     "/mascota?action=detalles&id=" + request.getParameter("mascotaId") +
-                    "&error=error_actualizacion");
+                    "&error=error_actualizacion_paseo");
         }
     }
 
     /**
-     * Eliminar un recordatorio de alimentación
+     * Eliminar un recordatorio de paseo
      */
-    private void eliminarRecordatorioAlimentacion(HttpServletRequest request, HttpServletResponse response)
+    private void eliminarRecordatorioPaseo(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
         HttpSession session = request.getSession();
@@ -329,7 +343,7 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
             String idStr = request.getParameter("id");
             String mascotaIdStr = request.getParameter("mascotaId");
 
-            System.out.println("=== INICIO ELIMINACIÓN RECORDATORIO ALIMENTACIÓN ===");
+            System.out.println("=== INICIO ELIMINACIÓN RECORDATORIO PASEO ===");
             System.out.println("ID Recordatorio recibido: " + idStr);
             System.out.println("ID Mascota recibido: " + mascotaIdStr);
 
@@ -352,7 +366,7 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
             Long mascotaId = Long.parseLong(mascotaIdStr);
 
             System.out.println("Buscando recordatorio con ID: " + recordatorioId);
-            RecordatorioAlimentacion recordatorio = recordatorioAlimentacionDAO.obtenerPorId(recordatorioId);
+            RecordatorioPaseo recordatorio = recordatorioPaseoDAO.obtenerPorId(recordatorioId);
 
             if (recordatorio == null) {
                 System.err.println("ERROR: No se encontró el recordatorio con ID: " + recordatorioId);
@@ -375,19 +389,19 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
                 return;
             }
 
-            System.out.println("Intentando eliminar recordatorio...");
-            boolean eliminado = recordatorioAlimentacionDAO.eliminar(recordatorioId);
+            System.out.println("Intentando eliminar recordatorio de paseo...");
+            boolean eliminado = recordatorioPaseoDAO.eliminar(recordatorioId);
 
             if (eliminado) {
-                System.out.println("✓ Recordatorio eliminado exitosamente");
+                System.out.println("✓ Recordatorio de paseo eliminado exitosamente");
                 response.sendRedirect(request.getContextPath() +
                         "/mascota?action=detalles&id=" + mascotaId +
-                        "&success=recordatorio_alimentacion_eliminado");
+                        "&success=recordatorio_paseo_eliminado");
             } else {
-                System.err.println("✗ Error al eliminar el recordatorio - el DAO retornó false");
+                System.err.println("✗ Error al eliminar el recordatorio de paseo - el DAO retornó false");
                 response.sendRedirect(request.getContextPath() +
                         "/mascota?action=detalles&id=" + mascotaId +
-                        "&error=error_eliminar_recordatorio");
+                        "&error=error_eliminar_recordatorio_paseo");
             }
 
         } catch (NumberFormatException e) {
@@ -397,20 +411,20 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
                     "/mascota?action=detalles&id=" + request.getParameter("mascotaId") +
                     "&error=formato_id_invalido");
         } catch (Exception e) {
-            System.err.println("ERROR GENERAL al eliminar recordatorio");
+            System.err.println("ERROR GENERAL al eliminar recordatorio de paseo");
             e.printStackTrace();
             response.sendRedirect(request.getContextPath() +
                     "/mascota?action=detalles&id=" + request.getParameter("mascotaId") +
-                    "&error=error_eliminando_recordatorio_alimentacion");
+                    "&error=error_eliminando_recordatorio_paseo");
         } finally {
-            System.out.println("=== FIN ELIMINACIÓN RECORDATORIO ALIMENTACIÓN ===");
+            System.out.println("=== FIN ELIMINACIÓN RECORDATORIO PASEO ===");
         }
     }
 
     /**
      * Desactivar un recordatorio sin eliminarlo
      */
-    private void desactivarRecordatorioAlimentacion(HttpServletRequest request, HttpServletResponse response)
+    private void desactivarRecordatorioPaseo(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
         HttpSession session = request.getSession();
@@ -420,7 +434,7 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
             Long recordatorioId = Long.parseLong(request.getParameter("id"));
             Long mascotaId = Long.parseLong(request.getParameter("mascotaId"));
 
-            RecordatorioAlimentacion recordatorio = recordatorioAlimentacionDAO.obtenerPorId(recordatorioId);
+            RecordatorioPaseo recordatorio = recordatorioPaseoDAO.obtenerPorId(recordatorioId);
 
             if (recordatorio == null) {
                 response.sendRedirect(request.getContextPath() +
@@ -437,44 +451,44 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
                 return;
             }
 
-            boolean desactivado = recordatorioAlimentacionDAO.desactivarRecordatorio(recordatorioId);
+            boolean desactivado = recordatorioPaseoDAO.desactivarRecordatorio(recordatorioId);
 
             if (desactivado) {
                 response.sendRedirect(request.getContextPath() +
                         "/mascota?action=detalles&id=" + mascotaId +
-                        "&success=recordatorio_desactivado");
+                        "&success=recordatorio_paseo_desactivado");
             } else {
                 response.sendRedirect(request.getContextPath() +
                         "/mascota?action=detalles&id=" + mascotaId +
-                        "&error=error_desactivar_recordatorio");
+                        "&error=error_desactivar_recordatorio_paseo");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect(request.getContextPath() +
                     "/mascota?action=detalles&id=" + request.getParameter("mascotaId") +
-                    "&error=error_desactivando_recordatorio");
+                    "&error=error_desactivando_recordatorio_paseo");
         }
     }
 
     /**
-     * Listar recordatorios de alimentación de una mascota
+     * Listar recordatorios de paseo de una mascota
      */
-    private void listarRecordatoriosAlimentacion(HttpServletRequest request, HttpServletResponse response)
+    private void listarRecordatoriosPaseo(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         try {
             Long mascotaId = Long.parseLong(request.getParameter("mascotaId"));
-            List<RecordatorioAlimentacion> recordatorios =
-                    recordatorioAlimentacionDAO.obtenerRecordatoriosAlimentacionPorMascota(mascotaId);
+            List<RecordatorioPaseo> recordatorios =
+                    recordatorioPaseoDAO.obtenerRecordatoriosPaseoPorMascota(mascotaId);
 
-            request.setAttribute("recordatoriosAlimentacion", recordatorios);
+            request.setAttribute("recordatoriosPaseo", recordatorios);
             request.setAttribute("mascotaId", mascotaId);
-            request.getRequestDispatcher("/jsp/listaRecordatoriosAlimentacion.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/listaRecordatoriosPaseo.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/mascota?error=error_listando_recordatorios");
+            response.sendRedirect(request.getContextPath() + "/mascota?error=error_listando_recordatorios_paseo");
         }
     }
 }

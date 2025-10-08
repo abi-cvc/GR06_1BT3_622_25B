@@ -27,6 +27,8 @@ public class Recordatorio {
 
     // Constructor vacío
     public Recordatorio() {
+        // Establecer fecha por defecto para recordatorios
+        this.fechaHoraRecordatorio = LocalDateTime.now();
     }
 
     // Constructor con campos obligatorios
@@ -79,9 +81,19 @@ public class Recordatorio {
 
     @Override
     public String toString() {
+        String mascotaNombre = "null";
+        try {
+            if (mascota != null) {
+                mascotaNombre = mascota.getNombre();
+            }
+        } catch (Exception e) {
+            // Si ocurre LazyInitializationException, no acceder a la mascota
+            mascotaNombre = "Mascota (lazy)";
+        }
+
         return "Recordatorio{" +
                 "id=" + id +
-                ", mascota=" + (mascota != null ? mascota.getNombre() : "null") +
+                ", mascota=" + mascotaNombre +
                 ", descripcion='" + descripcion + '\'' +
                 ", fechaHoraRecordatorio=" + fechaHoraRecordatorio +
                 ", activo=" + activo +

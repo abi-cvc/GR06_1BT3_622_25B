@@ -4,28 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/RecordatorioAlimentacionServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/modal.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/detallesmascota.js" afterDir="false" />
+    <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="Funcionalidad Recordatorio">
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.agent.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask2agent.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.edit.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/webContexts.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/RecordatorioPaseoServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/MascotaServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/MascotaServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/RecordatorioServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/RecordatorioServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/RecordatorioAlimentacionServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/RecordatorioAlimentacionServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/RecordatorioServlet.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/RecordatorioAlimentacionDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/RecordatorioAlimentacionDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/RecordatorioDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/RecordatorioDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/RecordatorioPaseoDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/RecordatorioPaseoDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/SugerenciaAlimentacionDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/SugerenciaAlimentacionDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/SugerenciaDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/SugerenciaDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/SugerenciaEjercicioDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/SugerenciaEjercicioDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/Recordatorio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/Recordatorio.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/RecordatorioAlimentacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/RecordatorioAlimentacion.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/RecordatorioPaseo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/RecordatorioPaseo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/css/dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/css/dashboard.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/detallesmascota.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/detallesmascota.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/jsp/detallesMascota.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/jsp/detallesMascota.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/jsp/generarSugerenciaAlimentacion.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/jsp/generarSugerenciaEjercicio.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/jsp/registrarRecordatorioAlimentacion.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/jsp/registrarRecordatorioPaseo.jsp" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,8 +90,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26927.53" />
-        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.26927.53" />
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.28774.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.28774.11" />
       </set>
     </attachedChunks>
   </component>
@@ -114,6 +110,9 @@
       <workItem from="1759644341968" duration="2560000" />
       <workItem from="1759695693812" duration="549000" />
       <workItem from="1759696278993" duration="11702000" />
+      <workItem from="1759876247677" duration="413000" />
+      <workItem from="1759877184717" duration="832000" />
+      <workItem from="1759882054673" duration="8876000" />
     </task>
     <task id="LOCAL-00001" summary="Creación de Archivos JSP para el segundo Incremento">
       <option name="closed" value="true" />
@@ -147,7 +146,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759703959827</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Funcionalidad Recordatorio">
+      <option name="closed" value="true" />
+      <created>1759720509118</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1759720509118</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -180,6 +187,7 @@
     <MESSAGE value="Creación de Archivos JSP para el segundo Incremento" />
     <MESSAGE value="Configuración Segundo Incremento" />
     <MESSAGE value="Modificación Ventana de Visualización de Mascotas" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modificación Ventana de Visualización de Mascotas" />
+    <MESSAGE value="Funcionalidad Recordatorio" />
+    <option name="LAST_COMMIT_MESSAGE" value="Funcionalidad Recordatorio" />
   </component>
 </project>
