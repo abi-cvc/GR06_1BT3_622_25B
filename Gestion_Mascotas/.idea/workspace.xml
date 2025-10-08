@@ -4,19 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="Funcionalidad Listar y Eliminar Recordatorio">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/NivelActividad.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/jsp/recomendaciones.jsp" afterDir="false" />
+    <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="Cambios en BDD para Base de Conocimiento de Sugerencias">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/util/DataLoaderListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/SugerenciaServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/SugerenciaServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/SugerenciaAlimentacionDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/SugerenciaAlimentacionDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/SugerenciaDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/SugerenciaDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/SugerenciaEjercicioDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/SugerenciaEjercicioDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/AnalizadorDatos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/AnalizadorDatos.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/Mascota.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/Mascota.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/Sugerencia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/Sugerencia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/SugerenciaAlimentacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/SugerenciaAlimentacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/SugerenciaEjercicio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/SugerenciaEjercicio.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,9 +17,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Enum" />
         <option value="Jsp File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -110,7 +101,7 @@
       <workItem from="1759876247677" duration="413000" />
       <workItem from="1759877184717" duration="832000" />
       <workItem from="1759882054673" duration="13250000" />
-      <workItem from="1759895659960" duration="720000" />
+      <workItem from="1759895659960" duration="1864000" />
     </task>
     <task id="LOCAL-00001" summary="Creación de Archivos JSP para el segundo Incremento">
       <option name="closed" value="true" />
@@ -160,7 +151,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759891241131</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Cambios en BDD para Base de Conocimiento de Sugerencias">
+      <option name="closed" value="true" />
+      <created>1759896409476</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1759896409477</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -195,7 +194,8 @@
     <MESSAGE value="Modificación Ventana de Visualización de Mascotas" />
     <MESSAGE value="Funcionalidad Recordatorio" />
     <MESSAGE value="Funcionalidad Listar y Eliminar Recordatorio" />
-    <option name="LAST_COMMIT_MESSAGE" value="Funcionalidad Listar y Eliminar Recordatorio" />
+    <MESSAGE value="Cambios en BDD para Base de Conocimiento de Sugerencias" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cambios en BDD para Base de Conocimiento de Sugerencias" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
