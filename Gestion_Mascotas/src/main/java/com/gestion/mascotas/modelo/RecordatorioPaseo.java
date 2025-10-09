@@ -4,23 +4,39 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "recordatorios_paseo")
-@PrimaryKeyJoinColumn(name = "id") // Une con la tabla Recordatorio
+@PrimaryKeyJoinColumn(name = "id")
 public class RecordatorioPaseo extends Recordatorio {
 
-    @Column(name = "dias_semana")
+    @Column(name = "dias_semana", length = 200)
     private String diasSemana; // Ej: "Lunes,Miércoles,Viernes"
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String horarios; // Ej: "07:00,18:00"
 
     @Column(name = "duracion_minutos")
     private Integer duracionMinutos; // Duración estimada del paseo en minutos
+
+    // Constructor vacío
+    public RecordatorioPaseo() {
+        super();
+    }
+
+    // Constructor con campos específicos
+    public RecordatorioPaseo(Mascota mascota, String descripcion, boolean activo,
+                             String diasSemana, String horarios, Integer duracionMinutos) {
+        super(mascota, descripcion, activo);
+        this.diasSemana = diasSemana;
+        this.horarios = horarios;
+        this.duracionMinutos = duracionMinutos;
+    }
 
     // Getters y Setters
     public String getDiasSemana() {
@@ -39,6 +55,16 @@ public class RecordatorioPaseo extends Recordatorio {
         this.horarios = horarios;
     }
 
+    public List<LocalTime> getListaHorarios() {
+        if (this.horarios == null || this.horarios.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return Arrays.stream(this.horarios.split(","))
+                .map(String::trim)
+                .map(LocalTime::parse)
+                .collect(Collectors.toList());
+    }
+
     public Integer getDuracionMinutos() {
         return duracionMinutos;
     }
@@ -46,36 +72,39 @@ public class RecordatorioPaseo extends Recordatorio {
     public void setDuracionMinutos(Integer duracionMinutos) {
         this.duracionMinutos = duracionMinutos;
     }
-/*
-    // Sobreescribe el método de configuración para incluir detalles del paseo
-    public void configurarRecordatorio(Mascota mascota, String descripcion, LocalDateTime fechaHora,
-                                       String diasSemana, String horarios, Integer duracionMinutos) {
-        super.configurarRecordatorio(mascota, descripcion, fechaHora);
-        this.setDiasSemana(diasSemana);
-        this.setHorarios(horarios);
-        this.setDuracionMinutos(duracionMinutos);
-        System.out.println("Recordatorio de Paseo configurado para " + mascota.getNombre() +
-                ": " + descripcion + " (" + diasSemana + " - " + horarios + " - " + duracionMinutos + " min)");
+
+    public List<String> getListaDiasSemana() {
+        if (this.diasSemana == null || this.diasSemana.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return Arrays.asList(this.diasSemana.split(","));
     }
 
-    // Sobreescribe el método de modificación
-    @Override
-    public void modificarRecordatorio(String nuevaDescripcion, LocalDateTime nuevaFechaHora, boolean activo) {
-        super.modificarRecordatorio(nuevaDescripcion, nuevaFechaHora, activo);
-        System.out.println("Detalles de paseo modificados para el recordatorio.");
-    }
-*/
     public void modificarDetallesPaseo(String diasSemana, String horarios, Integer duracionMinutos) {
         this.setDiasSemana(diasSemana);
         this.setHorarios(horarios);
         this.setDuracionMinutos(duracionMinutos);
-        System.out.println("Detalles de paseo actualizados: Días=" + diasSemana + ", Horarios=" + horarios + ", Duración=" + duracionMinutos + " min");
+        System.out.println("Detalles de paseo actualizados: Días=" + diasSemana +
+                ", Horarios=" + horarios + ", Duración=" + duracionMinutos + " min");
     }
 
     @Override
     public String toString() {
+        String mascotaNombre = "null";
+        try {
+            if (getMascota() != null) {
+                mascotaNombre = getMascota().getNombre();
+            }
+        } catch (Exception e) {
+            // Si ocurre LazyInitializationException, usar solo el ID
+            mascotaNombre = "Mascota ID: " + (getMascota() != null ? "?" : "null");
+        }
+
         return "RecordatorioPaseo{" +
-                super.toString() +
+                "id=" + getId() +
+                ", mascota=" + mascotaNombre +
+                ", descripcion='" + getDescripcion() + '\'' +
+                ", activo=" + isActivo() +
                 ", diasSemana='" + diasSemana + '\'' +
                 ", horarios='" + horarios + '\'' +
                 ", duracionMinutos=" + duracionMinutos +

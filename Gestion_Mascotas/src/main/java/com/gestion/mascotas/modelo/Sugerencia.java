@@ -1,29 +1,40 @@
 package com.gestion.mascotas.modelo;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "sugerencias")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Sugerencia {
+public class Sugerencia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "mascota_id", nullable = false)
-    private Mascota mascota;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_mascota", nullable = false, length = 20)
+    private TipoMascota tipoMascota;
 
-    @Column(nullable = false)
-    private String titulo;
+    @Column(length = 100)
+    private String raza;
+
+    @Column(name = "edad_min")
+    private Integer edadMin;
+
+    @Column(name = "edad_max")
+    private Integer edadMax;
+
+    @Column(name = "peso_min")
+    private Double pesoMin;
+
+    @Column(name = "peso_max")
+    private Double pesoMax;
 
     @Column(columnDefinition = "TEXT", nullable = false)
-    private String contenido;
+    private String descripcion;
 
-    @Column(name = "fecha_generacion", nullable = false)
-    private LocalDate fechaGeneracion;
+    @Column(length = 255)
+    private String fuente;
 
     // Getters y Setters
     public Long getId() {
@@ -34,57 +45,82 @@ public abstract class Sugerencia {
         this.id = id;
     }
 
-    public Mascota getMascota() {
-        return mascota;
+    public TipoMascota getTipoMascota() {
+        return tipoMascota;
     }
 
-    public void setMascota(Mascota mascota) {
-        this.mascota = mascota;
+    public void setTipoMascota(TipoMascota tipoMascota) {
+        this.tipoMascota = tipoMascota;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public String getRaza() {
+        return raza;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setRaza(String raza) {
+        this.raza = raza;
     }
 
-    public String getContenido() {
-        return contenido;
+    public Integer getEdadMin() {
+        return edadMin;
     }
 
-    public void setContenido(String contenido) {
-        this.contenido = contenido;
+    public void setEdadMin(Integer edadMin) {
+        this.edadMin = edadMin;
     }
 
-    public LocalDate getFechaGeneracion() {
-        return fechaGeneracion;
+    public Integer getEdadMax() {
+        return edadMax;
     }
 
-    public void setFechaGeneracion(LocalDate fechaGeneracion) {
-        this.fechaGeneracion = fechaGeneracion;
+    public void setEdadMax(Integer edadMax) {
+        this.edadMax = edadMax;
     }
 
-    // Métodos genéricos de sugerencia
-    public abstract void generarSugerencia(Mascota mascota);
+    public Double getPesoMin() {
+        return pesoMin;
+    }
 
-    public void mostrarSugerencia() {
-        System.out.println("--- Sugerencia para " + (mascota != null ? mascota.getNombre() : "N/A") + " ---");
-        System.out.println("Título: " + titulo);
-        System.out.println("Fecha: " + fechaGeneracion);
-        System.out.println("Contenido: " + contenido);
-        System.out.println("------------------------------------");
+    public void setPesoMin(Double pesoMin) {
+        this.pesoMin = pesoMin;
+    }
+
+    public Double getPesoMax() {
+        return pesoMax;
+    }
+
+    public void setPesoMax(Double pesoMax) {
+        this.pesoMax = pesoMax;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getFuente() {
+        return fuente;
+    }
+
+    public void setFuente(String fuente) {
+        this.fuente = fuente;
     }
 
     @Override
     public String toString() {
         return "Sugerencia{" +
                 "id=" + id +
-                ", mascota=" + (mascota != null ? mascota.getNombre() : "N/A") +
-                ", titulo='" + titulo + '\'' +
-                ", contenido='" + contenido + '\'' +
-                ", fechaGeneracion=" + fechaGeneracion +
+                ", tipoMascota=" + tipoMascota +
+                ", raza='" + raza + '\'' +
+                ", edadMin=" + edadMin +
+                ", edadMax=" + edadMax +
+                ", pesoMin=" + pesoMin +
+                ", pesoMax=" + pesoMax +
+                ", descripcion='" + descripcion + '\'' +
+                ", fuente='" + fuente + '\'' +
                 '}';
     }
 }

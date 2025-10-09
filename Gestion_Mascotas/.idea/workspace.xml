@@ -4,29 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/RecordatorioAlimentacionServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/modal.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/detallesmascota.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/MascotaServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/MascotaServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/RecordatorioServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/RecordatorioServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/RecordatorioAlimentacionDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/RecordatorioAlimentacionDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/RecordatorioDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/RecordatorioDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/RecordatorioPaseoDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/RecordatorioPaseoDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/SugerenciaAlimentacionDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/SugerenciaAlimentacionDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/SugerenciaDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/SugerenciaDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/SugerenciaEjercicioDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/SugerenciaEjercicioDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/Recordatorio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/Recordatorio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/RecordatorioAlimentacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/RecordatorioAlimentacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/RecordatorioPaseo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/RecordatorioPaseo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/css/dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/css/dashboard.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/jsp/detallesMascota.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/jsp/detallesMascota.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/jsp/generarSugerenciaAlimentacion.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/jsp/generarSugerenciaEjercicio.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/jsp/registrarRecordatorioAlimentacion.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/jsp/registrarRecordatorioPaseo.jsp" beforeDir="false" />
-    </list>
+    <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="Agregar DataLoaderListener para carga inicial de sugerencias y su correcto funcionamiento." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,6 +13,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Enum" />
         <option value="Jsp File" />
         <option value="Class" />
       </list>
@@ -88,14 +67,15 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.github.copilot.settings.ApplicationConfigurable&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26927.53" />
-        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.26927.53" />
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.28774.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.28774.11" />
       </set>
     </attachedChunks>
   </component>
@@ -114,6 +94,10 @@
       <workItem from="1759644341968" duration="2560000" />
       <workItem from="1759695693812" duration="549000" />
       <workItem from="1759696278993" duration="11702000" />
+      <workItem from="1759876247677" duration="413000" />
+      <workItem from="1759877184717" duration="832000" />
+      <workItem from="1759882054673" duration="13250000" />
+      <workItem from="1759895659960" duration="2089000" />
     </task>
     <task id="LOCAL-00001" summary="Creación de Archivos JSP para el segundo Incremento">
       <option name="closed" value="true" />
@@ -147,7 +131,39 @@
       <option name="project" value="LOCAL" />
       <updated>1759703959827</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Funcionalidad Recordatorio">
+      <option name="closed" value="true" />
+      <created>1759720509118</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1759720509118</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Funcionalidad Listar y Eliminar Recordatorio">
+      <option name="closed" value="true" />
+      <created>1759891241131</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1759891241131</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Cambios en BDD para Base de Conocimiento de Sugerencias">
+      <option name="closed" value="true" />
+      <created>1759896409476</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1759896409477</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Agregar DataLoaderListener para carga inicial de sugerencias y su correcto funcionamiento.">
+      <option name="closed" value="true" />
+      <created>1759897585384</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1759897585384</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -164,7 +180,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/develop" />
+                        <option value="develop" />
                       </list>
                     </value>
                   </entry>
@@ -180,6 +196,14 @@
     <MESSAGE value="Creación de Archivos JSP para el segundo Incremento" />
     <MESSAGE value="Configuración Segundo Incremento" />
     <MESSAGE value="Modificación Ventana de Visualización de Mascotas" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modificación Ventana de Visualización de Mascotas" />
+    <MESSAGE value="Funcionalidad Recordatorio" />
+    <MESSAGE value="Funcionalidad Listar y Eliminar Recordatorio" />
+    <MESSAGE value="Cambios en BDD para Base de Conocimiento de Sugerencias" />
+    <MESSAGE value="Agregar DataLoaderListener para carga inicial de sugerencias y su correcto funcionamiento." />
+    <option name="LAST_COMMIT_MESSAGE" value="Agregar DataLoaderListener para carga inicial de sugerencias y su correcto funcionamiento." />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
