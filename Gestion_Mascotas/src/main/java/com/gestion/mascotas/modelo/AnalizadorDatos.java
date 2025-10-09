@@ -33,19 +33,24 @@ public class AnalizadorDatos {
      */
     public Map<String, List<?>> analizarMascota(Mascota mascota) {
         Map<String, List<?>> resultados = new HashMap<>();
+/**
+ * Refactorizacion N.-2: Inline Temp, como  las variables sugerenciasAlimentacion y sugerenciasEjercicio
+ * solo se usan para pasarle un valor al metodo,entonces las eliminamos y directamente llamamos al metodo
+ */
 
-        // Obtener sugerencias de alimentación
-        List<SugerenciaAlimentacion> sugerenciasAlimentacion =
-                obtenerSugerenciasAlimentacion(mascota);
+        resultados.put("alimentacion", obtenerSugerenciasAlimentacion(mascota));
+        resultados.put("ejercicio", obtenerSugerenciasEjercicio(mascota));
 
-        // Obtener sugerencias de ejercicio
-        List<SugerenciaEjercicio> sugerenciasEjercicio =
-                obtenerSugerenciasEjercicio(mascota);
+        mostrarResumenAnalisis(mascota, resultados);
 
-        resultados.put("alimentacion", sugerenciasAlimentacion);
-        resultados.put("ejercicio", sugerenciasEjercicio);
+        return resultados;
+    }
 
-        // Log de análisis
+    /**
+     * Refactorizacion N.-1: Extract Method,extraemos la funcionalidad de imprimir
+     * el log de la mascota  otro metodo para mas dinamismo.
+     */
+    public void mostrarResumenAnalisis(Mascota mascota,Map<String, List<?>> resultados){
         System.out.println("=== ANÁLISIS DE MASCOTA ===");
         System.out.println("Nombre: " + mascota.getNombre());
         System.out.println("Tipo: " + mascota.getTipo());
@@ -55,9 +60,8 @@ public class AnalizadorDatos {
         System.out.println("Sugerencias de alimentación encontradas: " + sugerenciasAlimentacion.size());
         System.out.println("Sugerencias de ejercicio encontradas: " + sugerenciasEjercicio.size());
         System.out.println("===========================");
-
-        return resultados;
     }
+
 
     /**
      * Obtiene sugerencias de alimentación personalizadas para la mascota
@@ -169,31 +173,28 @@ public class AnalizadorDatos {
     /**
      * Calcula el nivel de actividad recomendado basado en la edad de la mascota
      */
+
+    /**
+     * Refactorizacion N.-3 , Replace Nested Conditional with Guard Clauses, usamos clausas de guardia para simplificar
+     * las condicionales y evitar anidamientos profundos
+     */
     public String calcularNivelActividadRecomendado(Mascota mascota) {
-        if (mascota.getEdad() == null) {
-            return "MEDIA";
-        }
+        if (mascota.getEdad() == null) return "MEDIA";
 
         if (mascota.getTipo() == TipoMascota.PERRO) {
-            if (mascota.getEdad() < 2) {
-                return "MEDIA"; // Cachorros necesitan actividad moderada
-            } else if (mascota.getEdad() < 8) {
-                return "ALTA"; // Adultos necesitan más actividad
-            } else {
-                return "BAJA"; // Seniors necesitan actividad reducida
-            }
-        } else if (mascota.getTipo() == TipoMascota.GATO) {
-            if (mascota.getEdad() < 2) {
-                return "MEDIA";
-            } else if (mascota.getEdad() < 10) {
-                return "MEDIA";
-            } else {
-                return "BAJA";
-            }
+            if (mascota.getEdad() < 2) return "MEDIA";
+            if (mascota.getEdad() < 8) return "ALTA";
+            return "BAJA";
+        }
+
+        if (mascota.getTipo() == TipoMascota.GATO) {
+            if (mascota.getEdad() < 10) return "MEDIA";
+            return "BAJA";
         }
 
         return "MEDIA";
     }
+
 
     /**
      * Calcula las calorías diarias recomendadas basadas en peso y edad
@@ -276,9 +277,6 @@ public class AnalizadorDatos {
      */
     public Map<String, List<?>> obtenerRecomendacionesPriorizadas(Mascota mascota) {
         Map<String, List<?>> resultados = analizarMascota(mascota);
-
-        // Aquí podrías implementar lógica adicional de priorización
-        // Por ejemplo, ordenar por relevancia, fecha, etc.
 
         return resultados;
     }
