@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="Cambios en BDD para Base de Conocimiento de Sugerencias">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/util/DataLoaderListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/Sugerencia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/Sugerencia.java" afterDir="false" />
-    </list>
+    <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="Agregar DataLoaderListener para carga inicial de sugerencias y su correcto funcionamiento." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -101,7 +97,7 @@
       <workItem from="1759876247677" duration="413000" />
       <workItem from="1759877184717" duration="832000" />
       <workItem from="1759882054673" duration="13250000" />
-      <workItem from="1759895659960" duration="1864000" />
+      <workItem from="1759895659960" duration="2089000" />
     </task>
     <task id="LOCAL-00001" summary="Creación de Archivos JSP para el segundo Incremento">
       <option name="closed" value="true" />
@@ -159,7 +155,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759896409477</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Agregar DataLoaderListener para carga inicial de sugerencias y su correcto funcionamiento.">
+      <option name="closed" value="true" />
+      <created>1759897585384</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1759897585384</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -176,7 +180,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/develop" />
+                        <option value="develop" />
                       </list>
                     </value>
                   </entry>
@@ -195,7 +199,8 @@
     <MESSAGE value="Funcionalidad Recordatorio" />
     <MESSAGE value="Funcionalidad Listar y Eliminar Recordatorio" />
     <MESSAGE value="Cambios en BDD para Base de Conocimiento de Sugerencias" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cambios en BDD para Base de Conocimiento de Sugerencias" />
+    <MESSAGE value="Agregar DataLoaderListener para carga inicial de sugerencias y su correcto funcionamiento." />
+    <option name="LAST_COMMIT_MESSAGE" value="Agregar DataLoaderListener para carga inicial de sugerencias y su correcto funcionamiento." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
