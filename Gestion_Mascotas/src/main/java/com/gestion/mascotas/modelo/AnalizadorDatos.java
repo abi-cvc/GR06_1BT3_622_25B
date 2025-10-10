@@ -57,8 +57,8 @@ public class AnalizadorDatos {
         System.out.println("Raza: " + mascota.getRaza());
         System.out.println("Edad: " + mascota.getEdad() + " años");
         System.out.println("Peso: " + mascota.getPeso() + " kg");
-        System.out.println("Sugerencias de alimentación encontradas: " + sugerenciasAlimentacion.size());
-        System.out.println("Sugerencias de ejercicio encontradas: " + sugerenciasEjercicio.size());
+        System.out.println("Sugerencias de alimentacion encontradas: " + (resultados.get("alimentacion").size());
+        System.out.println("Sugerencias de ejercicio encontradas: " + (resultados.get("ejercicio").size());
         System.out.println("===========================");
     }
 
