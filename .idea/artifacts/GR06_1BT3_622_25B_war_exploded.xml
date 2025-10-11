@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="GR06_1BT3_622_25B:war exploded">
+    <output-path>$PROJECT_DIR$/Gestion_Mascotas/src/main/webapp/WEB-INF/web.xml</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="GR06_1BT3_622_25B/web/Web" />
+    </root>
+  </artifact>
+</component>

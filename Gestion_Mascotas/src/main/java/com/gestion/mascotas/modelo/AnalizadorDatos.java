@@ -57,8 +57,8 @@ public class AnalizadorDatos {
         System.out.println("Raza: " + mascota.getRaza());
         System.out.println("Edad: " + mascota.getEdad() + " años");
         System.out.println("Peso: " + mascota.getPeso() + " kg");
-        System.out.println("Sugerencias de alimentacion encontradas: " + (resultados.get("alimentacion").size());
-        System.out.println("Sugerencias de ejercicio encontradas: " + (resultados.get("ejercicio").size());
+        System.out.println("Sugerencias de alimentacion encontradas: " + (resultados.get("alimentacion").size()));
+        System.out.println("Sugerencias de ejercicio encontradas: " + (resultados.get("ejercicio").size()));
         System.out.println("===========================");
     }
 
@@ -74,47 +74,58 @@ public class AnalizadorDatos {
         List<SugerenciaAlimentacion> sugerencias = new ArrayList<>();
 
         // Estrategia 1: Búsqueda específica por raza
-        if (mascota.getRaza() != null && !mascota.getRaza().trim().isEmpty()) {
-            sugerencias = sugerenciaAlimentacionDAO.obtenerPorCriterios(
-                    mascota.getTipo(),
-                    mascota.getRaza(),
-                    mascota.getEdad(),
-                    mascota.getPeso()
-            );
-
-            if (!sugerencias.isEmpty()) {
-                System.out.println("✓ Sugerencias específicas encontradas para raza: " + mascota.getRaza());
-                return sugerencias;
-            }
-        }
+        sugerencias = buscarPorRaza(mascota);
+        if (!sugerencias.isEmpty()) return sugerencias;
 
         // Estrategia 2: Búsqueda genérica por tipo (sin raza)
-        sugerencias = sugerenciaAlimentacionDAO.obtenerPorCriterios(
-                mascota.getTipo(),
-                null,
-                mascota.getEdad(),
-                mascota.getPeso()
-        );
-
-        if (!sugerencias.isEmpty()) {
-            System.out.println("✓ Sugerencias genéricas encontradas para " + mascota.getTipo());
-            return sugerencias;
-        }
+        sugerencias = buscarPorTipoEdadPeso(mascota);
+        if (!sugerencias.isEmpty()) return sugerencias;
 
         // Estrategia 3: Búsqueda solo por tipo (sin edad ni peso)
-        sugerencias = sugerenciaAlimentacionDAO.obtenerPorCriterios(
-                mascota.getTipo(),
-                null,
-                null,
-                null
+        sugerencias = buscarSoloPorTipo(mascota);
+        if (!sugerencias.isEmpty()) return sugerencias;
+
+        return sugerencias;
+    }
+
+    /**REFACTORIZACIÓN 4: EXTRACT METHOD
+        Extraemos la logica de busqueda por raza a un metodo aparte para mejorar la legibilidad y mantenimiento del codigo
+    **/
+    // Estrategia 1: Búsqueda específica por raza
+    private List<SugerenciaAlimentacion> buscarPorRaza(Mascota mascota) {
+        if (mascota.getRaza() == null || mascota.getRaza().trim().isEmpty()) return new ArrayList<>();
+        List<SugerenciaAlimentacion> sugerencias = sugerenciaAlimentacionDAO.obtenerPorCriterios(
+            mascota.getTipo(),
+            mascota.getRaza(),
+            mascota.getEdad(),
+            mascota.getPeso()
         );
 
-        if (!sugerencias.isEmpty()) {
-            System.out.println("✓ Sugerencias básicas encontradas para " + mascota.getTipo());
-        } else {
-            System.out.println("⚠ No se encontraron sugerencias de alimentación");
-        }
-
+        if (!sugerencias.isEmpty()) System.out.println("✓ Sugerencias específicas encontradas para raza: " +      mascota.getRaza());
+        
+        return sugerencias;
+    }
+    // Estrategia 2: Búsqueda genérica por tipo (sin raza)
+    private List<SugerenciaAlimentacion> buscarPorTipoEdadPeso(Mascota mascota) {
+        List<SugerenciaAlimentacion> sugerencias = sugerenciaAlimentacionDAO.obtenerPorCriterios(
+            mascota.getTipo(), 
+            null, 
+            mascota.getEdad(), 
+            mascota.getPeso()
+        );
+        if (!sugerencias.isEmpty()) System.out.println("✓ Sugerencias genéricas encontradas para " + mascota.getTipo());
+        return sugerencias;
+    }
+    // Estrategia 3: Búsqueda solo por tipo (sin edad ni peso)
+    private List<SugerenciaAlimentacion> buscarSoloPorTipo(Mascota mascota) {
+        List<SugerenciaAlimentacion> sugerencias = sugerenciaAlimentacionDAO.obtenerPorCriterios(
+            mascota.getTipo(), 
+            null, 
+            null, 
+            null
+        );
+        if (!sugerencias.isEmpty()) System.out.println("✓ Sugerencias básicas encontradas para " + mascota.getTipo());
+        else System.out.println("⚠ No se encontraron sugerencias de alimentación");
         return sugerencias;
     }
 
@@ -169,6 +180,7 @@ public class AnalizadorDatos {
 
         return sugerencias;
     }
+    
 
     /**
      * Calcula el nivel de actividad recomendado basado en la edad de la mascota
