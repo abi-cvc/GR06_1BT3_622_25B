@@ -89,7 +89,7 @@ public class AnalizadorDatos {
     }
 
     /**REFACTORIZACIÓN 4: EXTRACT METHOD
-        Extraemos la logica de busqueda por raza a un metodo aparte para mejorar la legibilidad y mantenimiento del codigo
+        Extraemos la logica de busqueda a un metodo aparte para mejorar la legibilidad y mantenimiento del codigo
     **/
     // Estrategia 1: Búsqueda específica por raza
     private List<SugerenciaAlimentacion> buscarPorRaza(Mascota mascota) {
@@ -133,12 +133,30 @@ public class AnalizadorDatos {
      * Obtiene sugerencias de ejercicio personalizadas para la mascota
      * Implementa estrategia de búsqueda en cascada similar a alimentación
      */
+    /**REFACTORIZACIÓN 5: EXTRACT METHOD
+        Extraemos la logica de busqueda a un metodo aparte para mejorar la legibilidad y mantenimiento del codigo
+    **/
     public List<SugerenciaEjercicio> obtenerSugerenciasEjercicio(Mascota mascota) {
         List<SugerenciaEjercicio> sugerencias = new ArrayList<>();
 
         // Estrategia 1: Búsqueda específica por raza
+        sugerencias = buscarPorRazaEjercicio(mascota);
+        if (!sugerencias.isEmpty()) return sugerencias;
+
+        // Estrategia 2: Búsqueda genérica por tipo (sin raza)
+        sugerencias = buscarPorTipoEdadPesoEjercicio(mascota);
+        if (!sugerencias.isEmpty()) return sugerencias;
+
+        // Estrategia 3: Búsqueda solo por tipo (sin edad ni peso)
+        sugerencias = buscarSoloPorTipoEjercicio(mascota);
+        if (!sugerencias.isEmpty()) return sugerencias;
+        
+        return sugerencias;
+    }
+    // Estrategia 1: Búsqueda específica por raza
+    private List<SugerenciaEjercicio> buscarPorRazaEjercicio(Mascota mascota) {
         if (mascota.getRaza() != null && !mascota.getRaza().trim().isEmpty()) {
-            sugerencias = sugerenciaEjercicioDAO.obtenerPorCriterios(
+            List<SugerenciaEjercicio> sugerencias = sugerenciaEjercicioDAO.obtenerPorCriterios(
                     mascota.getTipo(),
                     mascota.getRaza(),
                     mascota.getEdad(),
@@ -150,9 +168,12 @@ public class AnalizadorDatos {
                 return sugerencias;
             }
         }
+        return new ArrayList<>();
+    }
 
-        // Estrategia 2: Búsqueda genérica por tipo (sin raza)
-        sugerencias = sugerenciaEjercicioDAO.obtenerPorCriterios(
+    // Estrategia 2: Búsqueda genérica por tipo (sin raza)
+    private List<SugerenciaEjercicio> buscarPorTipoEdadPesoEjercicio(Mascota mascota) {
+        List<SugerenciaEjercicio> sugerencias = sugerenciaEjercicioDAO.obtenerPorCriterios(
                 mascota.getTipo(),
                 null,
                 mascota.getEdad(),
@@ -163,9 +184,11 @@ public class AnalizadorDatos {
             System.out.println("✓ Sugerencias de ejercicio genéricas para " + mascota.getTipo());
             return sugerencias;
         }
-
-        // Estrategia 3: Búsqueda solo por tipo (sin edad ni peso)
-        sugerencias = sugerenciaEjercicioDAO.obtenerPorCriterios(
+        return new ArrayList<>();
+    }
+    // Estrategia 3: Búsqueda solo por tipo (sin edad ni peso)
+    private List<SugerenciaEjercicio> buscarSoloPorTipoEjercicio(Mascota mascota) {
+        List<SugerenciaEjercicio> sugerencias = sugerenciaEjercicioDAO.obtenerPorCriterios(
                 mascota.getTipo(),
                 null,
                 null,
@@ -174,11 +197,11 @@ public class AnalizadorDatos {
 
         if (!sugerencias.isEmpty()) {
             System.out.println("✓ Sugerencias de ejercicio básicas para " + mascota.getTipo());
+            return sugerencias;
         } else {
             System.out.println("⚠ No se encontraron sugerencias de ejercicio");
+            return new ArrayList<>();
         }
-
-        return sugerencias;
     }
     
 
@@ -207,7 +230,7 @@ public class AnalizadorDatos {
         return "MEDIA";
     }
 
-
+    
     /**
      * Calcula las calorías diarias recomendadas basadas en peso y edad
      * Fórmula simplificada: peso * factor de actividad
