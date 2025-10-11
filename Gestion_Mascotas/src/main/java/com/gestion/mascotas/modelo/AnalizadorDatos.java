@@ -61,7 +61,7 @@ public class AnalizadorDatos {
         System.out.println("Sugerencias de ejercicio encontradas: " + (resultados.get("ejercicio").size()));
         System.out.println("===========================");
     }
-    /**
+    /** Refactorizacion N.-4
      * Obtiene sugerencias de alimentación personalizadas para la mascota
      * Implementa estrategia de búsqueda en cascada:
      * 1. Buscar por raza específica
@@ -85,7 +85,7 @@ public class AnalizadorDatos {
 
         return sugerencias;
     }
-    /**
+    /** Refactorizacion N.-5
      * Obtiene sugerencias de ejercicio personalizadas para la mascota
      * Implementa estrategia de búsqueda en cascada similar a alimentación
      */
@@ -118,32 +118,36 @@ public class AnalizadorDatos {
     }
 
     /**
-     * Calcula las calorías diarias recomendadas basadas en peso y edad
-     * Fórmula simplificada: peso * factor de actividad
+     * Calcula las calorías diarias recomendadas basadas en peso y nivel de actividad.
+     * Refactorización #8: Replace Temp with Query - Se eliminó la variable temporal 'factor'
+     * reemplazándola por una llamada al método obtenerCaloriasPorKilo()
      */
     public Integer calcularCaloriasRecomendadas(Mascota mascota) {
         if (mascota.getPeso() == null) {
             return null;
         }
 
-        double peso = mascota.getPeso();
+        return (int) (mascota.getPeso() * obtenerCaloriasPorKilo(mascota));
+    }
+
+    /**
+     * Determina las calorías por kilogramo según el nivel de actividad de la mascota.
+     * @param mascota --> mascota a evaluar
+     * @return --> Calorías por kg (25 para BAJA, 30 para MEDIA, 35 para ALTA)
+     */
+    private double obtenerCaloriasPorKilo(Mascota mascota) {
         String nivelActividad = calcularNivelActividadRecomendado(mascota);
 
-        // Factores según nivel de actividad
-        double factor = 30.0; // Por defecto
         switch (nivelActividad) {
             case "BAJA":
-                factor = 25.0;
-                break;
+                return 25.0;
             case "MEDIA":
-                factor = 30.0;
-                break;
+                return 30.0;
             case "ALTA":
-                factor = 35.0;
-                break;
+                return 35.0;
+            default:
+                return 30.0;
         }
-
-        return (int) (peso * factor);
     }
 
     /**
