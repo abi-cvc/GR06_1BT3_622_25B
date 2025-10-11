@@ -172,32 +172,20 @@ public class AnalizadorDatos {
 
     /**
      * Verifica si una mascota necesita atención especial basada en su edad y peso
+     * Refactorización #9: Replace Method with Method Object - Se delegó la lógica
+     * de validación a la clase ValidadorAtencionEspecial.
      */
     public boolean necesitaAtencionEspecial(Mascota mascota) {
-        // Mascotas muy jóvenes o muy viejas necesitan atención especial
-        if (mascota.getEdad() != null) {
-            if (mascota.getEdad() < 1 || mascota.getEdad() > 10) {
-                return true;
-            }
-        }
-
-        // Verificar peso extremo (muy bajo o muy alto para el tipo)
-        if (mascota.getPeso() != null) {
-            if (mascota.getTipo() == TipoMascota.PERRO) {
-                if (mascota.getPeso() < 2.0 || mascota.getPeso() > 50.0) {
-                    return true;
-                }
-            } else if (mascota.getTipo() == TipoMascota.GATO) {
-                if (mascota.getPeso() < 2.0 || mascota.getPeso() > 10.0) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        ValidadorAtencionEspecial validador = new ValidadorAtencionEspecial(mascota);
+        return validador.necesitaAtencion();
     }
 
     /**
      * Obtiene recomendaciones priorizadas (las más relevantes primero)
      */
+    public Map<String, List<?>> obtenerRecomendacionesPriorizadas(Mascota mascota) {
+        Map<String, List<?>> resultados = analizarMascota(mascota);
+
+        return resultados;
+    }
 }

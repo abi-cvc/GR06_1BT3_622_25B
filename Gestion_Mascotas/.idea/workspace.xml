@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="Actualización Modelo">
+    <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="Refactorización 8: Replace Temp with Query - Refactorización del método calcularCaloriasRecomendadas en AnalizadorDatos">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/ValidadorAtencionEspecial.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/AnalizadorDatos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/AnalizadorDatos.java" afterDir="false" />
     </list>
@@ -101,7 +102,7 @@
       <workItem from="1759877184717" duration="832000" />
       <workItem from="1759882054673" duration="13250000" />
       <workItem from="1759895659960" duration="2089000" />
-      <workItem from="1760217968818" duration="2753000" />
+      <workItem from="1760217968818" duration="4969000" />
     </task>
     <task id="LOCAL-00001" summary="Creación de Archivos JSP para el segundo Incremento">
       <option name="closed" value="true" />
@@ -167,7 +168,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759897585384</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Refactorización 8: Replace Temp with Query - Refactorización del método calcularCaloriasRecomendadas en AnalizadorDatos">
+      <option name="closed" value="true" />
+      <created>1760221033296</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1760221033296</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -204,7 +213,8 @@
     <MESSAGE value="Funcionalidad Listar y Eliminar Recordatorio" />
     <MESSAGE value="Cambios en BDD para Base de Conocimiento de Sugerencias" />
     <MESSAGE value="Agregar DataLoaderListener para carga inicial de sugerencias y su correcto funcionamiento." />
-    <option name="LAST_COMMIT_MESSAGE" value="Agregar DataLoaderListener para carga inicial de sugerencias y su correcto funcionamiento." />
+    <MESSAGE value="Refactorización 8: Replace Temp with Query - Refactorización del método calcularCaloriasRecomendadas en AnalizadorDatos" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactorización 8: Replace Temp with Query - Refactorización del método calcularCaloriasRecomendadas en AnalizadorDatos" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
