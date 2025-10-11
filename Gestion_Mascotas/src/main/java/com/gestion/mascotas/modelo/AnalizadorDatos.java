@@ -14,6 +14,7 @@ import java.util.Map;
  */
 public class AnalizadorDatos {
 
+    private final EstrategiaActividadPerro estrategiaActividadPerro = new EstrategiaActividadPerro();
     public SugerenciaAlimentacionDAO sugerenciaAlimentacionDAO;
     public SugerenciaEjercicioDAO sugerenciaEjercicioDAO;
     private final EstrategiaBusquedaSugerencias estrategiaBusquedaSugerencias;
@@ -92,11 +93,11 @@ public class AnalizadorDatos {
         List<SugerenciaEjercicio> sugerencias = new ArrayList<>();
 
         // Estrategia 1: Búsqueda específica por raza
-        sugerencias = estrategiaBusquedaSugerencias.buscarPorRazaEjercicio(mascota, this);
+        sugerencias = estrategiaBusquedaSugerencias.buscarPorRazaEjercicio(mascota);
         if (!sugerencias.isEmpty()) return sugerencias;
 
         // Estrategia 2: Búsqueda genérica por tipo (sin raza)
-        sugerencias = estrategiaBusquedaSugerencias.buscarPorTipoEdadPesoEjercicio(mascota, this);
+        sugerencias = estrategiaBusquedaSugerencias.buscarPorTipoEdadPesoEjercicio(mascota);
         if (!sugerencias.isEmpty()) return sugerencias;
 
         // Estrategia 3: Búsqueda solo por tipo (sin edad ni peso)
@@ -107,27 +108,15 @@ public class AnalizadorDatos {
     }
 
     /**
-     * Refactorizacion N.-3 , Replace Nested Conditional with Guard Clauses, usamos clausas de guardia para simplificar
+     * Refactorizacion N.-3 y 7, Replace Nested Conditional with Guard Clauses, usamos clausas de guardia para simplificar
      * las condicionales y evitar anidamientos profundos
      */
     public String calcularNivelActividadRecomendado(Mascota mascota) {
         if (mascota.getEdad() == null) return "MEDIA";
 
-        if (mascota.getTipo() == TipoMascota.PERRO) {
-            if (mascota.getEdad() < 2) return "MEDIA";
-            if (mascota.getEdad() < 8) return "ALTA";
-            return "BAJA";
-        }
-
-        if (mascota.getTipo() == TipoMascota.GATO) {
-            if (mascota.getEdad() < 10) return "MEDIA";
-            return "BAJA";
-        }
-
-        return "MEDIA";
+        return mascota.getTipo().calcularNivelActividad(mascota.getEdad());
     }
 
-    
     /**
      * Calcula las calorías diarias recomendadas basadas en peso y edad
      * Fórmula simplificada: peso * factor de actividad
@@ -207,9 +196,4 @@ public class AnalizadorDatos {
     /**
      * Obtiene recomendaciones priorizadas (las más relevantes primero)
      */
-    public Map<String, List<?>> obtenerRecomendacionesPriorizadas(Mascota mascota) {
-        Map<String, List<?>> resultados = analizarMascota(mascota);
-
-        return resultados;
-    }
 }

@@ -67,7 +67,7 @@ public class EstrategiaBusquedaSugerencias {
      Extraemos la logica de busqueda a un metodo aparte para mejorar la legibilidad y mantenimiento del codigo
      **/
     // Estrategia 1: Búsqueda específica por raza
-    List<SugerenciaEjercicio> buscarPorRazaEjercicio(Mascota mascota, AnalizadorDatos analizadorDatos) {
+    List<SugerenciaEjercicio> buscarPorRazaEjercicio(Mascota mascota) {
         if (mascota.getRaza() != null && !mascota.getRaza().trim().isEmpty()) {
             List<SugerenciaEjercicio> sugerencias = sugerenciaEjercicioDAO.obtenerPorCriterios(
                     mascota.getTipo(),
@@ -85,7 +85,7 @@ public class EstrategiaBusquedaSugerencias {
     }
 
     // Estrategia 2: Búsqueda genérica por tipo (sin raza)
-    List<SugerenciaEjercicio> buscarPorTipoEdadPesoEjercicio(Mascota mascota, AnalizadorDatos analizadorDatos) {
+    List<SugerenciaEjercicio> buscarPorTipoEdadPesoEjercicio(Mascota mascota) {
         List<SugerenciaEjercicio> sugerencias = sugerenciaEjercicioDAO.obtenerPorCriterios(
                 mascota.getTipo(),
                 null,

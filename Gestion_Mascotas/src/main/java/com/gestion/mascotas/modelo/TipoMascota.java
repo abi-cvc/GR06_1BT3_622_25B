@@ -1,6 +1,16 @@
 package com.gestion.mascotas.modelo;
 
 public enum TipoMascota {
-    PERRO,
-    GATO
+    PERRO(new EstrategiaActividadPerro()),
+    GATO(new EstrategiaActividadGato());
+
+    private final EstrategiaActividad estrategiaActividad;
+
+    TipoMascota(EstrategiaActividad estrategiaActividad) {
+        this.estrategiaActividad = estrategiaActividad;
+    }
+
+    public String calcularNivelActividad(Integer edad) {
+        return estrategiaActividad.calcularNivelActividad(edad);
+    }
 }
