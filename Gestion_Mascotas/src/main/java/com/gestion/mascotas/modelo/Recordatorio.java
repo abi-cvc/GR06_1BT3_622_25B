@@ -79,6 +79,15 @@ public class Recordatorio {
         this.activo = activo;
     }
 
+    protected String obtenerNombreMascotaSeguro() {
+        try {
+            return (mascota != null)? mascota.getNombre(): "Sin Mascota";
+        } catch (Exception e) {
+            // Si ocurre LazyInitializationException, usar solo el ID
+            return "Mascota (no cargada)";
+        }
+    }
+
     @Override
     public String toString() {
         String mascotaNombre = "null";

@@ -91,15 +91,7 @@ public class RecordatorioAlimentacion extends Recordatorio {
 
     @Override
     public String toString() {
-        String mascotaNombre = "null";
-        try {
-            if (getMascota() != null) {
-                mascotaNombre = getMascota().getNombre();
-            }
-        } catch (Exception e) {
-            // Si ocurre LazyInitializationException, usar solo el ID
-            mascotaNombre = "Mascota ID: " + (getMascota() != null ? "?" : "null");
-        }
+        String mascotaNombre = obtenerNombreMascotaSeguro();
 
         return "RecordatorioAlimentacion{" +
                 "id=" + getId() +
@@ -112,4 +104,5 @@ public class RecordatorioAlimentacion extends Recordatorio {
                 ", diasSemana='" + diasSemana + '\'' +
                 '}';
     }
+
 }

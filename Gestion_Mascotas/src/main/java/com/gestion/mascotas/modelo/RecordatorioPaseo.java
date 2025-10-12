@@ -90,15 +90,7 @@ public class RecordatorioPaseo extends Recordatorio {
 
     @Override
     public String toString() {
-        String mascotaNombre = "null";
-        try {
-            if (getMascota() != null) {
-                mascotaNombre = getMascota().getNombre();
-            }
-        } catch (Exception e) {
-            // Si ocurre LazyInitializationException, usar solo el ID
-            mascotaNombre = "Mascota ID: " + (getMascota() != null ? "?" : "null");
-        }
+        String mascotaNombre = obtenerNombreMascotaSeguro();
 
         return "RecordatorioPaseo{" +
                 "id=" + getId() +
