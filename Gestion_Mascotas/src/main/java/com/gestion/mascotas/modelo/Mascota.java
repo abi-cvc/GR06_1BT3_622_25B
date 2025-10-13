@@ -39,9 +39,6 @@ public class Mascota {
     @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Recordatorio> recordatorios = new ArrayList<>(); // Inicializar
 
-    // NUEVAS RELACIONES: Sugerencias
-    @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Sugerencia> sugerencias = new ArrayList<>(); // Inicializar
 
     // Getters y Setters
     public Long getId() { return id; }
@@ -79,8 +76,6 @@ public class Mascota {
     public List<Recordatorio> getRecordatorios() { return recordatorios; }
     public void setRecordatorios(List<Recordatorio> recordatorios) { this.recordatorios = recordatorios; }
 
-    public List<Sugerencia> getSugerencias() { return sugerencias; }
-    public void setSugerencias(List<Sugerencia> sugerencias) { this.sugerencias = sugerencias; }
 
     // Métodos de gestión de datos (según la descripción)
     public void registrarMascota(String nombre, TipoMascota tipo, String raza, Integer edad, Double peso, String color, Usuario usuario) {
@@ -138,10 +133,6 @@ public class Mascota {
         recordatorio.setMascota(this);
     }
 
-    public void addSugerencia(Sugerencia sugerencia) {
-        this.sugerencias.add(sugerencia);
-        sugerencia.setMascota(this);
-    }
 
     @Override
     public String toString() {

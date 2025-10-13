@@ -1,9 +1,6 @@
 package com.gestion.mascotas.modelo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,19 +9,19 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "recordatorios_alimentacion")
-@PrimaryKeyJoinColumn(name = "id") // Indica que la PK es también FK a Recordatorio
+@PrimaryKeyJoinColumn(name = "id")
 public class RecordatorioAlimentacion extends Recordatorio {
 
     @Column(nullable = false)
-    private String frecuencia; // Ej: "1 vez al día", "2 veces al día", "3 veces al día"
+    private String frecuencia; // Ej: "1", "2", "3"
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String horarios; // Horas separadas por coma, ej: "08:00,13:00,18:00"
 
-    @Column(name = "tipo_alimento")
+    @Column(name = "tipo_alimento", length = 100)
     private String tipoAlimento;
 
-    @Column(name = "dias_semana")
+    @Column(name = "dias_semana", length = 200)
     private String diasSemana; // Días de la semana separados por coma, ej: "Lunes,Miércoles,Viernes"
 
     // Constructor vacío
@@ -64,6 +61,7 @@ public class RecordatorioAlimentacion extends Recordatorio {
             return new ArrayList<>();
         }
         return Arrays.stream(this.horarios.split(","))
+                .map(String::trim)
                 .map(LocalTime::parse)
                 .collect(Collectors.toList());
     }
@@ -93,9 +91,11 @@ public class RecordatorioAlimentacion extends Recordatorio {
 
     @Override
     public String toString() {
+        String mascotaNombre = obtenerNombreMascotaSeguro();
+
         return "RecordatorioAlimentacion{" +
                 "id=" + getId() +
-                ", mascota=" + (getMascota() != null ? getMascota().getNombre() : "null") +
+                ", mascota=" + mascotaNombre +
                 ", descripcion='" + getDescripcion() + '\'' +
                 ", activo=" + isActivo() +
                 ", frecuencia='" + frecuencia + '\'' +
@@ -104,4 +104,5 @@ public class RecordatorioAlimentacion extends Recordatorio {
                 ", diasSemana='" + diasSemana + '\'' +
                 '}';
     }
+
 }

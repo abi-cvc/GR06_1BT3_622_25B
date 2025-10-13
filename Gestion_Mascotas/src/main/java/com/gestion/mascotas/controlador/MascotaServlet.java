@@ -2,9 +2,11 @@ package com.gestion.mascotas.controlador;
 
 import com.gestion.mascotas.dao.MascotaDAO;
 import com.gestion.mascotas.dao.RecordatorioAlimentacionDAO;
+import com.gestion.mascotas.dao.RecordatorioPaseoDAO;
 import com.gestion.mascotas.dao.UsuarioDAO;
 import com.gestion.mascotas.modelo.Mascota;
 import com.gestion.mascotas.modelo.RecordatorioAlimentacion;
+import com.gestion.mascotas.modelo.RecordatorioPaseo;
 import com.gestion.mascotas.modelo.TipoMascota;
 import com.gestion.mascotas.modelo.Usuario;
 
@@ -20,6 +22,7 @@ public class MascotaServlet extends HttpServlet {
     private MascotaDAO mascotaDAO = new MascotaDAO();
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
     private RecordatorioAlimentacionDAO recordatorioAlimentacionDAO = new RecordatorioAlimentacionDAO();
+    private RecordatorioPaseoDAO recordatorioPaseoDAO = new RecordatorioPaseoDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -103,8 +106,14 @@ public class MascotaServlet extends HttpServlet {
         }
 
         // Cargar recordatorios de alimentación para esta mascota
-        List<RecordatorioAlimentacion> recordatoriosAlimentacion = recordatorioAlimentacionDAO.obtenerRecordatoriosAlimentacionPorMascota(id);
+        List<RecordatorioAlimentacion> recordatoriosAlimentacion =
+                recordatorioAlimentacionDAO.obtenerRecordatoriosAlimentacionPorMascota(id);
         request.setAttribute("recordatoriosAlimentacion", recordatoriosAlimentacion);
+
+        // Cargar recordatorios de paseo para esta mascota
+        List<RecordatorioPaseo> recordatoriosPaseo =
+                recordatorioPaseoDAO.obtenerRecordatoriosPaseoPorMascota(id);
+        request.setAttribute("recordatoriosPaseo", recordatoriosPaseo);
 
         request.setAttribute("mascota", mascota);
         request.getRequestDispatcher("/jsp/detallesMascota.jsp").forward(request, response);
@@ -227,8 +236,6 @@ public class MascotaServlet extends HttpServlet {
      * @return Lista de mascotas del usuario
      */
     public List<Mascota> obtenerPorUsuario(Long usuarioId) {
-        // Este método ya existe en MascotaDAO, no es necesario duplicarlo aquí.
-        // Si se llama desde el servlet, debería usar mascotaDAO.obtenerMascotasPorUsuario(usuarioId);
         return mascotaDAO.obtenerMascotasPorUsuario(usuarioId);
     }
 }

@@ -1,97 +1,182 @@
 package com.gestion.mascotas.dao;
 
 import com.gestion.mascotas.modelo.RecordatorioAlimentacion;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
+import com.gestion.mascotas.util.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+import org.hibernate.Hibernate;
+
 import java.util.List;
 
 public class RecordatorioAlimentacionDAO {
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionMascotasPU");
+    // Guardar o actualizar recordatorio de alimentación
+    public boolean guardar(RecordatorioAlimentacion recordatorio) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
 
-    public void guardar(RecordatorioAlimentacion recordatorio) {
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
             if (recordatorio.getId() == null) {
-                em.persist(recordatorio);
+                session.persist(recordatorio);
             } else {
-                em.merge(recordatorio);
+                session.merge(recordatorio);
             }
-            tx.commit();
+
+            transaction.commit();
+            return true;
         } catch (Exception e) {
-            if (tx.isActive()) tx.rollback();
+            if (transaction != null) {
+                transaction.rollback();
+            }
             e.printStackTrace();
-            throw new RuntimeException("Error al guardar el recordatorio de alimentación", e);
-        } finally {
-            em.close();
+            return false;
         }
     }
 
+    // Obtener todos los recordatorios de alimentación
     public List<RecordatorioAlimentacion> obtenerTodos() {
-        EntityManager em = emf.createEntityManager();
-        try {
-            return em.createQuery("SELECT ra FROM RecordatorioAlimentacion ra", RecordatorioAlimentacion.class).getResultList();
-        } finally {
-            em.close();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(
+                    "FROM RecordatorioAlimentacion ra ORDER BY ra.mascota.nombre, ra.horarios",
+                    RecordatorioAlimentacion.class
+            ).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
+    // Obtener recordatorio por ID
     public RecordatorioAlimentacion obtenerPorId(Long id) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            return em.find(RecordatorioAlimentacion.class, id);
-        } finally {
-            em.close();
-        }
-    }
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // Usar JOIN FETCH para cargar la mascota junto con el recordatorio
+            Query<RecordatorioAlimentacion> query = session.createQuery(
+                    "FROM RecordatorioAlimentacion ra " +
+                            "LEFT JOIN FETCH ra.mascota m " +
+                            "LEFT JOIN FETCH m.usuario " +
+                            "WHERE ra.id = :id",
+                    RecordatorioAlimentacion.class
+            );
+            query.setParameter("id", id);
+            RecordatorioAlimentacion recordatorio = query.uniqueResult();
 
-    public void actualizar(RecordatorioAlimentacion recordatorio) {
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-            em.merge(recordatorio);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) tx.rollback();
-            e.printStackTrace();
-            throw new RuntimeException("Error al actualizar el recordatorio de alimentación", e);
-        } finally {
-            em.close();
-        }
-    }
-
-    public void eliminar(Long id) {
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-            RecordatorioAlimentacion recordatorio = em.find(RecordatorioAlimentacion.class, id);
-            if (recordatorio != null) {
-                em.remove(recordatorio);
+            // Inicializar explícitamente la mascota si existe
+            if (recordatorio != null && recordatorio.getMascota() != null) {
+                Hibernate.initialize(recordatorio.getMascota());
+                Hibernate.initialize(recordatorio.getMascota().getUsuario());
             }
-            tx.commit();
+
+            return recordatorio;
         } catch (Exception e) {
-            if (tx.isActive()) tx.rollback();
             e.printStackTrace();
-            throw new RuntimeException("Error al eliminar el recordatorio de alimentación", e);
-        } finally {
-            em.close();
+            return null;
         }
     }
 
-    public List<RecordatorioAlimentacion> obtenerRecordatoriosAlimentacionPorMascota(Long mascotaId) {
-        EntityManager em = emf.createEntityManager();
+    // Actualizar recordatorio
+    public boolean actualizar(RecordatorioAlimentacion recordatorio) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.merge(recordatorio);
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Eliminar recordatorio
+    public boolean eliminar(Long id) {
+        Transaction transaction = null;
+        Session session = null;
         try {
-            return em.createQuery("SELECT ra FROM RecordatorioAlimentacion ra WHERE ra.mascota.id = :mascotaId ORDER BY ra.horarios", RecordatorioAlimentacion.class)
-                    .setParameter("mascotaId", mascotaId)
-                    .getResultList();
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            RecordatorioAlimentacion recordatorio = session.get(RecordatorioAlimentacion.class, id);
+            if (recordatorio != null) {
+                session.remove(recordatorio);
+                transaction.commit();
+                System.out.println("Recordatorio de alimentación eliminado exitosamente: ID = " + id);
+                return true;
+            } else {
+                System.err.println("No se encontró recordatorio de alimentación con ID: " + id);
+                if (transaction != null) {
+                    transaction.rollback();
+                }
+                return false;
+            }
+        } catch (Exception e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            System.err.println("Error al eliminar recordatorio de alimentación con ID: " + id);
+            e.printStackTrace();
+            return false;
         } finally {
-            em.close();
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+
+    // Obtener recordatorios de alimentación por mascota
+    public List<RecordatorioAlimentacion> obtenerRecordatoriosAlimentacionPorMascota(Long mascotaId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<RecordatorioAlimentacion> query = session.createQuery(
+                    "FROM RecordatorioAlimentacion ra WHERE ra.mascota.id = :mascotaId ORDER BY ra.horarios",
+                    RecordatorioAlimentacion.class
+            );
+            query.setParameter("mascotaId", mascotaId);
+            return query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // Obtener recordatorios activos por mascota
+    public List<RecordatorioAlimentacion> obtenerRecordatoriosActivosPorMascota(Long mascotaId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<RecordatorioAlimentacion> query = session.createQuery(
+                    "FROM RecordatorioAlimentacion ra WHERE ra.mascota.id = :mascotaId AND ra.activo = true ORDER BY ra.horarios",
+                    RecordatorioAlimentacion.class
+            );
+            query.setParameter("mascotaId", mascotaId);
+            return query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // Desactivar recordatorio (sin eliminarlo)
+    public boolean desactivarRecordatorio(Long id) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            RecordatorioAlimentacion recordatorio = session.get(RecordatorioAlimentacion.class, id);
+            if (recordatorio != null) {
+                recordatorio.setActivo(false);
+                session.merge(recordatorio);
+                transaction.commit();
+                return true;
+            }
+
+            return false;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return false;
         }
     }
 }

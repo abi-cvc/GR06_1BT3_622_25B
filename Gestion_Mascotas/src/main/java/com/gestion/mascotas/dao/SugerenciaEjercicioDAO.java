@@ -1,6 +1,7 @@
 package com.gestion.mascotas.dao;
 
 import com.gestion.mascotas.modelo.SugerenciaEjercicio;
+import com.gestion.mascotas.modelo.TipoMascota;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
@@ -16,9 +17,9 @@ public class SugerenciaEjercicioDAO {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            if (sugerencia.getId() == null) { // Si el ID es nulo, es una nueva entidad
+            if (sugerencia.getId() == null) {
                 em.persist(sugerencia);
-            } else { // Si el ID existe, se actualiza
+            } else {
                 em.merge(sugerencia);
             }
             tx.commit();
@@ -84,12 +85,42 @@ public class SugerenciaEjercicioDAO {
         }
     }
 
-    public List<SugerenciaEjercicio> obtenerSugerenciasEjercicioPorMascota(Long mascotaId) {
+    /**
+     * Obtiene sugerencias de ejercicio filtradas por criterios (case-insensitive para raza)
+     */
+    public List<SugerenciaEjercicio> obtenerPorCriterios(TipoMascota tipoMascota, String raza, Integer edad, Double peso) {
         EntityManager em = emf.createEntityManager();
         try {
-            return em.createQuery("SELECT se FROM SugerenciaEjercicio se WHERE se.mascota.id = :mascotaId", SugerenciaEjercicio.class)
-                    .setParameter("mascotaId", mascotaId)
-                    .getResultList();
+            StringBuilder jpql = new StringBuilder("SELECT se FROM SugerenciaEjercicio se WHERE se.tipoMascota = :tipo");
+
+            if (raza != null && !raza.trim().isEmpty()) {
+                jpql.append(" AND LOWER(se.raza) = LOWER(:raza)");
+            }
+
+            if (edad != null) {
+                jpql.append(" AND (se.edadMin IS NULL OR se.edadMin <= :edad)");
+                jpql.append(" AND (se.edadMax IS NULL OR se.edadMax >= :edad)");
+            }
+
+            if (peso != null) {
+                jpql.append(" AND (se.pesoMin IS NULL OR se.pesoMin <= :peso)");
+                jpql.append(" AND (se.pesoMax IS NULL OR se.pesoMax >= :peso)");
+            }
+
+            var query = em.createQuery(jpql.toString(), SugerenciaEjercicio.class);
+            query.setParameter("tipo", tipoMascota);
+
+            if (raza != null && !raza.trim().isEmpty()) {
+                query.setParameter("raza", raza);
+            }
+            if (edad != null) {
+                query.setParameter("edad", edad);
+            }
+            if (peso != null) {
+                query.setParameter("peso", peso);
+            }
+
+            return query.getResultList();
         } finally {
             em.close();
         }
