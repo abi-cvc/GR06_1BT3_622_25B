@@ -6,87 +6,11 @@ import java.util.regex.Pattern;
 
 public class UsuarioService {
 
-    private UsuarioDAO usuarioDAO = new UsuarioDAO();
-    // Patrones de validación (ahora en el servicio)
+    private final UsuarioDAO usuarioDAO = new UsuarioDAO();
+    // Patrones de validación
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]{3,50}$");
     private static final Pattern PHONE_PATTERN = Pattern.compile("^[0-9]{10}$");
-
-    /**
-     * Valida los datos para el registro de un nuevo usuario.
-     * @return Un String con el mensaje de error, o null si los datos son válidos.
-     */
-    private String validarDatosRegistro(String nombreUsuario, String nombre, String email, String telefono, String contrasena, String confirmarContrasena) {
-        if (nombreUsuario == null || !USERNAME_PATTERN.matcher(nombreUsuario.trim()).matches()) {
-            return "El nombre de usuario es inválido (3-50 caracteres alfanuméricos).";
-        }
-        if (nombre == null || nombre.trim().length() < 2) {
-            return "El nombre completo es obligatorio.";
-        }
-        if (email == null || !EMAIL_PATTERN.matcher(email.trim()).matches()) {
-            return "El formato del correo electrónico no es válido.";
-        }
-        if (telefono != null && !telefono.trim().isEmpty() && !PHONE_PATTERN.matcher(telefono.trim()).matches()) {
-            return "El teléfono debe contener 10 dígitos.";
-        }
-        if (contrasena == null || contrasena.length() < 6) {
-            return "La contraseña debe tener al menos 6 caracteres.";
-        }
-        if (!contrasena.equals(confirmarContrasena)) {
-            return "Las contraseñas no coinciden.";
-        }
-
-        if (!validarFortalezaContrasena(contrasena)) {
-            return "Tu contraseña es muy débil. Intenta incluir mayúsculas, minúsculas, números o caracteres especiales.";
-        }
-
-        if (usuarioDAO.buscarPorNombreUsuario(nombreUsuario.trim().toLowerCase()) != null) {
-            return "El nombre de usuario ya está en uso.";
-        }
-        if (usuarioDAO.buscarPorEmail(email.trim().toLowerCase()) != null) {
-            return "El correo electrónico ya está registrado.";
-        }
-        return null; // No hay errores
-    }
-
-    private boolean validarFortalezaContrasena(String contrasena) {
-        // Debe tener al menos una letra
-        boolean tieneLetra = contrasena.matches(".*[a-zA-Z].*");
-
-        // Debe tener al menos un número O un caracter especial
-        boolean tieneNumeroOEspecial = contrasena.matches(".*[0-9].*") ||
-                contrasena.matches(".*[!@#$%^&*(),.?\":{}|<>].*");
-
-        return tieneLetra && tieneNumeroOEspecial;
-    }
-
-    /**
-     * Valida los datos para la actualización de un perfil.
-     * @return Un String con el mensaje de error, o null si los datos son válidos.
-     */
-    private String validarDatosActualizacion(String nombre, String email, String telefono, String contrasenaActual, String nuevaContrasena, String confirmarNuevaContrasena) {
-        if (nombre == null || nombre.trim().isEmpty()) {
-            return "El nombre completo es obligatorio.";
-        }
-        if (email == null || !EMAIL_PATTERN.matcher(email.trim()).matches()) {
-            return "El formato del correo electrónico no es válido.";
-        }
-        if (contrasenaActual == null || contrasenaActual.isEmpty()) {
-            return "Debes ingresar tu contraseña actual para guardar los cambios.";
-        }
-        if (telefono != null && !telefono.trim().isEmpty() && !PHONE_PATTERN.matcher(telefono.trim()).matches()) {
-            return "El teléfono debe contener exactamente 10 dígitos.";
-        }
-        if (nuevaContrasena != null && !nuevaContrasena.isEmpty()) {
-            if (nuevaContrasena.length() < 6) {
-                return "La nueva contraseña debe tener al menos 6 caracteres.";
-            }
-            if (!nuevaContrasena.equals(confirmarNuevaContrasena)) {
-                return "Las nuevas contraseñas no coinciden.";
-            }
-        }
-        return null; // No hay errores
-    }
 
     /**
      * Crea un nuevo perfil de usuario después de validar los datos.
@@ -122,16 +46,6 @@ public class UsuarioService {
     public Usuario iniciarSesion(String nombreUsuario, String contrasena) {
         return usuarioDAO.validarLogin(nombreUsuario, contrasena);
     }
-
-    /**
-     * Edita el perfil de un usuario existente.
-     * @param usuarioActual El usuario con los datos a actualizar.
-     * @param nuevoNombre El nuevo nombre completo.
-     * @param nuevoEmail El nuevo correo electrónico.
-     * @param nuevoTelefono El nuevo teléfono.
-     * @param nuevaContrasena La nueva contraseña (opcional).
-     * @return true si la actualización fue exitosa, false en caso contrario.
-     */
 
     /**
      * Edita el perfil de un usuario existente después de validar los datos.
@@ -187,7 +101,89 @@ public class UsuarioService {
      * Se puede agregar lógica adicional aquí si es necesario (ej. registrar logout).
      */
     public void cerrarSesion() {
-        // Lógica de logout adicional si se requiere, por ejemplo, registrar el evento.
+        // Lógica de logout adicional sí se requiere, por ejemplo, registrar el evento.
         System.out.println("Cerrando sesión...");
+    }
+
+
+    /**
+     * Válida los datos para el registro de un nuevo usuario.
+     * @return Un String con el mensaje de error, o null si los datos son válidos.
+     */
+    private String validarDatosRegistro(String nombreUsuario, String nombre, String email, String telefono, String contrasena, String confirmarContrasena) {
+        if (nombreUsuario == null || !USERNAME_PATTERN.matcher(nombreUsuario.trim()).matches()) {
+            return "El nombre de usuario es inválido (3-50 caracteres alfanuméricos).";
+        }
+        if (nombre == null || nombre.trim().length() < 2) {
+            return "El nombre completo es obligatorio.";
+        }
+        if (email == null || !EMAIL_PATTERN.matcher(email.trim()).matches()) {
+            return "El formato del correo electrónico no es válido.";
+        }
+        if (telefono != null && !telefono.trim().isEmpty() && !PHONE_PATTERN.matcher(telefono.trim()).matches()) {
+            return "El teléfono debe contener 10 dígitos.";
+        }
+        if (contrasena == null || contrasena.length() < 6) {
+            return "La contraseña debe tener al menos 6 caracteres.";
+        }
+        if (!contrasena.equals(confirmarContrasena)) {
+            return "Las contraseñas no coinciden.";
+        }
+
+        if (validarFortalezaContrasena(contrasena)) {
+            return "Tu contraseña es muy débil. Intenta incluir mayúsculas, minúsculas, números o caracteres especiales.";
+        }
+
+        if (usuarioDAO.buscarPorNombreUsuario(nombreUsuario.trim().toLowerCase()) != null) {
+            return "El nombre de usuario ya está en uso.";
+        }
+        if (usuarioDAO.buscarPorEmail(email.trim().toLowerCase()) != null) {
+            return "El correo electrónico ya está registrado.";
+        }
+        return null; // No hay errores
+    }
+
+    private boolean validarFortalezaContrasena(String contrasena) {
+        // Debe tener al menos una letra
+        boolean tieneLetra = contrasena.matches(".*[a-zA-Z].*");
+
+        // Debe tener al menos un número O un caracter especial
+        boolean tieneNumeroOEspecial = contrasena.matches(".*[0-9].*") ||
+                contrasena.matches(".*[!@#$%^&*(),.?\":{}|<>].*");
+
+        return !tieneLetra || !tieneNumeroOEspecial;
+    }
+
+    /**
+     * Valida los datos para la actualización de un perfil.
+     * @return Un String con el mensaje de error, o null si los datos son válidos.
+     */
+    private String validarDatosActualizacion(String nombre, String email, String telefono, String contrasenaActual, String nuevaContrasena, String confirmarNuevaContrasena) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            return "El nombre completo es obligatorio.";
+        }
+        if (email == null || !EMAIL_PATTERN.matcher(email.trim()).matches()) {
+            return "El formato del correo electrónico no es válido.";
+        }
+        if (contrasenaActual == null || contrasenaActual.isEmpty()) {
+            return "Debes ingresar tu contraseña actual para guardar los cambios.";
+        }
+        if (telefono != null && !telefono.trim().isEmpty() && !PHONE_PATTERN.matcher(telefono.trim()).matches()) {
+            return "El teléfono debe contener exactamente 10 dígitos.";
+        }
+        if (nuevaContrasena != null && !nuevaContrasena.isEmpty()) {
+            if (nuevaContrasena.length() < 6) {
+                return "La nueva contraseña debe tener al menos 6 caracteres.";
+            }
+
+            if (!nuevaContrasena.equals(confirmarNuevaContrasena)) {
+                return "Las nuevas contraseñas no coinciden.";
+            }
+
+            if (validarFortalezaContrasena(nuevaContrasena)){
+                return "Tu contraseña es muy débil. Intenta incluir mayúsculas, minúsculas, números o caracteres especiales.";
+            }
+        }
+        return null; // No hay errores
     }
 }

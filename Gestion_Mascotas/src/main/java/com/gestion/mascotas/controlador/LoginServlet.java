@@ -18,13 +18,11 @@ import java.io.IOException;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-    private UsuarioDAO usuarioDAO;
     private UsuarioService usuarioService;
 
 
     @Override
     public void init() {
-        usuarioDAO = new UsuarioDAO();
         usuarioService = new UsuarioService();
     }
 

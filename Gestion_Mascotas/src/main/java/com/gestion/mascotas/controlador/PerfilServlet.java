@@ -1,6 +1,5 @@
 package com.gestion.mascotas.controlador;
 
-import com.gestion.mascotas.dao.UsuarioDAO;
 import com.gestion.mascotas.modelo.entidades.Usuario;
 
 import com.gestion.mascotas.servicio.UsuarioService;
@@ -11,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.regex.Pattern;
 
 /**
  * Servlet para manejar actualizaciones y eliminación del perfil de usuario
@@ -19,17 +17,10 @@ import java.util.regex.Pattern;
 @WebServlet("/perfil")
 public class PerfilServlet extends HttpServlet {
 
-    private UsuarioDAO usuarioDAO;
     private UsuarioService usuarioService;
-
-    private static final Pattern EMAIL_PATTERN =
-            Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
-    private static final Pattern PHONE_PATTERN =
-            Pattern.compile("^[0-9]{10}$");
 
     @Override
     public void init() {
-        usuarioDAO = new UsuarioDAO();
         usuarioService = new UsuarioService();
     }
 
@@ -100,60 +91,5 @@ public class PerfilServlet extends HttpServlet {
         }
 
         response.sendRedirect(request.getContextPath() + "/dashboard");
-    }
-    /**
-     * Eliminar el perfil del usuario y todos sus datos
-     */
-    private void eliminarPerfil(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-
-        String contrasena = request.getParameter("contrasena");
-
-        // Validar contraseña
-        if (contrasena == null || contrasena.trim().isEmpty()) {
-            session.setAttribute("error", "Debes ingresar tu contraseña para eliminar tu perfil.");
-            response.sendRedirect(request.getContextPath() + "/dashboard");
-            return;
-        }
-
-        try {
-            // Verificar contraseña
-            Usuario usuarioVerificado = usuarioDAO.validarLogin(usuario.getNombreUsuario(), contrasena);
-
-            if (usuarioVerificado == null) {
-                session.setAttribute("error", "La contraseña es incorrecta.");
-                response.sendRedirect(request.getContextPath() + "/dashboard");
-                return;
-            }
-
-            // Eliminar usuario (cascade eliminará mascotas, vacunas, visitas)
-            boolean eliminado = usuarioDAO.eliminarUsuario(usuario.getId());
-
-            if (eliminado) {
-                // Invalidar sesión
-                session.invalidate();
-
-                // Crear nueva sesión con mensaje
-                HttpSession nuevaSesion = request.getSession();
-                nuevaSesion.setAttribute("eliminacionExitosa", true);
-                nuevaSesion.setAttribute("mensajeEliminacion",
-                        "Tu perfil ha sido eliminado exitosamente. ¡Esperamos verte de nuevo!");
-
-                response.sendRedirect(request.getContextPath() + "/login");
-            } else {
-                session.setAttribute("error",
-                        "Error al eliminar el perfil. Por favor intenta nuevamente.");
-                response.sendRedirect(request.getContextPath() + "/dashboard");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            session.setAttribute("error",
-                    "Error en el servidor: " + e.getMessage());
-            response.sendRedirect(request.getContextPath() + "/dashboard");
-        }
     }
 }

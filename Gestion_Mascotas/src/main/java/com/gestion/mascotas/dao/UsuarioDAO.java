@@ -59,7 +59,7 @@ public class UsuarioDAO {
         }
     }
 
-    // Validar login (nuevo método)
+    // Validar login
     public Usuario validarLogin(String nombreUsuario, String contrasena) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<Usuario> query = session.createQuery(
@@ -131,12 +131,12 @@ public class UsuarioDAO {
         }
     }
 
-    // Verificar si existe un email (nuevo método)
+    // Verificar si existe un email
     public boolean existeEmail(String email) {
         return buscarPorEmail(email) != null;
     }
 
-    // Método guardar alternativo (nuevo método)
+    // Método guardar alternativo
     public void guardar(Usuario usuario) {
         crearUsuario(usuario);
     }
