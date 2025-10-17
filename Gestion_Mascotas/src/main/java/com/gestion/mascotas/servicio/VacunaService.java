@@ -115,7 +115,6 @@ public class VacunaService {
         }
     }
 
-    // Métodos de validación específicos si fueran necesarios
     public boolean validarTipo(String tipoVacuna) {
         // Aquí podrías tener una lista de tipos válidos o alguna lógica más compleja
         return tipoVacuna != null && !tipoVacuna.trim().isEmpty();
