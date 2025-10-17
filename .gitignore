@@ -1,40 +1,39 @@
-Gestion_Mascotas/target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# Archivos de compilación de Java
+*.class
 
-### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
-*.iws
+# Directorios de salida de Maven
+/target/
+/Gestion_Mascotas/target/
+
+# Logs
+*.log
+logs/
+
+# Archivos de configuración del IDE
+# IntelliJ IDEA
+.idea/
 *.iml
-*.ipr
-.SmartTomcat/
-.smarttomcat/
+*.iws
 
-### Eclipse ###
-.apt_generated
+# Eclipse
 .classpath
-.factorypath
 .project
-.settings
-.springBeans
-.sts4-cache
+.settings/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+# NetBeans
+nbproject/
 build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+dist/
 
-### VS Code ###
+# VS Code
 .vscode/
 
-### Mac OS ###
+# Archivos del sistema operativo
 .DS_Store
+
+# Archivos generados por servidores locales
+.SmartTomcat/
+
+# No ignorar el Maven Wrapper Jar
+!/.mvn/wrapper/maven-wrapper.jar
+!/Gestion_Mascotas/.mvn/wrapper/maven-wrapper.jar
