@@ -14,11 +14,21 @@ public class MascotaDAO {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.persist(mascota);
+            // --- CAMBIO AQUÍ ---
+            if (mascota.getId() == null) {
+                // Si es nueva, usa persist
+                em.persist(mascota);
+            } else {
+                // Si ya existe (tiene ID), usa merge para actualizar
+                em.merge(mascota);
+            }
+            // --- FIN DEL CAMBIO ---
             tx.commit();
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
-            e.printStackTrace();
+            e.printStackTrace(); // Es buena idea loggear el error
+            // Podrías lanzar una excepción personalizada aquí si prefieres
+            // throw new RuntimeException("Error al guardar la mascota", e);
         } finally {
             em.close();
         }

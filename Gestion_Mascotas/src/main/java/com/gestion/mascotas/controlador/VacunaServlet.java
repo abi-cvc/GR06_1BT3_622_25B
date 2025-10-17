@@ -1,11 +1,10 @@
 package com.gestion.mascotas.controlador;
 
-import com.gestion.mascotas.dao.MascotaDAO;
-import com.gestion.mascotas.dao.VacunaDAO;
 import com.gestion.mascotas.modelo.entidades.Mascota;
-import com.gestion.mascotas.modelo.entidades.Vacuna;
 import com.gestion.mascotas.modelo.entidades.Usuario;
-
+import com.gestion.mascotas.modelo.entidades.Vacuna;
+import com.gestion.mascotas.servicio.MascotaService; // Necesario para listar mascotas en el form
+import com.gestion.mascotas.servicio.VacunaService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -16,14 +15,13 @@ import java.util.List;
 @WebServlet({"/vacunas", "/vacuna"})
 public class VacunaServlet extends HttpServlet {
 
-    private VacunaDAO vacunaDAO = new VacunaDAO();
-    private MascotaDAO mascotaDAO = new MascotaDAO();
+    private VacunaService vacunaService = new VacunaService();
+    private MascotaService mascotaService = new MascotaService(); // Para obtener la lista de mascotas
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Verificar que el usuario esté logueado
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("usuario") == null) {
             response.sendRedirect(request.getContextPath() + "/login");
@@ -32,55 +30,52 @@ public class VacunaServlet extends HttpServlet {
 
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         String action = request.getParameter("action");
+        if (action == null) action = "listar";
 
-        if (action == null) {
-            action = "listar";
-        }
-
-        switch (action) {
-            case "eliminar":
-                eliminarVacuna(request, response);
-                break;
-            case "listar":
-            default:
-                listarVacunas(request, response, usuario);
-                break;
+        try {
+            switch (action) {
+                case "eliminar":
+                    eliminarVacuna(request, response, usuario);
+                    break;
+                case "listar":
+                default:
+                    listarVacunas(request, response, usuario);
+                    break;
+            }
+        } catch (Exception e) {
+            // Manejo genérico de errores
+            e.printStackTrace(); // Loggear el error
+            session.setAttribute("error", "Ocurrió un error inesperado: " + e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/vacunas"); // Redirigir a la lista
         }
     }
 
     private void listarVacunas(HttpServletRequest request, HttpServletResponse response, Usuario usuario)
             throws ServletException, IOException {
-        try {
-            // Obtener todas las vacunas del sistema (puedes filtrar por usuario si lo deseas)
-            List<Vacuna> vacunas = vacunaDAO.obtenerTodas();
+        // Obtener vacunas y mascotas usando los servicios
+        List<Vacuna> vacunas = vacunaService.consultarVacunasPorUsuario(usuario.getId());
+        List<Mascota> mascotas = mascotaService.listarMascotasPorUsuario(usuario.getId());
 
-            // Obtener las mascotas del usuario para el modal de registro
-            List<Mascota> mascotas = mascotaDAO.obtenerPorUsuario(usuario.getId());
-
-            // Pasar la fecha actual para comparaciones en el JSP
-            request.setAttribute("fechaActual", LocalDate.now());
-            request.setAttribute("vacunas", vacunas);
-            request.setAttribute("mascotas", mascotas);
-
-            request.getRequestDispatcher("jsp/listaVacunas.jsp").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("error", "Error al cargar las vacunas: " + e.getMessage());
-            request.getRequestDispatcher("jsp/listaVacunas.jsp").forward(request, response);
-        }
+        request.setAttribute("vacunas", vacunas);
+        request.setAttribute("mascotas", mascotas); // Para el modal de registro
+        request.getRequestDispatcher("/jsp/listaVacunas.jsp").forward(request, response);
     }
 
-    private void eliminarVacuna(HttpServletRequest request, HttpServletResponse response)
+    private void eliminarVacuna(HttpServletRequest request, HttpServletResponse response, Usuario usuario)
             throws IOException {
         try {
             Long id = Long.parseLong(request.getParameter("id"));
-            vacunaDAO.eliminar(id);
-            response.sendRedirect(request.getContextPath() + "/vacuna?success=eliminado");
+            vacunaService.eliminarVacuna(id, usuario);
+            response.sendRedirect(request.getContextPath() + "/vacunas?success=eliminado");
         } catch (NumberFormatException e) {
-            response.sendRedirect(request.getContextPath() + "/vacuna?error=id_invalido");
+            response.sendRedirect(request.getContextPath() + "/vacunas?error=id_invalido");
+        } catch (IllegalArgumentException | SecurityException e) {
+            request.getSession().setAttribute("error", e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/vacunas");
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/vacuna?error=error_eliminando");
+            request.getSession().setAttribute("error", "Error interno al eliminar la vacuna.");
+            response.sendRedirect(request.getContextPath() + "/vacunas");
         }
     }
 
@@ -88,63 +83,55 @@ public class VacunaServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Verificar sesión
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("usuario") == null) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
 
         String action = request.getParameter("action");
         if ("registrar".equals(action)) {
-            registrarVacuna(request, response);
+            registrarVacuna(request, response, usuario);
+        } else {
+            response.sendRedirect(request.getContextPath() + "/vacunas?error=accion_desconocida");
         }
     }
 
-    private void registrarVacuna(HttpServletRequest request, HttpServletResponse response)
+    private void registrarVacuna(HttpServletRequest request, HttpServletResponse response, Usuario usuario)
             throws IOException, ServletException {
         try {
-            // Obtener parámetros del formulario
             String nombre = request.getParameter("nombre");
             String fechaStr = request.getParameter("fecha");
             String mascotaIdStr = request.getParameter("mascotaId");
 
-            // Validar que todos los campos estén presentes
-            if (nombre == null || nombre.trim().isEmpty() ||
-                    fechaStr == null || fechaStr.trim().isEmpty() ||
-                    mascotaIdStr == null || mascotaIdStr.trim().isEmpty()) {
-                response.sendRedirect(request.getContextPath() + "/vacuna?error=campos_vacios");
-                return;
+            // Validar que los strings no sean nulos o vacíos antes de parsear
+            if (nombre == null || nombre.trim().isEmpty() || fechaStr == null || fechaStr.isEmpty() || mascotaIdStr == null || mascotaIdStr.isEmpty()) {
+                throw new IllegalArgumentException("Todos los campos son obligatorios.");
             }
 
-            // Parsear fecha y mascota ID
             LocalDate fecha = LocalDate.parse(fechaStr);
             Long mascotaId = Long.parseLong(mascotaIdStr);
 
-            // Obtener la mascota
-            Mascota mascota = mascotaDAO.obtenerPorId(mascotaId);
-            if (mascota == null) {
-                response.sendRedirect(request.getContextPath() + "/vacuna?error=mascota_no_encontrada");
-                return;
-            }
+            vacunaService.registrarVacuna(nombre, fecha, mascotaId, usuario);
 
-            // Crear y guardar la vacuna
-            Vacuna vacuna = new Vacuna();
-            vacuna.setNombre(nombre.trim());
-            vacuna.setFecha(fecha);
-            vacuna.setMascota(mascota);
+            response.sendRedirect(request.getContextPath() + "/vacunas?success=registrado");
 
-            vacunaDAO.guardar(vacuna);
-
-            // Redirigir con mensaje de éxito
-            response.sendRedirect(request.getContextPath() + "/vacuna?success=registrado");
-
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/vacuna?error=formato_invalido");
+        } catch (IllegalArgumentException | SecurityException e) {
+            // Errores de validación o permisos del servicio
+            request.setAttribute("error", e.getMessage());
+            // Recargar mascotas para el formulario
+            List<Mascota> mascotas = mascotaService.listarMascotasPorUsuario(usuario.getId());
+            request.setAttribute("mascotas", mascotas);
+            request.getRequestDispatcher("/jsp/listaVacunas.jsp").forward(request, response); // Mostrar error en la misma página
         } catch (Exception e) {
-            e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/vacuna?error=error_registro");
+            // Otros errores (parsing, base de datos, etc.)
+            e.printStackTrace(); // Loggear
+            request.setAttribute("error", "Error al procesar el registro: " + e.getMessage());
+            // Recargar mascotas para el formulario
+            List<Mascota> mascotas = mascotaService.listarMascotasPorUsuario(usuario.getId());
+            request.setAttribute("mascotas", mascotas);
+            request.getRequestDispatcher("/jsp/listaVacunas.jsp").forward(request, response); // Mostrar error en la misma página
         }
     }
 }

@@ -9,17 +9,17 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <!-- Entidades -->
-        <class>com.gestion.mascotas.modelo.Usuario</class>
-        <class>com.gestion.mascotas.modelo.Mascota</class>
-        <class>com.gestion.mascotas.modelo.Vacuna</class>
-        <class>com.gestion.mascotas.modelo.VisitaVeterinaria</class>
+        <class>com.gestion.mascotas.modelo.entidades.Usuario</class>
+        <class>com.gestion.mascotas.modelo.entidades.Mascota</class>
+        <class>com.gestion.mascotas.modelo.entidades.Vacuna</class>
+        <class>com.gestion.mascotas.modelo.entidades.VisitaVeterinaria</class>
         <!-- NUEVAS ENTIDADES -->
-        <class>com.gestion.mascotas.modelo.Recordatorio</class>
-        <class>com.gestion.mascotas.modelo.RecordatorioAlimentacion</class>
-        <class>com.gestion.mascotas.modelo.RecordatorioPaseo</class>
-        <class>com.gestion.mascotas.modelo.Sugerencia</class>
-        <class>com.gestion.mascotas.modelo.SugerenciaAlimentacion</class>
-        <class>com.gestion.mascotas.modelo.SugerenciaEjercicio</class>
+        <class>com.gestion.mascotas.modelo.entidades.Recordatorio</class>
+        <class>com.gestion.mascotas.modelo.entidades.RecordatorioAlimentacion</class>
+        <class>com.gestion.mascotas.modelo.entidades.RecordatorioPaseo</class>
+        <class>com.gestion.mascotas.modelo.entidades.Sugerencia</class>
+        <class>com.gestion.mascotas.modelo.entidades.SugerenciaAlimentacion</class>
+        <class>com.gestion.mascotas.modelo.entidades.SugerenciaEjercicio</class>
 
         <properties>
             <!-- Configuración de conexión PostgreSQL -->
@@ -27,7 +27,7 @@
             <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/gestion_mascotas?useUnicode=true&amp;characterEncoding=UTF-8"/>
             <property name="jakarta.persistence.jdbc.user" value="postgres"/>
             <!-- ⚠️ IMPORTANTEEEEEE CAMBIA ESTA CONTRASEÑA POR LA QUE PUSISTE EN LA INSTALACIÓN -->
-            <property name="jakarta.persistence.jdbc.password" value="mateo"/>
+            <property name="jakarta.persistence.jdbc.password" value="admin123"/>
 
             <!-- Configuración de Hibernate -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
