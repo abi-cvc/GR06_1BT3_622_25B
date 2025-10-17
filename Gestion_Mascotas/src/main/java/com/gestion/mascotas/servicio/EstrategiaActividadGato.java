@@ -1,4 +1,6 @@
-package com.gestion.mascotas.modelo;
+package com.gestion.mascotas.servicio;
+
+import com.gestion.mascotas.util.EstrategiaActividad;
 
 public class EstrategiaActividadGato implements EstrategiaActividad {
     @Override

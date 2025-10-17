@@ -4,11 +4,11 @@ import com.gestion.mascotas.dao.MascotaDAO;
 import com.gestion.mascotas.dao.RecordatorioAlimentacionDAO;
 import com.gestion.mascotas.dao.RecordatorioPaseoDAO;
 import com.gestion.mascotas.dao.UsuarioDAO;
-import com.gestion.mascotas.modelo.Mascota;
-import com.gestion.mascotas.modelo.RecordatorioAlimentacion;
-import com.gestion.mascotas.modelo.RecordatorioPaseo;
-import com.gestion.mascotas.modelo.TipoMascota;
-import com.gestion.mascotas.modelo.Usuario;
+import com.gestion.mascotas.modelo.entidades.Mascota;
+import com.gestion.mascotas.modelo.entidades.RecordatorioAlimentacion;
+import com.gestion.mascotas.modelo.entidades.RecordatorioPaseo;
+import com.gestion.mascotas.modelo.enums.TipoMascota;
+import com.gestion.mascotas.modelo.entidades.Usuario;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

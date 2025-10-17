@@ -1,7 +1,10 @@
-package com.gestion.mascotas.modelo;
+package com.gestion.mascotas.servicio;
 
 import com.gestion.mascotas.dao.SugerenciaAlimentacionDAO;
 import com.gestion.mascotas.dao.SugerenciaEjercicioDAO;
+import com.gestion.mascotas.modelo.entidades.Mascota;
+import com.gestion.mascotas.modelo.entidades.SugerenciaAlimentacion;
+import com.gestion.mascotas.modelo.entidades.SugerenciaEjercicio;
 
 import java.util.ArrayList;
 import java.util.List;

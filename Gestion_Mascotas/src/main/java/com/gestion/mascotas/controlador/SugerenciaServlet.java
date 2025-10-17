@@ -1,11 +1,11 @@
 package com.gestion.mascotas.controlador;
 
 import com.gestion.mascotas.dao.MascotaDAO;
-import com.gestion.mascotas.modelo.Mascota;
-import com.gestion.mascotas.modelo.SugerenciaAlimentacion;
-import com.gestion.mascotas.modelo.SugerenciaEjercicio;
-import com.gestion.mascotas.modelo.Usuario;
-import com.gestion.mascotas.modelo.AnalizadorDatos;
+import com.gestion.mascotas.modelo.entidades.Mascota;
+import com.gestion.mascotas.modelo.entidades.SugerenciaAlimentacion;
+import com.gestion.mascotas.modelo.entidades.SugerenciaEjercicio;
+import com.gestion.mascotas.modelo.entidades.Usuario;
+import com.gestion.mascotas.servicio.AnalizadorDatos;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

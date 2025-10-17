@@ -1,4 +1,4 @@
-package com.gestion.mascotas.modelo;
+package com.gestion.mascotas.modelo.enums;
 
 public enum NivelActividad {
     BAJA,

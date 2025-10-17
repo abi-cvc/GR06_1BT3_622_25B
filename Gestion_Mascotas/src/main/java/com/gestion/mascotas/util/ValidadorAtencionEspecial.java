@@ -1,4 +1,7 @@
-package com.gestion.mascotas.modelo;
+package com.gestion.mascotas.util;
+
+import com.gestion.mascotas.modelo.entidades.Mascota;
+import com.gestion.mascotas.modelo.enums.TipoMascota;
 
 /**
  * Refactorización #9: Replace Method with Method Object

@@ -1,5 +1,6 @@
-package com.gestion.mascotas.modelo;
+package com.gestion.mascotas.modelo.entidades;
 
+import com.gestion.mascotas.modelo.enums.TipoMascota;
 import jakarta.persistence.*;
 import java.util.List;
 import java.util.ArrayList; // Importar ArrayList
@@ -76,33 +77,6 @@ public class Mascota {
     public List<Recordatorio> getRecordatorios() { return recordatorios; }
     public void setRecordatorios(List<Recordatorio> recordatorios) { this.recordatorios = recordatorios; }
 
-
-    // Métodos de gestión de datos (según la descripción)
-    public void registrarMascota(String nombre, TipoMascota tipo, String raza, Integer edad, Double peso, String color, Usuario usuario) {
-        this.setNombre(nombre);
-        this.setTipo(tipo);
-        this.setRaza(raza);
-        this.setEdad(edad);
-        this.setPeso(peso);
-        this.setColor(color);
-        this.setUsuario(usuario);
-        usuario.addMascota(this); // Asegura la bidireccionalidad
-        System.out.println("Mascota registrada: " + nombre + " (" + tipo + ")");
-    }
-
-    public void consultarDatos() {
-        System.out.println("--- Datos de Mascota ---");
-        System.out.println("ID: " + id);
-        System.out.println("Nombre: " + nombre);
-        System.out.println("Tipo: " + tipo);
-        System.out.println("Raza: " + raza);
-        System.out.println("Edad: " + edad + " años");
-        System.out.println("Peso: " + peso + " kg");
-        System.out.println("Color: " + color);
-        System.out.println("Dueño: " + (usuario != null ? usuario.getNombreUsuario() : "N/A"));
-        System.out.println("------------------------");
-    }
-
     public void actualizarDatos(String nombre, String raza, Integer edad, Double peso, String color) {
         this.setNombre(nombre);
         this.setRaza(raza);
@@ -111,28 +85,6 @@ public class Mascota {
         this.setColor(color);
         System.out.println("Datos de mascota actualizados para: " + nombre);
     }
-
-    public void eliminarMascota() {
-        // La eliminación se manejará a través del DAO, esto es solo una representación lógica
-        System.out.println("Mascota " + nombre + " marcada para eliminación.");
-    }
-
-    // Métodos para añadir a las listas (para mantener la bidireccionalidad si es necesario)
-    public void addVacuna(Vacuna vacuna) {
-        this.vacunas.add(vacuna);
-        vacuna.setMascota(this);
-    }
-
-    public void addVisita(VisitaVeterinaria visita) {
-        this.visitas.add(visita);
-        visita.setMascota(this);
-    }
-
-    public void addRecordatorio(Recordatorio recordatorio) {
-        this.recordatorios.add(recordatorio);
-        recordatorio.setMascota(this);
-    }
-
 
     @Override
     public String toString() {

@@ -1,6 +1,10 @@
 package com.gestion.mascotas.util;
 
-import com.gestion.mascotas.modelo.*;
+import com.gestion.mascotas.modelo.entidades.Sugerencia;
+import com.gestion.mascotas.modelo.entidades.SugerenciaAlimentacion;
+import com.gestion.mascotas.modelo.entidades.SugerenciaEjercicio;
+import com.gestion.mascotas.modelo.enums.NivelActividad;
+import com.gestion.mascotas.modelo.enums.TipoMascota;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;

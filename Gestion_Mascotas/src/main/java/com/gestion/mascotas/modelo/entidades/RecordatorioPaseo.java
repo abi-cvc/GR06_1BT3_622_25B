@@ -1,4 +1,4 @@
-package com.gestion.mascotas.modelo;
+package com.gestion.mascotas.modelo.entidades;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

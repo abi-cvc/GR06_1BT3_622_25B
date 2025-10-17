@@ -1,6 +1,6 @@
 package com.gestion.mascotas.dao;
 
-import com.gestion.mascotas.modelo.VisitaVeterinaria;
+import com.gestion.mascotas.modelo.entidades.VisitaVeterinaria;
 import jakarta.persistence.*;
 
 import java.util.List;

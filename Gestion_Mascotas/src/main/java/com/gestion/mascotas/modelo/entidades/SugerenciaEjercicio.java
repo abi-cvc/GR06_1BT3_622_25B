@@ -1,5 +1,6 @@
-package com.gestion.mascotas.modelo;
+package com.gestion.mascotas.modelo.entidades;
 
+import com.gestion.mascotas.modelo.enums.NivelActividad;
 import jakarta.persistence.*;
 
 @Entity

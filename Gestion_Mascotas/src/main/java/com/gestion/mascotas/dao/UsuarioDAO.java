@@ -1,6 +1,6 @@
 package com.gestion.mascotas.dao;
 
-import com.gestion.mascotas.modelo.Usuario;
+import com.gestion.mascotas.modelo.entidades.Usuario;
 import com.gestion.mascotas.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

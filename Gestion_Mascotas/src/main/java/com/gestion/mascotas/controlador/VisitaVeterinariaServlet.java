@@ -2,9 +2,9 @@ package com.gestion.mascotas.controlador;
 
 import com.gestion.mascotas.dao.MascotaDAO;
 import com.gestion.mascotas.dao.VisitaVeterinariaDAO;
-import com.gestion.mascotas.modelo.Mascota;
-import com.gestion.mascotas.modelo.Usuario;
-import com.gestion.mascotas.modelo.VisitaVeterinaria;
+import com.gestion.mascotas.modelo.entidades.Mascota;
+import com.gestion.mascotas.modelo.entidades.Usuario;
+import com.gestion.mascotas.modelo.entidades.VisitaVeterinaria;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

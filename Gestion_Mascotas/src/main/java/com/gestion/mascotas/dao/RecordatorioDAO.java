@@ -1,6 +1,6 @@
 package com.gestion.mascotas.dao;
 
-import com.gestion.mascotas.modelo.Recordatorio;
+import com.gestion.mascotas.modelo.entidades.Recordatorio;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;

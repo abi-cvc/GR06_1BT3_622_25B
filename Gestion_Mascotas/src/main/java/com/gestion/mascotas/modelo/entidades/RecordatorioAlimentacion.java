@@ -1,4 +1,4 @@
-package com.gestion.mascotas.modelo;
+package com.gestion.mascotas.modelo.entidades;
 
 import jakarta.persistence.*;
 import java.time.LocalTime;

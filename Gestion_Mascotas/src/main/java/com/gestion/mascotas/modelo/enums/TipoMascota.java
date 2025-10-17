@@ -1,4 +1,8 @@
-package com.gestion.mascotas.modelo;
+package com.gestion.mascotas.modelo.enums;
+
+import com.gestion.mascotas.util.EstrategiaActividad;
+import com.gestion.mascotas.servicio.EstrategiaActividadGato;
+import com.gestion.mascotas.servicio.EstrategiaActividadPerro;
 
 public enum TipoMascota {
     PERRO(new EstrategiaActividadPerro()),
