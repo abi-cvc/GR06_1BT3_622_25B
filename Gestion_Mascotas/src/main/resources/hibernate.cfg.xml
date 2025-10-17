@@ -10,7 +10,7 @@
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/gestion_mascotas</property>
         <property name="hibernate.connection.username">postgres</property>
         <!-- ⚠️ IMPORTANTEEEEE CAMBIA ESTA CONTRASEÑA POR LA QUE PUSISTE EN LA INSTALACIÓN -->
-        <property name="hibernate.connection.password">mateo</property>
+        <property name="hibernate.connection.password">carol123</property>
 
         <!-- Dialecto PostgreSQL -->
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
