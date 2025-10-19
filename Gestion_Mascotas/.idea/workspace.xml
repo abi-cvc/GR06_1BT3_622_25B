@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="Tests Unitarios Clases">
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/util/ValidadorRecordatorioTest.java" afterDir="false" />
+    <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="Tests Unitarios Clase ValidadorRecordatorio">
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/util/GestorHorariosTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/util/ValidadorRecordatorio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/util/ValidadorRecordatorio.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +59,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "JUnit.ValidadorRecordatorioTest.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
@@ -74,7 +74,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.github.copilot.settings.ApplicationConfigurable",
+    "settings.editor.selected.configurable": "preferences.editor",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -86,7 +86,22 @@
       <recent name="com.gestion.mascotas.util" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.GestorHorariosTest">
+    <configuration name="GestorHorariosTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gestion_mascotas" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.gestion.mascotas.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.gestion.mascotas.util" />
+      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.util.GestorHorariosTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ValidadorRecordatorioTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gestion_mascotas" />
       <extension name="coverage">
@@ -104,6 +119,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.GestorHorariosTest" />
         <item itemvalue="JUnit.ValidadorRecordatorioTest" />
       </list>
     </recent_temporary>
@@ -136,7 +152,7 @@
       <workItem from="1759882054673" duration="13250000" />
       <workItem from="1759895659960" duration="2089000" />
       <workItem from="1760217968818" duration="4969000" />
-      <workItem from="1760848288558" duration="3101000" />
+      <workItem from="1760848288558" duration="4673000" />
     </task>
     <task id="LOCAL-00001" summary="Creación de Archivos JSP para el segundo Incremento">
       <option name="closed" value="true" />
@@ -218,7 +234,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760849123442</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Tests Unitarios Clase ValidadorRecordatorio">
+      <option name="closed" value="true" />
+      <created>1760851454687</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1760851454687</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -257,7 +281,8 @@
     <MESSAGE value="Agregar DataLoaderListener para carga inicial de sugerencias y su correcto funcionamiento." />
     <MESSAGE value="Refactorización 8: Replace Temp with Query - Refactorización del método calcularCaloriasRecomendadas en AnalizadorDatos" />
     <MESSAGE value="Refactorización: Mover lógica de negocio de Recordatorios a capa service con validadores y gestores" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactorización: Mover lógica de negocio de Recordatorios a capa service con validadores y gestores" />
+    <MESSAGE value="Tests Unitarios Clase ValidadorRecordatorio" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tests Unitarios Clase ValidadorRecordatorio" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
