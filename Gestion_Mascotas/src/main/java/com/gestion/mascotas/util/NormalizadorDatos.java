@@ -1,4 +1,5 @@
 package com.gestion.mascotas.util;
+
 public class NormalizadorDatos {
 
     public static String normalizarNombre(String nombre) {

@@ -2,12 +2,14 @@ package com.gestion.mascotas.servicio;
 
 import com.gestion.mascotas.dao.UsuarioDAO;
 import com.gestion.mascotas.modelo.entidades.Usuario;
+import com.gestion.mascotas.util.NormalizadorDatos;
+
 import java.util.regex.Pattern;
 
 public class UsuarioService {
 
     private final UsuarioDAO usuarioDAO = new UsuarioDAO();
-    // Patrones de validación
+    private final NormalizadorDatos normalizador =  new NormalizadorDatos();
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]{3,50}$");
     private static final Pattern PHONE_PATTERN = Pattern.compile("^[0-9]{10}$");
@@ -23,11 +25,11 @@ public class UsuarioService {
             throw new IllegalArgumentException(error);
         }
 
-        // Normalizar datos
         String nombreUsuarioNorm = nombreUsuario.trim().toLowerCase();
-        String nombreNorm = nombre.trim();
-        String emailNorm = email.trim().toLowerCase();
-        String telefonoNorm = (telefono != null && !telefono.trim().isEmpty()) ? telefono.trim() : null;
+        String nombreNorm = NormalizadorDatos.normalizarNombre(nombre);
+        String emailNorm = NormalizadorDatos.normalizarEmail(email);
+        String telefonoNorm = NormalizadorDatos.normalizarTelefono(telefono);
+
 
         Usuario nuevoUsuario = new Usuario(nombreUsuarioNorm, nombreNorm, emailNorm, telefonoNorm, contrasena);
 
