@@ -1,150 +1,158 @@
 package com.gestion.mascotas.servicio;
 
-import com.gestion.mascotas.dao.MascotaDAO;
 import com.gestion.mascotas.dao.RecordatorioPaseoDAO;
 import com.gestion.mascotas.modelo.entidades.Mascota;
 import com.gestion.mascotas.modelo.entidades.RecordatorioPaseo;
 import com.gestion.mascotas.modelo.entidades.Usuario;
+import com.gestion.mascotas.util.ValidadorRecordatorio;
+import com.gestion.mascotas.util.GestorHorarios;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
-/**
- * Servicio que maneja la lógica de negocio para los recordatorios de paseo.
- */
-public class RecordatorioPaseoService {
+public class RecordatorioPaseoService extends RecordatorioService {
 
-    private final RecordatorioPaseoDAO recordatorioDAO;
-    private final MascotaDAO mascotaDAO;
+    private RecordatorioPaseoDAO recordatorioDAO;
 
     public RecordatorioPaseoService() {
-        recordatorioDAO = new RecordatorioPaseoDAO();
-        mascotaDAO = new MascotaDAO();
+        super();
+        this.recordatorioDAO = new RecordatorioPaseoDAO();
     }
 
-    /**
-     * Registra un nuevo recordatorio de paseo para una mascota del usuario.
-     */
-    public boolean registrarRecordatorio(Usuario usuario,
-                                         Long mascotaId,
-                                         int frecuencia,
-                                         Integer duracionMinutos,
-                                         String[] diasSeleccionados,
-                                         List<LocalTime> horarios) {
-
-        // Validar mascota
-        Mascota mascota = mascotaDAO.obtenerPorId(mascotaId);
-        if (mascota == null) {
-            throw new IllegalArgumentException("La mascota seleccionada no existe.");
+    public boolean registrarRecordatorio(String mascotaIdStr, String frecuenciaStr,
+                                         String duracionMinutosStr, String[] diasSeleccionados,
+                                         java.util.function.Function<String, String> getParameter,
+                                         Usuario usuario) {
+        // Validar frecuencia
+        String error = ValidadorRecordatorio.validarFrecuencia(frecuenciaStr);
+        if (error != null) {
+            throw new IllegalArgumentException(error);
         }
 
-        if (!mascota.getUsuario().getId().equals(usuario.getId())) {
-            throw new IllegalArgumentException("No tiene permisos para registrar recordatorios para esta mascota.");
+        // Validar y obtener mascota
+        Mascota mascota = validarYObtenerMascota(mascotaIdStr, usuario);
+
+        // Obtener horarios
+        int frecuencia = Integer.parseInt(frecuenciaStr);
+        List<LocalTime> horarios = GestorHorarios.extraerHorarios(frecuencia, "horarioPaseo", getParameter);
+
+        // Validar horarios
+        error = GestorHorarios.validarHorariosNoVacios(horarios);
+        if (error != null) {
+            throw new IllegalArgumentException(error);
         }
 
-        // Validaciones de datos
-        if (frecuencia <= 0) {
-            throw new IllegalArgumentException("La frecuencia de paseo debe ser mayor que cero.");
+        // Validar duración
+        Integer duracionMinutos = null;
+        if (duracionMinutosStr != null && !duracionMinutosStr.trim().isEmpty()) {
+            duracionMinutos = Integer.parseInt(duracionMinutosStr);
+            error = ValidadorRecordatorio.validarDuracion(duracionMinutos);
+            if (error != null) {
+                throw new IllegalArgumentException(error);
+            }
         }
 
-        if (horarios == null || horarios.isEmpty()) {
-            throw new IllegalArgumentException("Debe ingresar al menos un horario de paseo.");
-        }
+        // Construir días de semana
+        String diasSemana = GestorHorarios.construirDiasSemana(diasSeleccionados);
 
-        // Crear el recordatorio
+        // Crear recordatorio
         RecordatorioPaseo recordatorio = new RecordatorioPaseo();
         recordatorio.setMascota(mascota);
         recordatorio.setActivo(true);
-        recordatorio.setDuracionMinutos(duracionMinutos);
-        recordatorio.setDiasSemana(
-                (diasSeleccionados != null) ? String.join(",", diasSeleccionados) : ""
-        );
-        recordatorio.setHorarios(
-                horarios.stream()
-                        .map(LocalTime::toString)
-                        .collect(Collectors.joining(","))
-        );
-        recordatorio.setFechaHoraRecordatorio(LocalDateTime.now());
 
         String descripcion = "Recordatorio de paseo: " + frecuencia + " vez/veces al día";
-        if (duracionMinutos != null && duracionMinutos > 0) {
+        if (duracionMinutos != null) {
             descripcion += " - " + duracionMinutos + " minutos";
         }
         recordatorio.setDescripcion(descripcion);
 
-        // Guardar en la base de datos
+        recordatorio.setHorarios(GestorHorarios.convertirHorariosAString(horarios));
+        recordatorio.setDiasSemana(diasSemana);
+        recordatorio.setDuracionMinutos(duracionMinutos);
+        recordatorio.setFechaHoraRecordatorio(LocalDateTime.now());
+
+        System.out.println("Guardando recordatorio de paseo: " + recordatorio);
+
         return recordatorioDAO.guardar(recordatorio);
     }
 
-    /**
-     * Actualiza un recordatorio existente.
-     */
-    public boolean actualizarRecordatorio(Long idRecordatorio, Usuario usuario,
-                                          int frecuencia, Integer duracionMinutos,
-                                          String[] diasSeleccionados, List<LocalTime> horarios) {
+    public boolean actualizarRecordatorio(Long recordatorioId, String frecuenciaStr,
+                                          String duracionMinutosStr, String[] diasSeleccionados,
+                                          java.util.function.Function<String, String> getParameter,
+                                          Usuario usuario) {
+        RecordatorioPaseo recordatorio = recordatorioDAO.obtenerPorId(recordatorioId);
 
-        RecordatorioPaseo existente = recordatorioDAO.obtenerPorId(idRecordatorio);
-        if (existente == null) {
-            throw new IllegalArgumentException("El recordatorio no existe.");
+        // Validar permisos
+        validarPermisos(recordatorio, usuario,
+                r -> ((RecordatorioPaseo) r).getMascota().getUsuario());
+
+        // Obtener horarios
+        int frecuencia = Integer.parseInt(frecuenciaStr);
+        List<LocalTime> horarios = GestorHorarios.extraerHorarios(frecuencia, "horarioPaseo", getParameter);
+
+        // Validar duración
+        Integer duracionMinutos = null;
+        if (duracionMinutosStr != null && !duracionMinutosStr.trim().isEmpty()) {
+            duracionMinutos = Integer.parseInt(duracionMinutosStr);
         }
 
-        if (!existente.getMascota().getUsuario().getId().equals(usuario.getId())) {
-            throw new IllegalArgumentException("No tiene permisos para modificar este recordatorio.");
-        }
+        // Construir días de semana
+        String diasSemana = GestorHorarios.construirDiasSemana(diasSeleccionados);
 
-        existente.setDuracionMinutos(duracionMinutos);
-        existente.setDiasSemana(
-                (diasSeleccionados != null) ? String.join(",", diasSeleccionados) : ""
-        );
-        existente.setHorarios(
-                horarios.stream()
-                        .map(LocalTime::toString)
-                        .collect(Collectors.joining(","))
-        );
+        // Actualizar datos
+        recordatorio.setHorarios(GestorHorarios.convertirHorariosAString(horarios));
+        recordatorio.setDiasSemana(diasSemana);
+        recordatorio.setDuracionMinutos(duracionMinutos);
 
-        String descripcion = "Recordatorio de paseo actualizado: " + frecuencia + " vez/veces al día";
-        if (duracionMinutos != null && duracionMinutos > 0) {
+        String descripcion = "Recordatorio de paseo: " + frecuencia + " vez/veces al día";
+        if (duracionMinutos != null) {
             descripcion += " - " + duracionMinutos + " minutos";
         }
-        existente.setDescripcion(descripcion);
+        recordatorio.setDescripcion(descripcion);
 
-        return recordatorioDAO.actualizar(existente);
-    }
-
-    /**
-     * Elimina un recordatorio (solo si pertenece al usuario).
-     */
-    public boolean eliminarRecordatorio(Long idRecordatorio, Usuario usuario) {
-        RecordatorioPaseo recordatorio = recordatorioDAO.obtenerPorId(idRecordatorio);
-
-        if (recordatorio == null) {
-            throw new IllegalArgumentException("El recordatorio no existe.");
-        }
-
-        if (!recordatorio.getMascota().getUsuario().getId().equals(usuario.getId())) {
-            throw new IllegalArgumentException("No tiene permisos para eliminar este recordatorio.");
-        }
-
-        return recordatorioDAO.eliminar(idRecordatorio);
-    }
-
-    /**
-     * Desactiva un recordatorio (sin eliminarlo).
-     */
-    public boolean desactivarRecordatorio(Long idRecordatorio, Usuario usuario) {
-        RecordatorioPaseo recordatorio = recordatorioDAO.obtenerPorId(idRecordatorio);
-
-        if (recordatorio == null) {
-            throw new IllegalArgumentException("El recordatorio no existe.");
-        }
-
-        if (!recordatorio.getMascota().getUsuario().getId().equals(usuario.getId())) {
-            throw new IllegalArgumentException("No tiene permisos para desactivar este recordatorio.");
-        }
-
-        recordatorio.setActivo(false);
         return recordatorioDAO.actualizar(recordatorio);
+    }
+
+    public boolean eliminarRecordatorio(String idStr, Usuario usuario) {
+        // Validar ID
+        String error = ValidadorRecordatorio.validarIdRecordatorio(idStr);
+        if (error != null) {
+            throw new IllegalArgumentException(error);
+        }
+
+        Long recordatorioId = Long.parseLong(idStr);
+
+        System.out.println("Buscando recordatorio de paseo con ID: " + recordatorioId);
+        RecordatorioPaseo recordatorio = recordatorioDAO.obtenerPorId(recordatorioId);
+
+        // Validar permisos
+        validarPermisos(recordatorio, usuario,
+                r -> ((RecordatorioPaseo) r).getMascota().getUsuario());
+
+        System.out.println("Intentando eliminar recordatorio de paseo...");
+        boolean eliminado = recordatorioDAO.eliminar(recordatorioId);
+
+        if (eliminado) {
+            System.out.println("✓ Recordatorio de paseo eliminado exitosamente");
+        } else {
+            System.err.println("✗ Error al eliminar el recordatorio de paseo - el DAO retornó false");
+        }
+
+        return eliminado;
+    }
+
+    public boolean desactivarRecordatorio(Long recordatorioId, Usuario usuario) {
+        RecordatorioPaseo recordatorio = recordatorioDAO.obtenerPorId(recordatorioId);
+
+        // Validar permisos
+        validarPermisos(recordatorio, usuario,
+                r -> ((RecordatorioPaseo) r).getMascota().getUsuario());
+
+        return recordatorioDAO.desactivarRecordatorio(recordatorioId);
+    }
+
+    public List<RecordatorioPaseo> obtenerRecordatoriosPorMascota(Long mascotaId) {
+        return recordatorioDAO.obtenerRecordatoriosPaseoPorMascota(mascotaId);
     }
 }
