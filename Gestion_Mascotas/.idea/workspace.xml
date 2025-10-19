@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="Refactorización 8: Replace Temp with Query - Refactorización del método calcularCaloriasRecomendadas en AnalizadorDatos">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/servicio/RecordatorioAlimentacionService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/servicio/RecordatorioService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/util/GestorHorarios.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/util/ValidadorRecordatorio.java" afterDir="false" />
+    <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="Tests Unitarios Clases">
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/util/ValidadorRecordatorioTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/RecordatorioAlimentacionServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/RecordatorioAlimentacionServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/RecordatorioPaseoServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/controlador/RecordatorioPaseoServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/servicio/RecordatorioPaseoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/servicio/RecordatorioPaseoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/util/ValidadorRecordatorio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/util/ValidadorRecordatorio.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +20,7 @@
         <option value="Enum" />
         <option value="Jsp File" />
         <option value="Class" />
+        <option value="JUnit4 Test Class" />
       </list>
     </option>
   </component>
@@ -69,6 +65,8 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit4",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4": "",
     "git-widget-placeholder": "extractLogica",
     "last_opened_file_path": "C:/Users/andre/Music/PMascotas/Gestion_Mascotas",
     "node.js.detected.package.eslint": "true",
@@ -80,6 +78,36 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.gestion.mascotas.util" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="ValidadorRecordatorioTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gestion_mascotas" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.gestion.mascotas.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.gestion.mascotas.util" />
+      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.util.ValidadorRecordatorioTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.ValidadorRecordatorioTest" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -108,7 +136,7 @@
       <workItem from="1759882054673" duration="13250000" />
       <workItem from="1759895659960" duration="2089000" />
       <workItem from="1760217968818" duration="4969000" />
-      <workItem from="1760848288558" duration="750000" />
+      <workItem from="1760848288558" duration="3101000" />
     </task>
     <task id="LOCAL-00001" summary="Creación de Archivos JSP para el segundo Incremento">
       <option name="closed" value="true" />
@@ -182,7 +210,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760221033296</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Refactorización: Mover lógica de negocio de Recordatorios a capa service con validadores y gestores">
+      <option name="closed" value="true" />
+      <created>1760849123442</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1760849123442</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -220,7 +256,8 @@
     <MESSAGE value="Cambios en BDD para Base de Conocimiento de Sugerencias" />
     <MESSAGE value="Agregar DataLoaderListener para carga inicial de sugerencias y su correcto funcionamiento." />
     <MESSAGE value="Refactorización 8: Replace Temp with Query - Refactorización del método calcularCaloriasRecomendadas en AnalizadorDatos" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactorización 8: Replace Temp with Query - Refactorización del método calcularCaloriasRecomendadas en AnalizadorDatos" />
+    <MESSAGE value="Refactorización: Mover lógica de negocio de Recordatorios a capa service con validadores y gestores" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactorización: Mover lógica de negocio de Recordatorios a capa service con validadores y gestores" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

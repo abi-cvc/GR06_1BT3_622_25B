@@ -41,7 +41,7 @@ public class ValidadorRecordatorio {
     }
 
     public static String validarDuracion(Integer duracionMinutos) {
-        if (duracionMinutos != null && duracionMinutos <= 0) {
+        if (duracionMinutos == null || duracionMinutos <= 0) {
             return "duracion_invalida";
         }
         return null;
