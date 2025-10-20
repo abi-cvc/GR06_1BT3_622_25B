@@ -140,4 +140,18 @@ public class VisitaVeterinariaService {
         }
     }
     */
+
+    public long contarVisitasEnRango(Long mascotaId, LocalDate fechaInicio, LocalDate fechaFin, Usuario usuarioActual) {
+        Mascota mascota = mascotaDAO.obtenerPorId(mascotaId);
+        if (mascota == null) {
+            throw new IllegalArgumentException("Mascota no encontrada.");
+        }
+        if (!mascota.getUsuario().getId().equals(usuarioActual.getId())) {
+            throw new SecurityException("No tiene permiso para consultar esta mascota");
+        }
+        if (fechaInicio == null || fechaFin == null || fechaInicio.isAfter(fechaFin)) {
+            throw new IllegalArgumentException("Rango de fechas inválido.");
+        }
+        return visitaDAO.contarPorMascotaYFechas(mascotaId, fechaInicio, fechaFin);
+    }
 }

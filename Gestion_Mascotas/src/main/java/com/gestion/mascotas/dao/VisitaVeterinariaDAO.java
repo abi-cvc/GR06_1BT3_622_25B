@@ -3,6 +3,7 @@ package com.gestion.mascotas.dao;
 import com.gestion.mascotas.modelo.entidades.VisitaVeterinaria;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class VisitaVeterinariaDAO {
@@ -124,4 +125,24 @@ public class VisitaVeterinariaDAO {
             em.close();
         }
     }
+
+    public long contarPorMascotaYFechas(Long mascotaId, LocalDate fechaInicio, LocalDate fechaFin) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT COUNT(v) " +
+                                    "FROM VisitaVeterinaria v " +
+                                    "WHERE v.mascota.id = :mascotaId " +
+                                    "AND v.fecha BETWEEN :fechaInicio AND :fechaFin",
+                            Long.class
+                    )
+                    .setParameter("mascotaId", mascotaId)
+                    .setParameter("fechaInicio", fechaInicio)
+                    .setParameter("fechaFin", fechaFin)
+                    .getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
+
 }
