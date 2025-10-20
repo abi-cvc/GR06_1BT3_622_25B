@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="Tests Unitarios Clase ValidadorRecordatorio">
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/util/GestorHorariosTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/servicio/RecordatorioPaseoServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +60,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "JUnit.RecordatorioPaseoServiceTest.executor": "Run",
     "JUnit.ValidadorRecordatorioTest.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -83,10 +85,11 @@
       <recent name="" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.gestion.mascotas.servicio" />
       <recent name="com.gestion.mascotas.util" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.GestorHorariosTest">
+  <component name="RunManager" selected="JUnit.RecordatorioPaseoServiceTest">
     <configuration name="GestorHorariosTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gestion_mascotas" />
       <extension name="coverage">
@@ -97,6 +100,21 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.gestion.mascotas.util" />
       <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.util.GestorHorariosTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RecordatorioPaseoServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gestion_mascotas" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.gestion.mascotas.servicio.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.gestion.mascotas.servicio" />
+      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.servicio.RecordatorioPaseoServiceTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -119,6 +137,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.RecordatorioPaseoServiceTest" />
         <item itemvalue="JUnit.GestorHorariosTest" />
         <item itemvalue="JUnit.ValidadorRecordatorioTest" />
       </list>
