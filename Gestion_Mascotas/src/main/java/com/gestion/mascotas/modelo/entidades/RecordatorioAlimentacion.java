@@ -43,7 +43,6 @@ public class RecordatorioAlimentacion extends Recordatorio {
     public String getFrecuencia() {
         return frecuencia;
     }
-
     public void setFrecuencia(String frecuencia) {
         this.frecuencia = frecuencia;
     }
@@ -51,25 +50,13 @@ public class RecordatorioAlimentacion extends Recordatorio {
     public String getHorarios() {
         return horarios;
     }
-
     public void setHorarios(String horarios) {
         this.horarios = horarios;
-    }
-
-    public List<LocalTime> getListaHorarios() {
-        if (this.horarios == null || this.horarios.isEmpty()) {
-            return new ArrayList<>();
-        }
-        return Arrays.stream(this.horarios.split(","))
-                .map(String::trim)
-                .map(LocalTime::parse)
-                .collect(Collectors.toList());
     }
 
     public String getTipoAlimento() {
         return tipoAlimento;
     }
-
     public void setTipoAlimento(String tipoAlimento) {
         this.tipoAlimento = tipoAlimento;
     }
@@ -77,17 +64,10 @@ public class RecordatorioAlimentacion extends Recordatorio {
     public String getDiasSemana() {
         return diasSemana;
     }
-
     public void setDiasSemana(String diasSemana) {
         this.diasSemana = diasSemana;
     }
 
-    public List<String> getListaDiasSemana() {
-        if (this.diasSemana == null || this.diasSemana.isEmpty()) {
-            return new ArrayList<>();
-        }
-        return Arrays.asList(this.diasSemana.split(","));
-    }
 
     @Override
     public String toString() {

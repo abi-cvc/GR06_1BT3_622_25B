@@ -41,7 +41,6 @@ public class Sugerencia {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -49,7 +48,6 @@ public class Sugerencia {
     public TipoMascota getTipoMascota() {
         return tipoMascota;
     }
-
     public void setTipoMascota(TipoMascota tipoMascota) {
         this.tipoMascota = tipoMascota;
     }
@@ -57,7 +55,6 @@ public class Sugerencia {
     public String getRaza() {
         return raza;
     }
-
     public void setRaza(String raza) {
         this.raza = raza;
     }
@@ -65,7 +62,6 @@ public class Sugerencia {
     public Integer getEdadMin() {
         return edadMin;
     }
-
     public void setEdadMin(Integer edadMin) {
         this.edadMin = edadMin;
     }
@@ -73,7 +69,6 @@ public class Sugerencia {
     public Integer getEdadMax() {
         return edadMax;
     }
-
     public void setEdadMax(Integer edadMax) {
         this.edadMax = edadMax;
     }
@@ -81,7 +76,6 @@ public class Sugerencia {
     public Double getPesoMin() {
         return pesoMin;
     }
-
     public void setPesoMin(Double pesoMin) {
         this.pesoMin = pesoMin;
     }
@@ -89,7 +83,6 @@ public class Sugerencia {
     public Double getPesoMax() {
         return pesoMax;
     }
-
     public void setPesoMax(Double pesoMax) {
         this.pesoMax = pesoMax;
     }
@@ -97,7 +90,6 @@ public class Sugerencia {
     public String getDescripcion() {
         return descripcion;
     }
-
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
@@ -105,7 +97,6 @@ public class Sugerencia {
     public String getFuente() {
         return fuente;
     }
-
     public void setFuente(String fuente) {
         this.fuente = fuente;
     }

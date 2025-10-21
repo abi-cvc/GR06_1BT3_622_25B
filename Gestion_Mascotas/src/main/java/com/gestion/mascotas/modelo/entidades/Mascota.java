@@ -77,15 +77,6 @@ public class Mascota {
     public List<Recordatorio> getRecordatorios() { return recordatorios; }
     public void setRecordatorios(List<Recordatorio> recordatorios) { this.recordatorios = recordatorios; }
 
-    public void actualizarDatos(String nombre, String raza, Integer edad, Double peso, String color) {
-        this.setNombre(nombre);
-        this.setRaza(raza);
-        this.setEdad(edad);
-        this.setPeso(peso);
-        this.setColor(color);
-        System.out.println("Datos de mascota actualizados para: " + nombre);
-    }
-
     @Override
     public String toString() {
         return "Mascota{" +

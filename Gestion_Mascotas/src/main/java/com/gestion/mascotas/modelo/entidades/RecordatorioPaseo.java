@@ -80,14 +80,6 @@ public class RecordatorioPaseo extends Recordatorio {
         return Arrays.asList(this.diasSemana.split(","));
     }
 
-    public void modificarDetallesPaseo(String diasSemana, String horarios, Integer duracionMinutos) {
-        this.setDiasSemana(diasSemana);
-        this.setHorarios(horarios);
-        this.setDuracionMinutos(duracionMinutos);
-        System.out.println("Detalles de paseo actualizados: Días=" + diasSemana +
-                ", Horarios=" + horarios + ", Duración=" + duracionMinutos + " min");
-    }
-
     @Override
     public String toString() {
         String mascotaNombre = obtenerNombreMascotaSeguro();

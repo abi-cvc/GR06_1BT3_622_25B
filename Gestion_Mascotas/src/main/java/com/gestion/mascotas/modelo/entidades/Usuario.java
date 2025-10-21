@@ -46,7 +46,6 @@ public class Usuario {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -54,7 +53,6 @@ public class Usuario {
     public String getNombreUsuario() {
         return nombreUsuario;
     }
-
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
@@ -62,7 +60,6 @@ public class Usuario {
     public String getNombre() {
         return nombre;
     }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -70,7 +67,6 @@ public class Usuario {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -78,7 +74,6 @@ public class Usuario {
     public String getTelefono() {
         return telefono;
     }
-
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
@@ -86,7 +81,6 @@ public class Usuario {
     public String getContrasena() {
         return contrasena;
     }
-
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }
@@ -94,15 +88,8 @@ public class Usuario {
     public List<Mascota> getMascotas() {
         return mascotas;
     }
-
     public void setMascotas(List<Mascota> mascotas) {
         this.mascotas = mascotas;
-    }
-
-    // Método auxiliar para agregar mascota
-    public void addMascota(Mascota mascota) {
-        mascotas.add(mascota);
-        mascota.setUsuario(this);
     }
 
     @Override

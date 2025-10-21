@@ -20,10 +20,10 @@ public class RecordatorioPaseoService extends RecordatorioService {
         this.recordatorioDAO = new RecordatorioPaseoDAO();
     }
 
-    public boolean registrarRecordatorio(String mascotaIdStr, String frecuenciaStr,
-                                         String duracionMinutosStr, String[] diasSeleccionados,
-                                         java.util.function.Function<String, String> getParameter,
-                                         Usuario usuario) {
+    public boolean configurarRecordatorio(String mascotaIdStr, String frecuenciaStr,
+                                          String duracionMinutosStr, String[] diasSeleccionados,
+                                          java.util.function.Function<String, String> getParameter,
+                                          Usuario usuario) {
         // Validar frecuencia
         String error = ValidadorRecordatorio.validarFrecuencia(frecuenciaStr);
         if (error != null) {
@@ -77,10 +77,10 @@ public class RecordatorioPaseoService extends RecordatorioService {
         return recordatorioDAO.guardar(recordatorio);
     }
 
-    public boolean actualizarRecordatorio(Long recordatorioId, String frecuenciaStr,
-                                          String duracionMinutosStr, String[] diasSeleccionados,
-                                          java.util.function.Function<String, String> getParameter,
-                                          Usuario usuario) {
+    public boolean modificarRecordatorio(Long recordatorioId, String frecuenciaStr,
+                                         String duracionMinutosStr, String[] diasSeleccionados,
+                                         java.util.function.Function<String, String> getParameter,
+                                         Usuario usuario) {
         RecordatorioPaseo recordatorio = recordatorioDAO.obtenerPorId(recordatorioId);
 
         // Validar permisos

@@ -89,7 +89,7 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
             String tipoAlimento = request.getParameter("tipoAlimento");
             String[] diasSeleccionados = request.getParameterValues("diasSemana");
 
-            boolean guardado = recordatorioService.registrarRecordatorio(
+            boolean guardado = recordatorioService.configurarRecordatorio(
                     mascotaIdStr, frecuencia, tipoAlimento, diasSeleccionados,
                     request::getParameter, usuario
             );
@@ -142,7 +142,7 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
             String tipoAlimento = request.getParameter("tipoAlimento");
             String[] diasSeleccionados = request.getParameterValues("diasSemana");
 
-            boolean actualizado = recordatorioService.actualizarRecordatorio(
+            boolean actualizado = recordatorioService.modificarRecordatorio(
                     recordatorioId, frecuencia, tipoAlimento, diasSeleccionados,
                     request::getParameter, usuario
             );

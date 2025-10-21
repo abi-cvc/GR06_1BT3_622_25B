@@ -22,7 +22,6 @@ public class SugerenciaEjercicio extends Sugerencia {
     public String getTipoEjercicio() {
         return tipoEjercicio;
     }
-
     public void setTipoEjercicio(String tipoEjercicio) {
         this.tipoEjercicio = tipoEjercicio;
     }
@@ -30,7 +29,6 @@ public class SugerenciaEjercicio extends Sugerencia {
     public Integer getDuracionMinutos() {
         return duracionMinutos;
     }
-
     public void setDuracionMinutos(Integer duracionMinutos) {
         this.duracionMinutos = duracionMinutos;
     }
@@ -38,7 +36,6 @@ public class SugerenciaEjercicio extends Sugerencia {
     public NivelActividad getNivelActividad() {
         return nivelActividad;
     }
-
     public void setNivelActividad(NivelActividad nivelActividad) {
         this.nivelActividad = nivelActividad;
     }

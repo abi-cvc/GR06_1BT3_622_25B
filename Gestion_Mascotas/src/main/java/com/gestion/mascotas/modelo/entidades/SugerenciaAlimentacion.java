@@ -20,7 +20,6 @@ public class SugerenciaAlimentacion extends Sugerencia {
     public String getTipoComida() {
         return tipoComida;
     }
-
     public void setTipoComida(String tipoComida) {
         this.tipoComida = tipoComida;
     }
@@ -28,7 +27,6 @@ public class SugerenciaAlimentacion extends Sugerencia {
     public String getFrecuencia() {
         return frecuencia;
     }
-
     public void setFrecuencia(String frecuencia) {
         this.frecuencia = frecuencia;
     }
@@ -36,10 +34,8 @@ public class SugerenciaAlimentacion extends Sugerencia {
     public Integer getCaloriasRecomendadas() {
         return caloriasRecomendadas;
     }
+    public void setCaloriasRecomendadas(Integer caloriasRecomendadas) {this.caloriasRecomendadas = caloriasRecomendadas;}
 
-    public void setCaloriasRecomendadas(Integer caloriasRecomendadas) {
-        this.caloriasRecomendadas = caloriasRecomendadas;
-    }
 
     @Override
     public String toString() {

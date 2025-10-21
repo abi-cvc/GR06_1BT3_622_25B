@@ -11,9 +11,16 @@ public class Vacuna {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 100)
     private String nombre;
 
     private LocalDate fecha;
+
+    @Column(length = 100)
+    private String nombreVeterinario;
+
+    @Column(name = "proxima_dosis")
+    private LocalDate proximaDosis;
 
     @ManyToOne
     @JoinColumn(name = "mascota_id", nullable = false)
@@ -31,4 +38,10 @@ public class Vacuna {
 
     public Mascota getMascota() { return mascota; }
     public void setMascota(Mascota mascota) { this.mascota = mascota; }
+
+    public LocalDate getProximaDosis() {return proximaDosis;}
+    public void setProximaDosis(LocalDate proximaDosis) {this.proximaDosis = proximaDosis;}
+
+    public String getNombreVeterinario() {return nombreVeterinario;}
+    public void setNombreVeterinario(String nombreVeterinario) {this.nombreVeterinario = nombreVeterinario;}
 }

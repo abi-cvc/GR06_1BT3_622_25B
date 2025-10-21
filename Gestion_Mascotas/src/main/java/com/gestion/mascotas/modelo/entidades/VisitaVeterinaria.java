@@ -11,9 +11,30 @@ public class VisitaVeterinaria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    public String getDiagnostico() {
+        return diagnostico;
+    }
+
+    public void setDiagnostico(String diagnostico) {
+        this.diagnostico = diagnostico;
+    }
+
     private LocalDate fecha;
 
+    @Column(columnDefinition = "TEXT")
     private String motivo;
+
+    @Column(columnDefinition = "TEXT")
+    private String diagnostico;
+
+    @Column(columnDefinition = "TEXT")
+    private String tratamiento;
+
+    @Column(columnDefinition = "TEXT")
+    private String observaciones;
+
+    @Column(length = 100)
+    private String nombreVeterinario;
 
     @ManyToOne
     @JoinColumn(name = "mascota_id", nullable = false)
@@ -31,4 +52,13 @@ public class VisitaVeterinaria {
 
     public Mascota getMascota() { return mascota; }
     public void setMascota(Mascota mascota) { this.mascota = mascota; }
+
+    public String getTratamiento() {return tratamiento;}
+    public void setTratamiento(String tratamiento) {this.tratamiento = tratamiento;}
+
+    public String getObservaciones() {return observaciones;}
+    public void setObservaciones(String observaciones) {this.observaciones = observaciones;}
+
+    public String getNombreVeterinario() {return nombreVeterinario;}
+    public void setNombreVeterinario(String nombreVeterinario) {this.nombreVeterinario = nombreVeterinario;}
 }
