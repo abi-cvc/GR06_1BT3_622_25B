@@ -27,14 +27,14 @@
             <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/gestion_mascotas?useUnicode=true&amp;characterEncoding=UTF-8"/>
             <property name="jakarta.persistence.jdbc.user" value="postgres"/>
             <!-- ⚠️ IMPORTANTEEEEEE CAMBIA ESTA CONTRASEÑA POR LA QUE PUSISTE EN LA INSTALACIÓN -->
-            <property name="jakarta.persistence.jdbc.password" value="carol123"/>
+            <property name="jakarta.persistence.jdbc.password" value="mateo"/>
 
             <!-- Configuración de Hibernate -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
-
+            
             <!-- Configuración UTF-8 para caracteres especiales (tildes, ñ) -->
             <property name="hibernate.connection.characterEncoding" value="UTF-8"/>
             <property name="hibernate.connection.useUnicode" value="true"/>

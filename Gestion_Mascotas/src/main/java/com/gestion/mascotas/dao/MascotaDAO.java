@@ -14,28 +14,7 @@ public class MascotaDAO {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            if (mascota.getId() == null) {
-                // Nueva mascota - usar persist
-                em.persist(mascota);
-            } else {
-                // Mascota existente - usar merge para actualizar
-                em.merge(mascota);
-            }
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) tx.rollback();
-            e.printStackTrace();
-        } finally {
-            em.close();
-        }
-    }
-
-    public void actualizar(Mascota mascota) {
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-            em.merge(mascota);
+            em.persist(mascota);
             tx.commit();
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();

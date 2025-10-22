@@ -1,7 +1,7 @@
 package com.gestion.mascotas.controlador;
 
 import com.gestion.mascotas.dao.UsuarioDAO;
-import com.gestion.mascotas.modelo.Usuario;
+import com.gestion.mascotas.modelo.entidades.Usuario;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

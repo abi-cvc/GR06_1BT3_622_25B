@@ -1,8 +1,8 @@
 package com.gestion.mascotas.controlador;
 
-import com.gestion.mascotas.modelo.RecordatorioAlimentacion;
-import com.gestion.mascotas.modelo.Usuario;
-import com.gestion.mascotas.service.RecordatorioAlimentacionService;
+import com.gestion.mascotas.modelo.entidades.RecordatorioAlimentacion;
+import com.gestion.mascotas.modelo.entidades.Usuario;
+import com.gestion.mascotas.servicio.RecordatorioAlimentacionService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -89,7 +89,7 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
             String tipoAlimento = request.getParameter("tipoAlimento");
             String[] diasSeleccionados = request.getParameterValues("diasSemana");
 
-            boolean guardado = recordatorioService.registrarRecordatorio(
+            boolean guardado = recordatorioService.configurarRecordatorio(
                     mascotaIdStr, frecuencia, tipoAlimento, diasSeleccionados,
                     request::getParameter, usuario
             );
@@ -142,7 +142,7 @@ public class RecordatorioAlimentacionServlet extends HttpServlet {
             String tipoAlimento = request.getParameter("tipoAlimento");
             String[] diasSeleccionados = request.getParameterValues("diasSemana");
 
-            boolean actualizado = recordatorioService.actualizarRecordatorio(
+            boolean actualizado = recordatorioService.modificarRecordatorio(
                     recordatorioId, frecuencia, tipoAlimento, diasSeleccionados,
                     request::getParameter, usuario
             );

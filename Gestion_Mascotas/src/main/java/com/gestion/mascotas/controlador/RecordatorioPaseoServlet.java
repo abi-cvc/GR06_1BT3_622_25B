@@ -1,8 +1,8 @@
 package com.gestion.mascotas.controlador;
 
-import com.gestion.mascotas.modelo.RecordatorioPaseo;
-import com.gestion.mascotas.modelo.Usuario;
-import com.gestion.mascotas.service.RecordatorioPaseoService;
+import com.gestion.mascotas.modelo.entidades.RecordatorioPaseo;
+import com.gestion.mascotas.modelo.entidades.Usuario;
+import com.gestion.mascotas.servicio.RecordatorioPaseoService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -86,7 +86,7 @@ public class RecordatorioPaseoServlet extends HttpServlet {
             String duracionMinutosStr = request.getParameter("duracionMinutos");
             String[] diasSeleccionados = request.getParameterValues("diasSemanaPaseo");
 
-            boolean guardado = recordatorioService.registrarRecordatorio(
+            boolean guardado = recordatorioService.configurarRecordatorio(
                     mascotaIdStr, frecuenciaStr, duracionMinutosStr, diasSeleccionados,
                     request::getParameter, usuario
             );
@@ -136,7 +136,7 @@ public class RecordatorioPaseoServlet extends HttpServlet {
             String duracionMinutosStr = request.getParameter("duracionMinutos");
             String[] diasSeleccionados = request.getParameterValues("diasSemanaPaseo");
 
-            boolean actualizado = recordatorioService.actualizarRecordatorio(
+            boolean actualizado = recordatorioService.modificarRecordatorio(
                     recordatorioId, frecuenciaStr, duracionMinutosStr, diasSeleccionados,
                     request::getParameter, usuario
             );

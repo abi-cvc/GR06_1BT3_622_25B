@@ -1,7 +1,7 @@
 package com.gestion.mascotas.dao;
 
-import com.gestion.mascotas.modelo.SugerenciaEjercicio;
-import com.gestion.mascotas.modelo.TipoMascota;
+import com.gestion.mascotas.modelo.entidades.SugerenciaEjercicio;
+import com.gestion.mascotas.modelo.enums.TipoMascota;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;

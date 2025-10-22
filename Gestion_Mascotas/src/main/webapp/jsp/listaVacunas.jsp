@@ -103,6 +103,7 @@
                         </thead>
                         <tbody>
                         <%@ page import="java.time.LocalDate" %>
+                        <%@ page import="com.gestion.mascotas.modelo.entidades.Vacuna" %>
                         <c:forEach var="vacuna" items="${vacunas}">
                             <%
                                 // Obtener la fecha actual del servidor
@@ -123,7 +124,7 @@
                                 </td>
                                 <td style="padding: 1rem; text-align: center;">
                                     <%
-                                        com.gestion.mascotas.modelo.Vacuna vacunaActual = (com.gestion.mascotas.modelo.Vacuna) pageContext.getAttribute("vacuna");
+                                        com.gestion.mascotas.modelo.entidades.Vacuna vacunaActual = (com.gestion.mascotas.modelo.entidades.Vacuna) pageContext.getAttribute("vacuna");
                                         LocalDate fechaVacuna = vacunaActual.getFecha();
                                         boolean esFutura = fechaVacuna != null && fechaVacuna.isAfter(fechaHoy);
                                     %>

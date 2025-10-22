@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectModuleManager">
-    <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/GR06_1BT3_622_25B.iml" filepath="$PROJECT_DIR$/.idea/GR06_1BT3_622_25B.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Gestion_Mascotas/gestion_mascotas.iml" filepath="$PROJECT_DIR$/Gestion_Mascotas/gestion_mascotas.iml" />
-    </modules>
-  </component>
-</project>
