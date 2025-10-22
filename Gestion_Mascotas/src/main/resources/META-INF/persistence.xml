@@ -13,7 +13,6 @@
         <class>com.gestion.mascotas.modelo.entidades.Mascota</class>
         <class>com.gestion.mascotas.modelo.entidades.Vacuna</class>
         <class>com.gestion.mascotas.modelo.entidades.VisitaVeterinaria</class>
-        <!-- NUEVAS ENTIDADES -->
         <class>com.gestion.mascotas.modelo.entidades.Recordatorio</class>
         <class>com.gestion.mascotas.modelo.entidades.RecordatorioAlimentacion</class>
         <class>com.gestion.mascotas.modelo.entidades.RecordatorioPaseo</class>

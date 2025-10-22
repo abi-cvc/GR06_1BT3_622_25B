@@ -11,14 +11,14 @@ import java.util.List;
 
 public class VisitaVeterinariaService {
 
-    private VisitaVeterinariaDAO visitaDAO = new VisitaVeterinariaDAO();
-    private MascotaDAO mascotaDAO = new MascotaDAO();
+    private final VisitaVeterinariaDAO visitaDAO = new VisitaVeterinariaDAO();
+    private final MascotaDAO mascotaDAO = new MascotaDAO();
 
     /**
-     * Valida los datos de entrada para registrar una visita. (Corresponde a validarDatos)
+     * Válida los datos de entrada para registrar una visita. (Corresponde a validarDatos)
      * @return Mensaje de error o null si es válido.
      */
-    private String validarDatos(LocalDate fecha, String motivo, Mascota mascota) {
+    private String validarDatos(LocalDate fecha, String motivo, String diagnostico, String tratamiento, String observaciones, String nombreVeterinario, Mascota mascota) {
         if (fecha == null) {
             return "La fecha de la visita es obligatoria.";
         }
@@ -31,7 +31,20 @@ public class VisitaVeterinariaService {
         if (mascota == null) {
             return "La mascota asociada no fue encontrada.";
         }
-        // Podrían añadirse más validaciones (longitud del motivo, etc.)
+
+        if (diagnostico != null && diagnostico.length() > 1000) { // Ejemplo de límite
+            return "El diagnóstico es demasiado largo.";
+        }
+        if (tratamiento != null && tratamiento.length() > 1000) {
+            return "El tratamiento es demasiado largo.";
+        }
+        if (observaciones != null && observaciones.length() > 1000) {
+            return "Las observaciones son demasiado largas.";
+        }
+        if (nombreVeterinario != null && nombreVeterinario.length() > 100) {
+            return "El nombre del veterinario no puede exceder los 100 caracteres.";
+        }
+
         return null;
     }
 
@@ -41,10 +54,10 @@ public class VisitaVeterinariaService {
      * @throws SecurityException si el usuario no tiene permiso sobre la mascota.
      * @throws RuntimeException si ocurre un error al guardar.
      */
-    public void registrarVisita(LocalDate fecha, String motivo, Long mascotaId, Usuario usuarioActual) {
+    public void registrarVisita(LocalDate fecha, String motivo, String diagnostico, String tratamiento, String observaciones, String nombreVeterinario, Long mascotaId, Usuario usuarioActual) {
         Mascota mascota = mascotaDAO.obtenerPorId(mascotaId);
 
-        String errorValidacion = validarDatos(fecha, motivo, mascota);
+        String errorValidacion = validarDatos(fecha, motivo, diagnostico,tratamiento, observaciones, nombreVeterinario, mascota);
         if (errorValidacion != null) {
             throw new IllegalArgumentException(errorValidacion);
         }
@@ -57,6 +70,10 @@ public class VisitaVeterinariaService {
         VisitaVeterinaria nuevaVisita = new VisitaVeterinaria();
         nuevaVisita.setFecha(fecha);
         nuevaVisita.setMotivo(motivo.trim());
+        nuevaVisita.setDiagnostico(diagnostico.trim());
+        nuevaVisita.setTratamiento(tratamiento.trim());
+        nuevaVisita.setObservaciones(observaciones.trim());
+        nuevaVisita.setNombreVeterinario(nombreVeterinario.trim());
         nuevaVisita.setMascota(mascota);
 
         try {
@@ -74,20 +91,20 @@ public class VisitaVeterinariaService {
         return visitaDAO.obtenerPorUsuario(usuarioId);
     }
 
-    /**
-     * Consulta el historial de visitas de una mascota específica.
-     */
-    public List<VisitaVeterinaria> consultarHistorialPorMascota(Long mascotaId, Usuario usuarioActual) {
-        Mascota mascota = mascotaDAO.obtenerPorId(mascotaId);
-        if (mascota == null) {
-            throw new IllegalArgumentException("Mascota no encontrada.");
-        }
-        // Verificar permiso
-        if (!mascota.getUsuario().getId().equals(usuarioActual.getId())) {
-            throw new SecurityException("No tienes permiso para ver las visitas de esta mascota.");
-        }
-        return visitaDAO.obtenerPorMascota(mascotaId);
-    }
+//    /**
+//     * Consulta el historial de visitas de una mascota específica.
+//     */
+//    public List<VisitaVeterinaria> consultarHistorialPorMascota(Long mascotaId, Usuario usuarioActual) {
+//        Mascota mascota = mascotaDAO.obtenerPorId(mascotaId);
+//        if (mascota == null) {
+//            throw new IllegalArgumentException("Mascota no encontrada.");
+//        }
+//        // Verificar permiso
+//        if (!mascota.getUsuario().getId().equals(usuarioActual.getId())) {
+//            throw new SecurityException("No tienes permiso para ver las visitas de esta mascota.");
+//        }
+//        return visitaDAO.obtenerPorMascota(mascotaId);
+//    }
 
 
     /**
@@ -114,32 +131,6 @@ public class VisitaVeterinariaService {
             throw new RuntimeException("Error al eliminar la visita de la base de datos.");
         }
     }
-
-    /*
-    public void actualizarVisita(Long visitaId, LocalDate nuevaFecha, String nuevoMotivo, Usuario usuarioActual) {
-        VisitaVeterinaria visita = visitaDAO.obtenerPorId(visitaId);
-        if (visita == null) {
-            throw new IllegalArgumentException("Visita no encontrada.");
-        }
-        if (!visita.getMascota().getUsuario().getId().equals(usuarioActual.getId())) {
-            throw new SecurityException("No tienes permiso para actualizar esta visita.");
-        }
-
-        String errorValidacion = validarDatos(nuevaFecha, nuevoMotivo, visita.getMascota());
-        if (errorValidacion != null) {
-            throw new IllegalArgumentException(errorValidacion);
-        }
-
-        visita.setFecha(nuevaFecha);
-        visita.setMotivo(nuevoMotivo.trim());
-
-        try {
-            visitaDAO.guardar(visita); // Usará merge por tener ID
-        } catch (Exception e) {
-            throw new RuntimeException("Error al actualizar la visita.");
-        }
-    }
-    */
 
     public long contarVisitasEnRango(Long mascotaId, LocalDate fechaInicio, LocalDate fechaFin, Usuario usuarioActual) {
         Mascota mascota = mascotaDAO.obtenerPorId(mascotaId);

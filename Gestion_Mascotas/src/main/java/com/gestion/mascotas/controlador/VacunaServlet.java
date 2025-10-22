@@ -103,6 +103,8 @@ public class VacunaServlet extends HttpServlet {
         try {
             String nombre = request.getParameter("nombre");
             String fechaStr = request.getParameter("fecha");
+            String nombreVeterinario = request.getParameter("nombreVeterinario");
+            LocalDate proximaDosis  = LocalDate.parse(request.getParameter("proximaDosis"));
             String mascotaIdStr = request.getParameter("mascotaId");
 
             // Validar que los strings no sean nulos o vacíos antes de parsear
@@ -113,7 +115,7 @@ public class VacunaServlet extends HttpServlet {
             LocalDate fecha = LocalDate.parse(fechaStr);
             Long mascotaId = Long.parseLong(mascotaIdStr);
 
-            vacunaService.registrarVacuna(nombre, fecha, mascotaId, usuario);
+            vacunaService.registrarVacuna(nombre, fecha, nombreVeterinario, proximaDosis, mascotaId, usuario);
 
             response.sendRedirect(request.getContextPath() + "/vacunas?success=registrado");
 
