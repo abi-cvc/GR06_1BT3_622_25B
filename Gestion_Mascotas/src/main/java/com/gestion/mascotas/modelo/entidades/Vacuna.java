@@ -16,7 +16,7 @@ public class Vacuna {
 
     private LocalDate fecha;
 
-    @Column(length = 100)
+    @Column(name = "nombre_veterinario", length = 100)
     private String nombreVeterinario;
 
     @Column(name = "proxima_dosis")

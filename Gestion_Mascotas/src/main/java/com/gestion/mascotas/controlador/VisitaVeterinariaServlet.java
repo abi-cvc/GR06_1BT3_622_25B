@@ -117,6 +117,12 @@ public class VisitaVeterinariaServlet extends HttpServlet {
             String mascotaIdStr = request.getParameter("mascotaId");
             String fechaStr = request.getParameter("fecha");
             String motivo = request.getParameter("motivo");
+            String diagnostico = request.getParameter("diagnostico");
+            String tratamiento = request.getParameter("tratamiento");
+            String observaciones = request.getParameter("observaciones");
+            String nombreVeterinario = request.getParameter("nombreVeterinario");
+
+            System.out.println("Este es el nombre: "+nombreVeterinario);
 
             // Validar que los strings no sean nulos o vacíos antes de parsear
             if (mascotaIdStr == null || mascotaIdStr.trim().isEmpty() || fechaStr == null || fechaStr.isEmpty() || motivo == null || motivo.trim().isEmpty()) {
@@ -126,7 +132,7 @@ public class VisitaVeterinariaServlet extends HttpServlet {
             Long mascotaId = Long.parseLong(mascotaIdStr);
             LocalDate fecha = LocalDate.parse(fechaStr);
 
-            visitaService.registrarVisita(fecha, motivo, mascotaId, usuario); // Llamar al servicio
+            visitaService.registrarVisita(fecha, motivo, diagnostico,tratamiento,observaciones,nombreVeterinario, mascotaId, usuario);
 
             response.sendRedirect(request.getContextPath() + "/visitas?success=registrado");
 

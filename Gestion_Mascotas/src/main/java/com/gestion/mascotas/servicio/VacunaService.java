@@ -11,14 +11,14 @@ import java.util.List;
 
 public class VacunaService {
 
-    private VacunaDAO vacunaDAO = new VacunaDAO();
-    private MascotaDAO mascotaDAO = new MascotaDAO();
+    private final VacunaDAO vacunaDAO = new VacunaDAO();
+    private final MascotaDAO mascotaDAO = new MascotaDAO();
 
     /**
-     * Valida los datos de entrada para registrar una vacuna.
+     * Válida los datos de entrada para registrar una vacuna.
      * @return Mensaje de error o null si es válido.
      */
-    private String validarDatosVacuna(String nombre, LocalDate fecha, Mascota mascota) {
+    private String validarDatosVacuna(String nombre, LocalDate fecha, Mascota mascota, String nombreVeterinario, LocalDate proximaDosis) {
         if (nombre == null || nombre.trim().isEmpty()) {
             return "El nombre o tipo de vacuna es obligatorio.";
         }
@@ -28,7 +28,14 @@ public class VacunaService {
         if (mascota == null) {
             return "La mascota asociada no fue encontrada.";
         }
-        // Se podrían añadir más validaciones aquí (ej. tipos de vacuna válidos, fechas razonables)
+
+        if (nombreVeterinario != null && nombreVeterinario.length() > 100) {
+            return "El nombre del veterinario no puede exceder los 100 caracteres.";
+        }
+
+        if (proximaDosis != null && proximaDosis.isBefore(fecha)) {
+            return "La fecha de la próxima dosis no puede ser anterior a la fecha de aplicación.";
+        }
         return null;
     }
 
@@ -38,10 +45,11 @@ public class VacunaService {
      * @throws SecurityException si el usuario no tiene permiso sobre la mascota.
      * @throws RuntimeException si ocurre un error al guardar.
      */
-    public void registrarVacuna(String nombre, LocalDate fecha, Long mascotaId, Usuario usuarioActual) {
+    public void registrarVacuna(String nombre, LocalDate fecha, String nombreVeterinario, LocalDate proximaDosis, Long mascotaId, Usuario usuarioActual) {
         Mascota mascota = mascotaDAO.obtenerPorId(mascotaId);
 
-        String errorValidacion = validarDatosVacuna(nombre, fecha, mascota);
+        // Validar datos
+        String errorValidacion = validarDatosVacuna(nombre, fecha, mascota, nombreVeterinario, proximaDosis);
         if (errorValidacion != null) {
             throw new IllegalArgumentException(errorValidacion);
         }
@@ -55,11 +63,14 @@ public class VacunaService {
         nuevaVacuna.setNombre(nombre.trim());
         nuevaVacuna.setFecha(fecha);
         nuevaVacuna.setMascota(mascota);
+        nuevaVacuna.setNombreVeterinario(nombreVeterinario != null ? nombreVeterinario.trim() : null);
+        nuevaVacuna.setProximaDosis(proximaDosis);
+
 
         try {
             vacunaDAO.guardar(nuevaVacuna);
         } catch (Exception e) {
-            // Loggear el error e.printStackTrace();
+            e.printStackTrace();
             throw new RuntimeException("Error al guardar la vacuna en la base de datos.");
         }
     }

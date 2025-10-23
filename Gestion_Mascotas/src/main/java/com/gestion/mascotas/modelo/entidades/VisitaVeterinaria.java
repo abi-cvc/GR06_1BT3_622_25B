@@ -33,7 +33,7 @@ public class VisitaVeterinaria {
     @Column(columnDefinition = "TEXT")
     private String observaciones;
 
-    @Column(length = 100)
+    @Column(name = "nombre_veterinario", length = 100)
     private String nombreVeterinario;
 
     @ManyToOne

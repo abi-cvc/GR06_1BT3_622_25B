@@ -115,7 +115,7 @@ COMMENT ON TABLE sugerencias IS 'Tabla base para almacenar criterios y descripci
 -- Tabla de Sugerencias de Alimentación
 CREATE TABLE IF NOT EXISTS sugerencias_alimentacion (
     id BIGINT PRIMARY KEY,
-    ipo_comida VARCHAR(100),
+    tipo_comida VARCHAR(100),
     frecuencia VARCHAR(100),
     calorias_recomendadas INTEGER,
     CONSTRAINT fk_sugerencia_alimentacion_base FOREIGN KEY (id)
