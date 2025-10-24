@@ -1,9 +1,9 @@
 package com.gestion.mascotas.service;
 
 import com.gestion.mascotas.dao.MascotaDAO;
-import com.gestion.mascotas.modelo.Mascota;
-import com.gestion.mascotas.modelo.Usuario;
-import com.gestion.mascotas.logica.ValidadorRecordatorio;
+import com.gestion.mascotas.modelo.entidades.Mascota;
+import com.gestion.mascotas.modelo.entidades.Usuario;
+import com.gestion.mascotas.util.ValidadorRecordatorio;
 
 public abstract class RecordatorioService {
 

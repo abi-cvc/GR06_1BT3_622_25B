@@ -1,11 +1,11 @@
 package com.gestion.mascotas.service;
 
 import com.gestion.mascotas.dao.RecordatorioPaseoDAO;
-import com.gestion.mascotas.modelo.Mascota;
-import com.gestion.mascotas.modelo.RecordatorioPaseo;
-import com.gestion.mascotas.modelo.Usuario;
-import com.gestion.mascotas.logica.ValidadorRecordatorio;
-import com.gestion.mascotas.logica.GestorHorarios;
+import com.gestion.mascotas.modelo.entidades.Mascota;
+import com.gestion.mascotas.modelo.entidades.RecordatorioPaseo;
+import com.gestion.mascotas.modelo.entidades.Usuario;
+import com.gestion.mascotas.util.ValidadorRecordatorio;
+import com.gestion.mascotas.util.GestorHorarios;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;

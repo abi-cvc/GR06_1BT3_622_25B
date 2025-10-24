@@ -1,5 +1,9 @@
 package com.gestion.mascotas.modelo;
 
+import com.gestion.mascotas.modelo.entidades.Mascota;
+import com.gestion.mascotas.modelo.entidades.Usuario;
+import com.gestion.mascotas.modelo.enums.TipoMascota;
+import com.gestion.mascotas.util.ValidadorAtencionEspecial;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -2,10 +2,10 @@ package com.gestion.mascotas.service;
 
 import com.gestion.mascotas.dao.MascotaDAO;
 import com.gestion.mascotas.dao.RecordatorioAlimentacionDAO;
-import com.gestion.mascotas.modelo.Mascota;
-import com.gestion.mascotas.modelo.RecordatorioAlimentacion;
-import com.gestion.mascotas.modelo.TipoMascota;
-import com.gestion.mascotas.modelo.Usuario;
+import com.gestion.mascotas.modelo.entidades.Mascota;
+import com.gestion.mascotas.modelo.entidades.RecordatorioAlimentacion;
+import com.gestion.mascotas.modelo.enums.TipoMascota;
+import com.gestion.mascotas.modelo.entidades.Usuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
