@@ -10,8 +10,18 @@ import java.util.List;
 
 public class MascotaService {
 
-    private final MascotaDAO mascotaDAO = new MascotaDAO();
-    private final UsuarioDAO usuarioDAO = new UsuarioDAO();
+    private final MascotaDAO mascotaDAO;
+    private final UsuarioDAO usuarioDAO;
+
+    public MascotaService() {
+        this.mascotaDAO = new MascotaDAO();
+        this.usuarioDAO = new UsuarioDAO();
+    }
+
+    public MascotaService(MascotaDAO mascotaDAO, UsuarioDAO usuarioDAO) {
+        this.mascotaDAO = mascotaDAO;
+        this.usuarioDAO = usuarioDAO;
+    }
 
     /**
      * Registra una nueva mascota para un usuario. (registrarMascota)

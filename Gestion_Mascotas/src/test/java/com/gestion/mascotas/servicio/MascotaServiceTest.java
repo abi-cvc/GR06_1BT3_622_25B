@@ -10,6 +10,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullSource;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.stream.Stream;
 
@@ -19,15 +21,20 @@ class MascotaServiceTest {
 
     private MascotaService mascotaService;
 
+    // --- CAMBIO 2: Anotar los DAOs como @Mock ---
+    @Mock
     protected MascotaDAO mascotaDAO;
+    @Mock
     protected UsuarioDAO usuarioDAO;
 
+    // --- CAMBIO 3: Modificar setUp ---
     @BeforeEach
     void setUp() {
-        mascotaDAO = new MascotaDAO(); // O null
-        usuarioDAO = new UsuarioDAO(); // O null
+        // 1. Inicializar los mocks
+        MockitoAnnotations.openMocks(this);
 
-        mascotaService = new MascotaService();
+        // 2. Usar el constructor de test
+        mascotaService = new MascotaService(mascotaDAO, usuarioDAO);
     }
 
     // --- Test: Pruebas con Edades Inválidas ---

@@ -13,6 +13,10 @@ public abstract class RecordatorioService {
         this.mascotaDAO = new MascotaDAO();
     }
 
+    // Constructor para Inyección de Dependencias / Tests
+    public RecordatorioService(MascotaDAO mascotaDAO) {
+        this.mascotaDAO = mascotaDAO;
+    }
     protected Mascota validarYObtenerMascota(String mascotaIdStr, Usuario usuario) {
         // Validar ID de mascota
         String error = ValidadorRecordatorio.validarMascotaId(mascotaIdStr);
