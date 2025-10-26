@@ -41,9 +41,9 @@
                         <i class="fas fa-user-circle"></i>
                     </div>
                     <div class="user-info">
-                        <h2 class="user-name">${sessionScope.nombreCompleto}</h2>
-                        <p class="user-email"><i class="fas fa-envelope"></i> ${sessionScope.email}</p>
-                        <p class="user-username"><i class="fas fa-at"></i> ${sessionScope.nombreUsuario}</p>
+                        <h2 class="user-name">${sessionScope.usuario.nombre}</h2>
+                        <p class="user-email"><i class="fas fa-envelope"></i> ${sessionScope.usuario.email}</p>
+                        <p class="user-username"><i class="fas fa-at"></i> ${sessionScope.usuario.nombreUsuario}</p>
                         <c:if test="${not empty sessionScope.usuario.telefono}">
                             <p class="user-phone"><i class="fas fa-phone"></i> ${sessionScope.usuario.telefono}</p>
                         </c:if>
@@ -213,7 +213,7 @@
                     <input type="text"
                            id="nombre"
                            name="nombre"
-                           value="${sessionScope.nombreCompleto}"
+                           value="${sessionScope.usuario.nombre}"
                            required
                            maxlength="100">
                 </div>
@@ -225,7 +225,7 @@
                     <input type="email"
                            id="email"
                            name="email"
-                           value="${sessionScope.email}"
+                           value="${sessionScope.usuario.email}"
                            required
                            maxlength="100">
                 </div>

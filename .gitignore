@@ -1,0 +1,39 @@
+# Archivos de compilación de Java
+*.class
+
+# Directorios de salida de Maven
+/target/
+/Gestion_Mascotas/target/
+
+# Logs
+*.log
+logs/
+
+# Archivos de configuración del IDE
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# NetBeans
+nbproject/
+build/
+dist/
+
+# VS Code
+.vscode/
+
+# Archivos del sistema operativo
+.DS_Store
+
+# Archivos generados por servidores locales
+.SmartTomcat/
+
+# No ignorar el Maven Wrapper Jar
+!/.mvn/wrapper/maven-wrapper.jar
+!/Gestion_Mascotas/.mvn/wrapper/maven-wrapper.jar

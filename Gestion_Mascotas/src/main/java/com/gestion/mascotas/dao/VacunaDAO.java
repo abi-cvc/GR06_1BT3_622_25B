@@ -1,13 +1,13 @@
 package com.gestion.mascotas.dao;
 
-import com.gestion.mascotas.modelo.Vacuna;
+import com.gestion.mascotas.modelo.entidades.Vacuna;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 public class VacunaDAO {
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionMascotasPU");
+    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionMascotasPU");
 
     public void guardar(Vacuna vacuna) {
         EntityManager em = emf.createEntityManager();
@@ -88,6 +88,47 @@ public class VacunaDAO {
             return em.createQuery("SELECT COUNT(v) FROM Vacuna v WHERE v.mascota.id = :mascotaId AND v.fecha > CURRENT_DATE", Long.class)
                     .setParameter("mascotaId", mascotaId)
                     .getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Obtiene todas las vacunas asociadas a las mascotas de un usuario específico.
+     * Ordena los resultados por fecha descendente.
+     * @param usuarioId El ID del usuario.
+     * @return Una lista de vacunas del usuario.
+     */
+    public List<Vacuna> obtenerPorUsuario(Long usuarioId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            // JPQL Query: Selecciona Vacuna 'v' donde el id del usuario de la mascota asociada a 'v' sea :usuarioId
+            return em.createQuery(
+                            "SELECT v FROM Vacuna v WHERE v.mascota.usuario.id = :usuarioId ORDER BY v.fecha DESC",
+                            Vacuna.class
+                    )
+                    .setParameter("usuarioId", usuarioId)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Obtiene todas las vacunas asociadas a una mascota específica.
+     * Ordena los resultados por fecha descendente.
+     * @param mascotaId El ID de la mascota.
+     * @return Una lista de vacunas de la mascota.
+     */
+    public List<Vacuna> obtenerPorMascota(Long mascotaId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT v FROM Vacuna v WHERE v.mascota.id = :mascotaId ORDER BY v.fecha DESC",
+                            Vacuna.class
+                    )
+                    .setParameter("mascotaId", mascotaId)
+                    .getResultList();
         } finally {
             em.close();
         }

@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="Refactorización 8: Replace Temp with Query - Refactorización del método calcularCaloriasRecomendadas en AnalizadorDatos">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/ValidadorAtencionEspecial.java" afterDir="false" />
+    <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="Tests Unitarios Clase ValidadorRecordatorio">
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/servicio/RecordatorioPaseoServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/AnalizadorDatos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/AnalizadorDatos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +20,7 @@
         <option value="Enum" />
         <option value="Jsp File" />
         <option value="Class" />
+        <option value="JUnit4 Test Class" />
       </list>
     </option>
   </component>
@@ -57,24 +58,91 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Refactorizaciones&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/andre/Music/PMascotas/Gestion_Mascotas&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.github.copilot.settings.ApplicationConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.RecordatorioPaseoServiceTest.executor": "Run",
+    "JUnit.ValidadorRecordatorioTest.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit4",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4": "",
+    "git-widget-placeholder": "extractLogica",
+    "last_opened_file_path": "C:/Users/andre/Music/PMascotas/Gestion_Mascotas",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.editor",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.gestion.mascotas.servicio" />
+      <recent name="com.gestion.mascotas.util" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.RecordatorioPaseoServiceTest">
+    <configuration name="GestorHorariosTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gestion_mascotas" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.gestion.mascotas.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.gestion.mascotas.util" />
+      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.util.GestorHorariosTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RecordatorioPaseoServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gestion_mascotas" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.gestion.mascotas.servicio.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.gestion.mascotas.servicio" />
+      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.servicio.RecordatorioPaseoServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ValidadorRecordatorioTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gestion_mascotas" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.gestion.mascotas.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.gestion.mascotas.util" />
+      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.util.ValidadorRecordatorioTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.RecordatorioPaseoServiceTest" />
+        <item itemvalue="JUnit.GestorHorariosTest" />
+        <item itemvalue="JUnit.ValidadorRecordatorioTest" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -103,6 +171,7 @@
       <workItem from="1759882054673" duration="13250000" />
       <workItem from="1759895659960" duration="2089000" />
       <workItem from="1760217968818" duration="4969000" />
+      <workItem from="1760848288558" duration="4673000" />
     </task>
     <task id="LOCAL-00001" summary="Creación de Archivos JSP para el segundo Incremento">
       <option name="closed" value="true" />
@@ -176,7 +245,23 @@
       <option name="project" value="LOCAL" />
       <updated>1760221033296</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Refactorización: Mover lógica de negocio de Recordatorios a capa service con validadores y gestores">
+      <option name="closed" value="true" />
+      <created>1760849123442</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1760849123442</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Tests Unitarios Clase ValidadorRecordatorio">
+      <option name="closed" value="true" />
+      <created>1760851454687</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1760851454687</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -193,7 +278,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/Refactorizaciones" />
+                        <option value="origin/Practica2" />
                       </list>
                     </value>
                   </entry>
@@ -214,7 +299,9 @@
     <MESSAGE value="Cambios en BDD para Base de Conocimiento de Sugerencias" />
     <MESSAGE value="Agregar DataLoaderListener para carga inicial de sugerencias y su correcto funcionamiento." />
     <MESSAGE value="Refactorización 8: Replace Temp with Query - Refactorización del método calcularCaloriasRecomendadas en AnalizadorDatos" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactorización 8: Replace Temp with Query - Refactorización del método calcularCaloriasRecomendadas en AnalizadorDatos" />
+    <MESSAGE value="Refactorización: Mover lógica de negocio de Recordatorios a capa service con validadores y gestores" />
+    <MESSAGE value="Tests Unitarios Clase ValidadorRecordatorio" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tests Unitarios Clase ValidadorRecordatorio" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

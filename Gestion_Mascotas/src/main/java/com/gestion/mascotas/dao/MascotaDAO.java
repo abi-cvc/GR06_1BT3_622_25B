@@ -1,6 +1,6 @@
 package com.gestion.mascotas.dao;
 
-import com.gestion.mascotas.modelo.Mascota;
+import com.gestion.mascotas.modelo.entidades.Mascota;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -14,32 +14,21 @@ public class MascotaDAO {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
+            // --- CAMBIO AQUÍ ---
             if (mascota.getId() == null) {
-                // Nueva mascota - usar persist
+                // Si es nueva, usa persist
                 em.persist(mascota);
             } else {
-                // Mascota existente - usar merge para actualizar
+                // Si ya existe (tiene ID), usa merge para actualizar
                 em.merge(mascota);
             }
+            // --- FIN DEL CAMBIO ---
             tx.commit();
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
-            e.printStackTrace();
-        } finally {
-            em.close();
-        }
-    }
-
-    public void actualizar(Mascota mascota) {
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-            em.merge(mascota);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) tx.rollback();
-            e.printStackTrace();
+            e.printStackTrace(); // Es buena idea loggear el error
+            // Podrías lanzar una excepción personalizada aquí si prefieres
+            // throw new RuntimeException("Error al guardar la mascota", e);
         } finally {
             em.close();
         }

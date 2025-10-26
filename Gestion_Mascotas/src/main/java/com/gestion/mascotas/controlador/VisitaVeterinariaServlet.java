@@ -1,11 +1,10 @@
 package com.gestion.mascotas.controlador;
 
-import com.gestion.mascotas.dao.MascotaDAO;
-import com.gestion.mascotas.dao.VisitaVeterinariaDAO;
-import com.gestion.mascotas.modelo.Mascota;
-import com.gestion.mascotas.modelo.Usuario;
-import com.gestion.mascotas.modelo.VisitaVeterinaria;
-
+import com.gestion.mascotas.modelo.entidades.Mascota;
+import com.gestion.mascotas.modelo.entidades.Usuario;
+import com.gestion.mascotas.modelo.entidades.VisitaVeterinaria;
+import com.gestion.mascotas.servicio.MascotaService; // Necesario para listar mascotas
+import com.gestion.mascotas.servicio.VisitaVeterinariaService; // Importar el nuevo servicio
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -16,9 +15,13 @@ import java.util.List;
 @WebServlet({"/visita", "/visitas"})
 public class VisitaVeterinariaServlet extends HttpServlet {
 
-    private VisitaVeterinariaDAO visitaDAO = new VisitaVeterinariaDAO();
-    private MascotaDAO mascotaDAO = new MascotaDAO();
+    private VisitaVeterinariaService visitaService;
+    private MascotaService mascotaService;
 
+    public void init(){
+        visitaService = new VisitaVeterinariaService();
+        mascotaService = new MascotaService();
+    }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -28,71 +31,65 @@ public class VisitaVeterinariaServlet extends HttpServlet {
             return;
         }
 
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
         String action = request.getParameter("action");
         if (action == null) action = "listar";
 
-        switch (action) {
-            case "nueva":
-            case "registrar":
-                mostrarFormularioRegistro(request, response);
-                break;
-            case "eliminar":
-                eliminarVisita(request, response);
-                break;
-            case "listar":
-            default:
-                listarVisitas(request, response);
-                break;
+        try {
+            switch (action) {
+                case "nueva": // Renombrado de "registrar" para claridad en GET
+                    mostrarFormularioRegistro(request, response, usuario);
+                    break;
+                case "eliminar":
+                    eliminarVisita(request, response, usuario);
+                    break;
+                case "listar":
+                default:
+                    listarVisitas(request, response, usuario);
+                    break;
+            }
+        } catch (Exception e) {
+            // Manejo genérico de errores
+            e.printStackTrace(); // Loggear el error
+            session.setAttribute("error", "Ocurrió un error inesperado: " + e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/visitas"); // Redirigir a la lista
         }
     }
 
-    private void mostrarFormularioRegistro(HttpServletRequest request, HttpServletResponse response)
+    private void mostrarFormularioRegistro(HttpServletRequest request, HttpServletResponse response, Usuario usuario)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        Long usuarioId = (Long) session.getAttribute("usuarioId");
-
-        List<Mascota> mascotas = mascotaDAO.obtenerMascotasPorUsuario(usuarioId);
+        // Usar el servicio de mascota para obtener la lista
+        List<Mascota> mascotas = mascotaService.listarMascotasPorUsuario(usuario.getId());
         request.setAttribute("mascotas", mascotas);
         request.getRequestDispatcher("/jsp/registrarVisita.jsp").forward(request, response);
     }
 
-    private void listarVisitas(HttpServletRequest request, HttpServletResponse response)
+    private void listarVisitas(HttpServletRequest request, HttpServletResponse response, Usuario usuario)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        Long usuarioId = (Long) session.getAttribute("usuarioId");
-
-        List<VisitaVeterinaria> visitas = visitaDAO.obtenerPorUsuario(usuarioId);
-        List<Mascota> mascotas = mascotaDAO.obtenerMascotasPorUsuario(usuarioId);
+        // Usar los servicios para obtener visitas y mascotas
+        List<VisitaVeterinaria> visitas = visitaService.consultarHistorialPorUsuario(usuario.getId());
+        List<Mascota> mascotas = mascotaService.listarMascotasPorUsuario(usuario.getId());
 
         request.setAttribute("visitas", visitas);
-        request.setAttribute("mascotas", mascotas);
+        request.setAttribute("mascotas", mascotas); // Para el modal de registro
         request.getRequestDispatcher("/jsp/listaVisitas.jsp").forward(request, response);
     }
 
-    private void eliminarVisita(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
-        Long id = Long.parseLong(request.getParameter("id"));
-
-        HttpSession session = request.getSession(false);
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-
-        VisitaVeterinaria visita = visitaDAO.obtenerPorId(id);
-        if (visita == null) {
-            response.sendRedirect(request.getContextPath() + "/visitas?error=visita_no_encontrada");
-            return;
-        }
-
-        if (!visita.getMascota().getUsuario().getId().equals(usuario.getId())) {
-            response.sendRedirect(request.getContextPath() + "/visitas?error=acceso_denegado");
-            return;
-        }
-
+    private void eliminarVisita(HttpServletRequest request, HttpServletResponse response, Usuario usuario)
+            throws IOException {
         try {
-            visitaDAO.eliminar(id);
+            Long id = Long.parseLong(request.getParameter("id"));
+            visitaService.eliminarVisita(id, usuario); // Llamar al servicio
             response.sendRedirect(request.getContextPath() + "/visitas?success=eliminado");
+        } catch (NumberFormatException e) {
+            response.sendRedirect(request.getContextPath() + "/visitas?error=id_invalido");
+        } catch (IllegalArgumentException | SecurityException e) {
+            request.getSession().setAttribute("error", e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/visitas");
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/visitas?error=error_eliminando");
+            request.getSession().setAttribute("error", "Error interno al eliminar la visita.");
+            response.sendRedirect(request.getContextPath() + "/visitas");
         }
     }
 
@@ -104,49 +101,50 @@ public class VisitaVeterinariaServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
 
         String action = request.getParameter("action");
         if ("registrar".equals(action)) {
-            registrarVisita(request, response);
+            registrarVisita(request, response, usuario);
         } else {
             response.sendRedirect(request.getContextPath() + "/visitas?error=accion_desconocida");
         }
     }
 
-    private void registrarVisita(HttpServletRequest request, HttpServletResponse response)
+    private void registrarVisita(HttpServletRequest request, HttpServletResponse response, Usuario usuario)
             throws IOException, ServletException {
         try {
-            Long mascotaId = Long.parseLong(request.getParameter("mascotaId"));
-            LocalDate fecha = LocalDate.parse(request.getParameter("fecha"));
+            String mascotaIdStr = request.getParameter("mascotaId");
+            String fechaStr = request.getParameter("fecha");
             String motivo = request.getParameter("motivo");
+            String diagnostico = request.getParameter("diagnostico");
+            String tratamiento = request.getParameter("tratamiento");
+            String observaciones = request.getParameter("observaciones");
+            String nombreVeterinario = request.getParameter("nombreVeterinario");
 
-            Mascota mascota = mascotaDAO.obtenerPorId(mascotaId);
-            if (mascota == null) {
-                request.setAttribute("error", "Mascota no encontrada.");
-                mostrarFormularioRegistro(request, response);
-                return;
+            System.out.println("Este es el nombre: "+nombreVeterinario);
+
+            // Validar que los strings no sean nulos o vacíos antes de parsear
+            if (mascotaIdStr == null || mascotaIdStr.trim().isEmpty() || fechaStr == null || fechaStr.isEmpty() || motivo == null || motivo.trim().isEmpty()) {
+                throw new IllegalArgumentException("Todos los campos son obligatorios (Mascota, Fecha, Motivo).");
             }
 
-            HttpSession session = request.getSession(false);
-            Usuario usuario = (Usuario) session.getAttribute("usuario");
-            if (!mascota.getUsuario().getId().equals(usuario.getId())) {
-                request.setAttribute("error", "No tienes permiso para registrar visitas para esta mascota.");
-                mostrarFormularioRegistro(request, response);
-                return;
-            }
+            Long mascotaId = Long.parseLong(mascotaIdStr);
+            LocalDate fecha = LocalDate.parse(fechaStr);
 
-            VisitaVeterinaria visita = new VisitaVeterinaria();
-            visita.setFecha(fecha);
-            visita.setMotivo(motivo);
-            visita.setMascota(mascota);
+            visitaService.registrarVisita(fecha, motivo, diagnostico,tratamiento,observaciones,nombreVeterinario, mascotaId, usuario);
 
-            visitaDAO.guardar(visita);
             response.sendRedirect(request.getContextPath() + "/visitas?success=registrado");
 
+        } catch (IllegalArgumentException | SecurityException e) {
+            // Errores de validación o permisos del servicio
+            request.setAttribute("error", e.getMessage());
+            mostrarFormularioRegistro(request, response, usuario); // Volver al formulario con el error
         } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("error", "Error al registrar la visita: " + e.getMessage());
-            mostrarFormularioRegistro(request, response);
+            // Otros errores (parsing, base de datos, etc.)
+            e.printStackTrace(); // Loggear
+            request.setAttribute("error", "Error al procesar el registro: " + e.getMessage());
+            mostrarFormularioRegistro(request, response, usuario); // Volver al formulario con el error
         }
     }
 }

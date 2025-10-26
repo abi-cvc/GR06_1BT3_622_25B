@@ -1,6 +1,6 @@
 package com.gestion.mascotas.dao;
 
-import com.gestion.mascotas.modelo.RecordatorioPaseo;
+import com.gestion.mascotas.modelo.entidades.RecordatorioPaseo;
 import com.gestion.mascotas.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

@@ -3,8 +3,8 @@ package com.gestion.mascotas.controlador;
 import com.gestion.mascotas.dao.MascotaDAO;
 import com.gestion.mascotas.dao.VacunaDAO;
 import com.gestion.mascotas.dao.VisitaVeterinariaDAO;
-import com.gestion.mascotas.modelo.Mascota;
-import com.gestion.mascotas.modelo.Usuario;
+import com.gestion.mascotas.modelo.entidades.Mascota;
+import com.gestion.mascotas.modelo.entidades.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.gestion.mascotas.modelo.TipoMascota;
+import com.gestion.mascotas.modelo.enums.TipoMascota;
 
 @WebServlet({"/dashboard", "/home", ""})
 public class DashboardServlet extends HttpServlet {
