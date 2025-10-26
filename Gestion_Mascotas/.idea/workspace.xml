@@ -5,22 +5,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="Tests Unitarios Clase ValidadorRecordatorio">
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/servicio/RecordatorioPaseoServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/servicio/EstrategiaActividadGatoTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/servicio/MascotaServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/servicio/RecordatorioPaseoServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/servicio/UsuarioServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/servicio/VisitaVeterinariaServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/util/GestorHorariosTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/util/NormalizadorDatosTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/util/ValidadorRecordatorioTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+      <option value="repository" />
+    </option>
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
         <option value="Jsp File" />
-        <option value="Class" />
         <option value="JUnit4 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -60,8 +74,14 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "JUnit.EstrategiaActividadGatoTest.executor": "Run",
+    "JUnit.GestorHorariosTest.executor": "Run",
+    "JUnit.MascotaServiceTest.executor": "Run",
+    "JUnit.NormalizadorDatosTest.executor": "Run",
     "JUnit.RecordatorioPaseoServiceTest.executor": "Run",
+    "JUnit.UsuarioServiceTest.executor": "Run",
     "JUnit.ValidadorRecordatorioTest.executor": "Run",
+    "JUnit.VisitaVeterinariaServiceTest.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
@@ -69,7 +89,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit4",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4": "",
-    "git-widget-placeholder": "extractLogica",
+    "git-widget-placeholder": "Prueba1B",
     "last_opened_file_path": "C:/Users/andre/Music/PMascotas/Gestion_Mascotas",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -89,7 +109,7 @@
       <recent name="com.gestion.mascotas.util" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.RecordatorioPaseoServiceTest">
+  <component name="RunManager" selected="JUnit.VisitaVeterinariaServiceTest">
     <configuration name="GestorHorariosTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gestion_mascotas" />
       <extension name="coverage">
@@ -105,7 +125,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RecordatorioPaseoServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="NormalizadorDatosTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gestion_mascotas" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.gestion.mascotas.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.gestion.mascotas.util" />
+      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.util.NormalizadorDatosTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UsuarioServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gestion_mascotas" />
       <extension name="coverage">
         <pattern>
@@ -114,7 +149,7 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.gestion.mascotas.servicio" />
-      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.servicio.RecordatorioPaseoServiceTest" />
+      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.servicio.UsuarioServiceTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -135,11 +170,28 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="VisitaVeterinariaServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gestion_mascotas" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.gestion.mascotas.servicio.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.gestion.mascotas.servicio" />
+      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.servicio.VisitaVeterinariaServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.RecordatorioPaseoServiceTest" />
+        <item itemvalue="JUnit.VisitaVeterinariaServiceTest" />
         <item itemvalue="JUnit.GestorHorariosTest" />
+        <item itemvalue="JUnit.NormalizadorDatosTest" />
         <item itemvalue="JUnit.ValidadorRecordatorioTest" />
+        <item itemvalue="JUnit.UsuarioServiceTest" />
       </list>
     </recent_temporary>
   </component>
@@ -153,7 +205,7 @@
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="StructureViewState">
-    <option name="selectedTab" value="JSP" />
+    <option name="selectedTab" value="Logical" />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
