@@ -4,18 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="Tests Unitarios Clase ValidadorRecordatorio">
+    <list default="true" id="7b591263-c46c-4e8a-a23a-78adce384bfe" name="Changes" comment="Creación Rama Prueba 1B">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/dao/HistorialPesoDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/modelo/entidades/HistorialPeso.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/servicio/HistorialPesoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gestion/mascotas/util/ValidadorPeso.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/servicio/HistorialPesoServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/util/ValidadorPesoParametersTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/util/ValidadorPesoTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/servicio/EstrategiaActividadGatoTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/servicio/MascotaServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/servicio/RecordatorioPaseoServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/servicio/UsuarioServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/servicio/VisitaVeterinariaServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/util/GestorHorariosTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/util/NormalizadorDatosTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/gestion/mascotas/util/ValidadorRecordatorioTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,10 +76,19 @@
   "keyToString": {
     "JUnit.EstrategiaActividadGatoTest.executor": "Run",
     "JUnit.GestorHorariosTest.executor": "Run",
+    "JUnit.HistorialPesoServiceTest.executor": "Run",
+    "JUnit.HistorialPesoServiceTest.given_multiple_records_when_get_history_then_ordered_descending.executor": "Run",
     "JUnit.MascotaServiceTest.executor": "Run",
     "JUnit.NormalizadorDatosTest.executor": "Run",
     "JUnit.RecordatorioPaseoServiceTest.executor": "Run",
     "JUnit.UsuarioServiceTest.executor": "Run",
+    "JUnit.ValidadorPesoParametersTest.executor": "Run",
+    "JUnit.ValidadorPesoTest.executor": "Run",
+    "JUnit.ValidadorPesoTest.given_max_weight_when_validate_then_null.executor": "Run",
+    "JUnit.ValidadorPesoTest.given_negative_weight_when_validate_then_error_message.executor": "Run",
+    "JUnit.ValidadorPesoTest.given_peso_negativo_when_validar_then_throw_exception.executor": "Run",
+    "JUnit.ValidadorPesoTest.given_valid_positive_weight_when_validate_then_null.executor": "Run",
+    "JUnit.ValidadorPesoTest.given_zero_weight_when_validate_then_error_message.executor": "Run",
     "JUnit.ValidadorRecordatorioTest.executor": "Run",
     "JUnit.VisitaVeterinariaServiceTest.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
@@ -96,6 +105,9 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "preferences.editor",
     "vue.rearranger.settings.migration": "true"
   }
@@ -109,38 +121,8 @@
       <recent name="com.gestion.mascotas.util" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.VisitaVeterinariaServiceTest">
-    <configuration name="GestorHorariosTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="gestion_mascotas" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.gestion.mascotas.util.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.gestion.mascotas.util" />
-      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.util.GestorHorariosTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="NormalizadorDatosTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="gestion_mascotas" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.gestion.mascotas.util.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.gestion.mascotas.util" />
-      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.util.NormalizadorDatosTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="UsuarioServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.HistorialPesoServiceTest.given_multiple_records_when_get_history_then_ordered_descending">
+    <configuration name="HistorialPesoServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gestion_mascotas" />
       <extension name="coverage">
         <pattern>
@@ -149,28 +131,13 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.gestion.mascotas.servicio" />
-      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.servicio.UsuarioServiceTest" />
+      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.servicio.HistorialPesoServiceTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ValidadorRecordatorioTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="gestion_mascotas" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.gestion.mascotas.util.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.gestion.mascotas.util" />
-      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.util.ValidadorRecordatorioTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="VisitaVeterinariaServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="HistorialPesoServiceTest.given_multiple_records_when_get_history_then_ordered_descending" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="gestion_mascotas" />
       <extension name="coverage">
         <pattern>
@@ -179,19 +146,67 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.gestion.mascotas.servicio" />
-      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.servicio.VisitaVeterinariaServiceTest" />
+      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.servicio.HistorialPesoServiceTest" />
+      <option name="METHOD_NAME" value="given_multiple_records_when_get_history_then_ordered_descending" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ValidadorPesoParametersTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gestion_mascotas" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.gestion.mascotas.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.gestion.mascotas.util" />
+      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.util.ValidadorPesoParametersTest" />
       <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ValidadorPesoTest.given_negative_weight_when_validate_then_error_message" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gestion_mascotas" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.gestion.mascotas.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.gestion.mascotas.util" />
+      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.util.ValidadorPesoTest" />
+      <option name="METHOD_NAME" value="given_negative_weight_when_validate_then_error_message" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ValidadorPesoTest.given_zero_weight_when_validate_then_error_message" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="gestion_mascotas" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.gestion.mascotas.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.gestion.mascotas.util" />
+      <option name="MAIN_CLASS_NAME" value="com.gestion.mascotas.util.ValidadorPesoTest" />
+      <option name="METHOD_NAME" value="given_zero_weight_when_validate_then_error_message" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.VisitaVeterinariaServiceTest" />
-        <item itemvalue="JUnit.GestorHorariosTest" />
-        <item itemvalue="JUnit.NormalizadorDatosTest" />
-        <item itemvalue="JUnit.ValidadorRecordatorioTest" />
-        <item itemvalue="JUnit.UsuarioServiceTest" />
+        <item itemvalue="JUnit.HistorialPesoServiceTest.given_multiple_records_when_get_history_then_ordered_descending" />
+        <item itemvalue="JUnit.HistorialPesoServiceTest" />
+        <item itemvalue="JUnit.ValidadorPesoParametersTest" />
+        <item itemvalue="JUnit.ValidadorPesoTest.given_zero_weight_when_validate_then_error_message" />
+        <item itemvalue="JUnit.ValidadorPesoTest.given_negative_weight_when_validate_then_error_message" />
       </list>
     </recent_temporary>
   </component>
@@ -313,7 +328,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760851454687</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Creación Rama Prueba 1B">
+      <option name="closed" value="true" />
+      <created>1761511279529</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1761511279529</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -353,7 +376,8 @@
     <MESSAGE value="Refactorización 8: Replace Temp with Query - Refactorización del método calcularCaloriasRecomendadas en AnalizadorDatos" />
     <MESSAGE value="Refactorización: Mover lógica de negocio de Recordatorios a capa service con validadores y gestores" />
     <MESSAGE value="Tests Unitarios Clase ValidadorRecordatorio" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tests Unitarios Clase ValidadorRecordatorio" />
+    <MESSAGE value="Creación Rama Prueba 1B" />
+    <option name="LAST_COMMIT_MESSAGE" value="Creación Rama Prueba 1B" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
