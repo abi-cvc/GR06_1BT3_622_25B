@@ -1,5 +1,6 @@
 package com.gestion.mascotas.servicio;
 
+import com.gestion.mascotas.dao.MascotaDAO;
 import com.gestion.mascotas.dao.RecordatorioAlimentacionDAO;
 import com.gestion.mascotas.modelo.entidades.Mascota;
 import com.gestion.mascotas.modelo.entidades.RecordatorioAlimentacion;
@@ -13,11 +14,26 @@ import java.util.List;
 
 public class RecordatorioAlimentacionService extends RecordatorioService {
 
-    private RecordatorioAlimentacionDAO recordatorioDAO;
+    private final RecordatorioAlimentacionDAO recordatorioDAO;
+    // 'mascotaDAO' ya no se define aquí, se hereda del padre
 
+    // Constructor para producción
     public RecordatorioAlimentacionService() {
-        super();
+        super(); // Llama al constructor vacío del padre (que usa DAOs reales)
         this.recordatorioDAO = new RecordatorioAlimentacionDAO();
+    }
+
+    // --- ¡MODIFICA ESTE CONSTRUCTOR! ---
+    // Constructor para TESTS
+    public RecordatorioAlimentacionService(RecordatorioAlimentacionDAO recordatorioDAO,
+                                           MascotaDAO mascotaDAO) {
+
+        // ¡ESTA ES LA LÍNEA CLAVE QUE FALTABA!
+        // Pasa el MascotaDAO mock al constructor del padre
+        super(mascotaDAO);
+
+        // Asigna el RecordatorioDAO mock a esta clase
+        this.recordatorioDAO = recordatorioDAO;
     }
 
     public boolean configurarRecordatorio(String mascotaIdStr, String frecuencia,

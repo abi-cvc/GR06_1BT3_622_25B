@@ -20,18 +20,16 @@ import java.util.List;
 @WebServlet({"/mascota", "/mascotas"})
 public class MascotaServlet extends HttpServlet {
 
-    private MascotaService mascotaService;
-    private MascotaDAO mascotaDAO = new MascotaDAO();
-    private UsuarioDAO usuarioDAO = new UsuarioDAO();
-    private RecordatorioAlimentacionDAO recordatorioAlimentacionDAO = new RecordatorioAlimentacionDAO();
-    private RecordatorioPaseoDAO recordatorioPaseoDAO = new RecordatorioPaseoDAO();
+    private final MascotaService mascotaService;
 
+    // Llama al constructor de servicio real.
     public MascotaServlet() {
         this.mascotaService = new MascotaService();
     }
 
-    public void init (){
-        mascotaService = new MascotaService();
+    // Permite inyectar el servicio mockeado.
+    public MascotaServlet(MascotaService mascotaService) {
+        this.mascotaService = mascotaService;
     }
 
     @Override
@@ -54,6 +52,9 @@ public class MascotaServlet extends HttpServlet {
                     break;
                 case "eliminar":
                     eliminarMascota(request, response, usuario);
+                    break;
+                case "registrar": // <-- AÑADE ESTO
+                    mostrarFormularioRegistro(request, response);
                     break;
                 case "listar":
                 default:
@@ -86,15 +87,16 @@ public class MascotaServlet extends HttpServlet {
         }
     }
 
-//    private void mostrarFormularioRegistro(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException {
-//        HttpSession session = request.getSession(false);
-//        if (session != null && session.getAttribute("usuarioId") != null) {
-//            request.setAttribute("usuarioId", session.getAttribute("usuarioId"));
-//        }
-//        request.setAttribute("tiposMascota", TipoMascota.values());
-//        request.getRequestDispatcher("/jsp/registrarMascota.jsp").forward(request, response);
-//    }
+
+    private void mostrarFormularioRegistro(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("usuarioId") != null) {
+            request.setAttribute("usuarioId", session.getAttribute("usuarioId"));
+        }
+        request.setAttribute("tiposMascota", TipoMascota.values());
+        request.getRequestDispatcher("/jsp/registrarMascota.jsp").forward(request, response);
+    }
 
 //    private void mostrarFormularioEdicion(HttpServletRequest request, HttpServletResponse response)
 //            throws ServletException, IOException {
@@ -120,8 +122,20 @@ public class MascotaServlet extends HttpServlet {
 
     private void mostrarDetalles(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Long mascotaId = Long.parseLong(request.getParameter("id"));
-        request.setAttribute("mascota", mascotaService.consultarDatos(mascotaId));
-        // Lógica para cargar recordatorios iría aquí, llamando a sus respectivos servicios
+        Mascota mascota = mascotaService.consultarDatos(mascotaId); //
+
+        if (mascota == null) {
+            // La mascota no existe, redirige a la lista con un error
+            request.setAttribute("error", "Mascota no encontrada.");
+            // Necesitamos el usuario para llamar a listarMascotas
+            HttpSession session = request.getSession(false);
+            Usuario usuario = (Usuario) session.getAttribute("usuario");
+            listarMascotas(request, response, usuario); // Reutiliza el método de listar
+            return;
+        }
+
+        request.setAttribute("mascota", mascota);
+        // Lógica para cargar recordatorios iría aquí
         request.getRequestDispatcher("/jsp/detallesMascota.jsp").forward(request, response);
     }
 
@@ -179,7 +193,8 @@ public class MascotaServlet extends HttpServlet {
      * @param usuarioId ID del usuario
      * @return Lista de mascotas del usuario
      */
+    // MascotaServlet.java
     public List<Mascota> obtenerPorUsuario(Long usuarioId) {
-        return mascotaDAO.obtenerMascotasPorUsuario(usuarioId);
+        return mascotaService.listarMascotasPorUsuario(usuarioId); // <-- Usa el servicio
     }
 }

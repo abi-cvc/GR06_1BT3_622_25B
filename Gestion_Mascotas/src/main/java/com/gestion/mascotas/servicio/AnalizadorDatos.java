@@ -19,13 +19,25 @@ import java.util.Map;
 public class AnalizadorDatos {
 
     private final EstrategiaActividadPerro estrategiaActividadPerro = new EstrategiaActividadPerro();
-    public SugerenciaAlimentacionDAO sugerenciaAlimentacionDAO;
-    public SugerenciaEjercicioDAO sugerenciaEjercicioDAO;
+    public final SugerenciaAlimentacionDAO sugerenciaAlimentacionDAO;
+    public final SugerenciaEjercicioDAO sugerenciaEjercicioDAO;
+
     private final EstrategiaBusquedaSugerencias estrategiaBusquedaSugerencias;
 
+    // ---  Constructor de Producción  ---
     public AnalizadorDatos() {
         this.sugerenciaAlimentacionDAO = new SugerenciaAlimentacionDAO();
         this.sugerenciaEjercicioDAO = new SugerenciaEjercicioDAO();
+        this.estrategiaBusquedaSugerencias = new EstrategiaBusquedaSugerencias(
+                sugerenciaAlimentacionDAO, sugerenciaEjercicioDAO);
+    }
+
+    // --- Constructor de Test ---
+    public AnalizadorDatos(SugerenciaAlimentacionDAO sugerenciaAlimentacionDAO,
+                           SugerenciaEjercicioDAO sugerenciaEjercicioDAO) {
+        this.sugerenciaAlimentacionDAO = sugerenciaAlimentacionDAO;
+        this.sugerenciaEjercicioDAO = sugerenciaEjercicioDAO;
+        // Importante: Inicializar la estrategia con los DAOs inyectados (mocks)
         this.estrategiaBusquedaSugerencias = new EstrategiaBusquedaSugerencias(
                 sugerenciaAlimentacionDAO, sugerenciaEjercicioDAO);
     }

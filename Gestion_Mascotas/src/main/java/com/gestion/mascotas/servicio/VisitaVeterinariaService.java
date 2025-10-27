@@ -11,14 +11,26 @@ import java.util.List;
 
 public class VisitaVeterinariaService {
 
-    private final VisitaVeterinariaDAO visitaDAO = new VisitaVeterinariaDAO();
-    private final MascotaDAO mascotaDAO = new MascotaDAO();
+    private final VisitaVeterinariaDAO visitaDAO;
+    private final MascotaDAO mascotaDAO;
+
+    public VisitaVeterinariaService() {
+        this.visitaDAO = new VisitaVeterinariaDAO();
+        this.mascotaDAO = new MascotaDAO();
+    }
+
+    public VisitaVeterinariaService(VisitaVeterinariaDAO visitaDAO, MascotaDAO mascotaDAO) {
+        this.visitaDAO = visitaDAO;
+        this.mascotaDAO = mascotaDAO;
+    }
 
     /**
-     * Válida los datos de entrada para registrar una visita. (Corresponde a validarDatos)
+     * Válida los datos de entrada para registrar una visita.
      * @return Mensaje de error o null si es válido.
      */
-    private String validarDatos(LocalDate fecha, String motivo, String diagnostico, String tratamiento, String observaciones, String nombreVeterinario, Mascota mascota) {
+    private String validarDatos(LocalDate fecha, String motivo, String diagnostico,
+                                String tratamiento, String observaciones,
+                                String nombreVeterinario, Mascota mascota) {
         if (fecha == null) {
             return "La fecha de la visita es obligatoria.";
         }
@@ -32,7 +44,7 @@ public class VisitaVeterinariaService {
             return "La mascota asociada no fue encontrada.";
         }
 
-        if (diagnostico != null && diagnostico.length() > 1000) { // Ejemplo de límite
+        if (diagnostico != null && diagnostico.length() > 1000) {
             return "El diagnóstico es demasiado largo.";
         }
         if (tratamiento != null && tratamiento.length() > 1000) {
@@ -49,15 +61,20 @@ public class VisitaVeterinariaService {
     }
 
     /**
-     * Registra una nueva visita veterinaria. (Corresponde a registrarVisita)
+     * Registra una nueva visita veterinaria.
      * @throws IllegalArgumentException si los datos no son válidos o la mascota no existe.
      * @throws SecurityException si el usuario no tiene permiso sobre la mascota.
      * @throws RuntimeException si ocurre un error al guardar.
      */
-    public void registrarVisita(LocalDate fecha, String motivo, String diagnostico, String tratamiento, String observaciones, String nombreVeterinario, Long mascotaId, Usuario usuarioActual) {
+    public void registrarVisita(LocalDate fecha, String motivo, String diagnostico,
+                                String tratamiento, String observaciones,
+                                String nombreVeterinario, Long mascotaId,
+                                Usuario usuarioActual) {
         Mascota mascota = mascotaDAO.obtenerPorId(mascotaId);
 
-        String errorValidacion = validarDatos(fecha, motivo, diagnostico,tratamiento, observaciones, nombreVeterinario, mascota);
+        String errorValidacion = validarDatos(fecha, motivo, diagnostico,
+                tratamiento, observaciones,
+                nombreVeterinario, mascota);
         if (errorValidacion != null) {
             throw new IllegalArgumentException(errorValidacion);
         }
@@ -85,27 +102,11 @@ public class VisitaVeterinariaService {
     }
 
     /**
-     * Consulta el historial de visitas de todas las mascotas de un usuario. (Corresponde a consultarHistorial)
+     * Consulta el historial de visitas de todas las mascotas de un usuario.
      */
     public List<VisitaVeterinaria> consultarHistorialPorUsuario(Long usuarioId) {
         return visitaDAO.obtenerPorUsuario(usuarioId);
     }
-
-//    /**
-//     * Consulta el historial de visitas de una mascota específica.
-//     */
-//    public List<VisitaVeterinaria> consultarHistorialPorMascota(Long mascotaId, Usuario usuarioActual) {
-//        Mascota mascota = mascotaDAO.obtenerPorId(mascotaId);
-//        if (mascota == null) {
-//            throw new IllegalArgumentException("Mascota no encontrada.");
-//        }
-//        // Verificar permiso
-//        if (!mascota.getUsuario().getId().equals(usuarioActual.getId())) {
-//            throw new SecurityException("No tienes permiso para ver las visitas de esta mascota.");
-//        }
-//        return visitaDAO.obtenerPorMascota(mascotaId);
-//    }
-
 
     /**
      * Elimina el registro de una visita veterinaria.
@@ -132,17 +133,27 @@ public class VisitaVeterinariaService {
         }
     }
 
-    public long contarVisitasEnRango(Long mascotaId, LocalDate fechaInicio, LocalDate fechaFin, Usuario usuarioActual) {
+    /**
+     * Cuenta las visitas de una mascota en un rango de fechas.
+     * @throws IllegalArgumentException si el rango es inválido o la mascota no existe.
+     * @throws SecurityException si el usuario no tiene permiso.
+     */
+    public long contarVisitasEnRango(Long mascotaId, LocalDate fechaInicio,
+                                     LocalDate fechaFin, Usuario usuarioActual) {
+        // Validar rango de fechas PRIMERO (antes de consultar la BD)
+        if (fechaInicio == null || fechaFin == null || fechaInicio.isAfter(fechaFin)) {
+            throw new IllegalArgumentException("Rango de fechas inválido.");
+        }
+
         Mascota mascota = mascotaDAO.obtenerPorId(mascotaId);
         if (mascota == null) {
             throw new IllegalArgumentException("Mascota no encontrada.");
         }
+
         if (!mascota.getUsuario().getId().equals(usuarioActual.getId())) {
             throw new SecurityException("No tiene permiso para consultar esta mascota");
         }
-        if (fechaInicio == null || fechaFin == null || fechaInicio.isAfter(fechaFin)) {
-            throw new IllegalArgumentException("Rango de fechas inválido.");
-        }
+
         return visitaDAO.contarPorMascotaYFechas(mascotaId, fechaInicio, fechaFin);
     }
 }
