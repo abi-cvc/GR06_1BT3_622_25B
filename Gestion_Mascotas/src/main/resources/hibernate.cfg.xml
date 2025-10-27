@@ -30,12 +30,12 @@
         <mapping class="com.gestion.mascotas.modelo.entidades.Mascota"/>
         <mapping class="com.gestion.mascotas.modelo.entidades.Vacuna"/>
         <mapping class="com.gestion.mascotas.modelo.entidades.VisitaVeterinaria"/>
-        <!-- NUEVAS ENTIDADES -->
         <mapping class="com.gestion.mascotas.modelo.entidades.Recordatorio"/>
         <mapping class="com.gestion.mascotas.modelo.entidades.RecordatorioAlimentacion"/>
         <mapping class="com.gestion.mascotas.modelo.entidades.RecordatorioPaseo"/>
         <mapping class="com.gestion.mascotas.modelo.entidades.Sugerencia"/>
         <mapping class="com.gestion.mascotas.modelo.entidades.SugerenciaAlimentacion"/>
         <mapping class="com.gestion.mascotas.modelo.entidades.SugerenciaEjercicio"/>
+        <mapping class="com.gestion.mascotas.modelo.entidades.HistorialPeso"/>
     </session-factory>
 </hibernate-configuration>
