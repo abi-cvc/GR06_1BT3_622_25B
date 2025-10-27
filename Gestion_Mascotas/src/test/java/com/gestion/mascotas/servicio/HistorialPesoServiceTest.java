@@ -39,6 +39,11 @@ public class HistorialPesoServiceTest {
 
         when(mascotaDAOMock.obtenerPorId(mascotaId)).thenReturn(mascota);
 
+        HistorialPeso registro = new HistorialPeso(mascota, peso, LocalDateTime.now(), null);
+        registro.setId(1L);
+
+        when(historialPesoDAOMock.obtenerPorMascota(mascotaId)).thenReturn(List.of(registro));
+
         String resultado = service.registrarPeso(mascotaId, peso, LocalDateTime.now(), null);
 
         assertNull(resultado);
@@ -46,6 +51,7 @@ public class HistorialPesoServiceTest {
         verify(historialPesoDAOMock, times(1)).guardar(any(HistorialPeso.class));
         verify(mascotaDAOMock, times(1)).guardar(mascota);
     }
+
 
     @Test
     public void given_multiple_records_when_get_history_then_ordered_descending() {

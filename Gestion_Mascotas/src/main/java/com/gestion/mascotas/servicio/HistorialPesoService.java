@@ -53,9 +53,22 @@ public class HistorialPesoService {
         HistorialPeso registro = new HistorialPeso(mascota, peso, fechaRegistro, comentarios);
         historialPesoDAO.guardar(registro);
 
-        // Actualizar peso actual de la mascota
-        mascota.setPeso(peso);
-        mascotaDAO.guardar(mascota);
+        // Actualizar peso actual de la mascota SOLO si este registro es el más reciente
+        List<HistorialPeso> historial = historialPesoDAO.obtenerPorMascota(mascotaId);
+        HistorialPeso registroMasReciente = historial.stream()
+                .max(Comparator.comparing(HistorialPeso::getFechaRegistro))
+                .orElse(null);
+
+        if (registroMasReciente != null && registroMasReciente.getId().equals(registro.getId())) {
+            // Actualizar peso actual de la mascota
+            mascota.setPeso(peso);
+            mascotaDAO.guardar(mascota);
+
+        } else if (registroMasReciente != null) {
+            // Si hay un registro más reciente, actualizar con ese peso
+            mascota.setPeso(registroMasReciente.getPeso());
+            mascotaDAO.guardar(mascota);
+        }
 
         return null;
     }

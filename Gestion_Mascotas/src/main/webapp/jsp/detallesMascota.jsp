@@ -572,8 +572,17 @@
             <h3>Ver Recomendaciones</h3>
             <p>Obtén sugerencias personalizadas de alimentación y ejercicio.</p>
           </a>
+
+            <a href="${pageContext.request.contextPath}/historialPeso?action=listar&mascotaId=${mascota.id}" class="action-card-details">
+                <i class="action-icon fas fa-weight"></i>
+                <h3>Historial de Peso</h3>
+                <p>Registra y consulta la evolución del peso de tu mascota.</p>
+            </a>
+
         </div>
       </section>
+
+
 
       <!-- Sección de Recordatorios de Alimentación Existentes -->
       <c:if test="${not empty recordatoriosAlimentacion}">
@@ -872,7 +881,6 @@
   </div>
 </div>
 
-<script src="${pageContext.request.contextPath}/js/dashboard.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     // Modal de Alimentación

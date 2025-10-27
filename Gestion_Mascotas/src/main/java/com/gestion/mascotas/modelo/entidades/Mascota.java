@@ -24,6 +24,14 @@ public class Mascota {
     private Double peso; // En kg
     private String color;
 
+    // Relación con historial de peso
+    @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<HistorialPeso> historialPeso = new ArrayList<>();
+
+    // Getter y Setter
+    public List<HistorialPeso> getHistorialPeso() { return historialPeso; }
+    public void setHistorialPeso(List<HistorialPeso> historialPeso) { this.historialPeso = historialPeso; }
+
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
@@ -36,7 +44,7 @@ public class Mascota {
     @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<VisitaVeterinaria> visitas = new ArrayList<>(); // Inicializar
 
-    // NUEVAS RELACIONES: Recordatorios
+    // Recordatorios
     @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Recordatorio> recordatorios = new ArrayList<>(); // Inicializar
 
